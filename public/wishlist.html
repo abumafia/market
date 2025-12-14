@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HALLAYM - Sevimlilar (Wishlist)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7ZFGK6W9YV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-7ZFGK6W9YV');
+    </script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        teal: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e'
+                        },
+                        gold: {
+                            400: '#facc15',
+                            500: '#eab308',
+                            600: '#ca8a04'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 50%, #0f766e 100%);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #facc15 0%, #eab308 100%);
+            color: #0f766e;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(250, 204, 21, 0.4);
+        }
+        .btn-secondary {
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(20, 184, 166, 0.4);
+        }
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-danger:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.4);
+        }
+        .input-field {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .input-field:focus {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: #facc15;
+            box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.2);
+        }
+        .wishlist-card {
+            transition: all 0.3s ease;
+        }
+        .wishlist-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .empty-heart {
+            color: #9ca3af;
+        }
+        .filled-heart {
+            color: #ef4444;
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen text-white">
+    <!-- Navbar -->
+    <nav class="glass fixed w-full z-50 shadow-xl">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-8">
+                    <a href="index.html" class="text-3xl font-bold bg-gradient-to-r from-gold-500 to-gold-600 bg-clip-text text-transparent">HALLAYM</a>
+                    <div class="hidden md:flex space-x-8">
+                        <a href="market.html" class="text-teal-300 font-semibold hover:text-white transition-colors">Market</a>
+                        <a href="wishlist.html" class="text-teal-200 hover:text-teal-100 transition-colors">Sevimlilar</a>
+                        <a href="savat.html" class="text-teal-200 hover:text-teal-100 transition-colors">Savat</a>
+                        <a href="history.html" class="text-teal-200 hover:text-teal-100 transition-colors">Buyurtmalar</a>
+                        <a href="blog.html" class="text-teal-200 hover:text-teal-100 transition-colors">Blog</a>
+                        <a href="profile.html" class="text-teal-200 hover:text-teal-100 transition-colors">Profil</a>
+                        <a href="add-product.html" id="addProductLink" class="text-gold-400 font-semibold hidden">Mahsulot Qo'shish</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span id="userInfo" class="text-teal-100 font-medium"></span>
+                    <button onclick="logout()" class="btn-danger px-6 py-2 rounded-full text-sm">Chiqish</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="pt-20 max-w-6xl mx-auto py-8 px-4">
+        <h1 class="text-4xl font-bold mb-6 flex items-center">
+            <i class="fas fa-heart mr-3 text-red-400"></i>
+            Sevimlilar Ro'yxati (Wishlist)
+        </h1>
+
+        <!-- Filtrlar va qidiruv -->
+        <div class="glass rounded-3xl p-6 mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <input type="text" id="wishlistSearch" placeholder="Mahsulot qidirish..." class="input-field px-4 py-3 rounded-xl">
+                <select id="wishlistCategory" class="input-field px-4 py-3 rounded-xl">
+                    <option value="">Barcha kategoriyalar</option>
+                    <option value="instagram">Instagram</option>
+                    <option value="tiktok">TikTok</option>
+                    <option value="youtube">YouTube</option>
+                    <option value="websites">Veb-saytlar</option>
+                </select>
+                <button onclick="loadWishlist()" class="btn-secondary px-6 py-3 rounded-xl font-semibold">
+                    <i class="fas fa-search mr-2"></i>Qidirish
+                </button>
+            </div>
+        </div>
+
+        <!-- Wishlist mahsulotlari -->
+        <div id="wishlistContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <!-- Mahsulotlar yuklanadi -->
+        </div>
+
+        <!-- Yuklash indikatori -->
+        <div id="loadingIndicator" class="text-center py-12 hidden">
+            <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-gold-400 border-t-transparent"></div>
+            <p class="mt-4 text-teal-200 font-semibold">Sevimlilar yuklanmoqda...</p>
+        </div>
+
+        <!-- Agar bo'sh bo'lsa -->
+        <div id="emptyWishlist" class="text-center py-16 hidden">
+            <div class="text-teal-300 text-8xl mb-6">💖</div>
+            <h3 class="text-3xl font-bold text-white mb-4">Sevimlilar ro'yxati bo'sh</h3>
+            <p class="text-teal-200 text-lg mb-6">Mahsulotlarni yoqtirib, sevimlilarga qo'shing!</p>
+            <a href="market.html" class="btn-primary inline-block px-8 py-4 rounded-xl font-semibold text-lg">
+                Marketga o'ting va qo'shing
+            </a>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+        let wishlistItems = [];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+            loadWishlist();
+            setupEventListeners();
+        });
+
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            const user = localStorage.getItem('user');
+            if (!token || !user) {
+                window.location.href = 'register-login.html';
+                return;
+            }
+            currentUser = JSON.parse(user);
+            document.getElementById('userInfo').textContent = `@${currentUser.username}`;
+            if (currentUser.isPremium) {
+                document.getElementById('addProductLink').classList.remove('hidden');
+            }
+        }
+
+        function setupEventListeners() {
+            document.getElementById('wishlistSearch').addEventListener('input', debounce(loadWishlist, 300));
+            document.getElementById('wishlistCategory').addEventListener('change', loadWishlist);
+        }
+
+        // Debounce funksiyasi
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        async function loadWishlist() {
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const container = document.getElementById('wishlistContainer');
+            const emptyMessage = document.getElementById('emptyWishlist');
+
+            loadingIndicator.classList.remove('hidden');
+            container.innerHTML = '';
+            emptyMessage.classList.add('hidden');
+
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert('Sessiya tugadi. Qayta kiring.');
+                window.location.href = 'register-login.html';
+                return;
+            }
+
+            try {
+                const search = document.getElementById('wishlistSearch').value;
+                const category = document.getElementById('wishlistCategory').value;
+                const params = new URLSearchParams();
+                if (search) params.append('search', search);
+                if (category) params.append('category', category);
+
+                const response = await fetch(`/api/wishlist?${params}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Wishlist yuklashda xatolik');
+                }
+
+                wishlistItems = data;
+                displayWishlist(wishlistItems);
+            } catch (error) {
+                console.error('Xatolik:', error);
+                container.innerHTML = `
+                    <div class="glass p-6 rounded-3xl text-center col-span-full">
+                        <i class="fas fa-exclamation-triangle text-6xl text-red-400 mb-4"></i>
+                        <p class="text-red-300 font-semibold text-xl mb-2">Xatolik!</p>
+                        <p class="text-teal-200">${error.message}</p>
+                        <button onclick="loadWishlist()" class="btn-danger mt-4 px-6 py-3 rounded-xl font-semibold">
+                            Qayta yuklash
+                        </button>
+                    </div>
+                `;
+            } finally {
+                loadingIndicator.classList.add('hidden');
+            }
+        }
+
+        function displayWishlist(items) {
+            const container = document.getElementById('wishlistContainer');
+            const emptyMessage = document.getElementById('emptyWishlist');
+
+            if (items.length === 0) {
+                emptyMessage.classList.remove('hidden');
+                return;
+            }
+
+            container.innerHTML = items.map(item => {
+                const product = item.product; // Wishlist item'da product bor deb faraz qilamiz
+                const price = product.discountPrice || product.price;
+                const discountPercent = product.discountPrice ? Math.round((1 - price / product.price) * 100) : 0;
+                const img = product.images?.[0] || 'https://via.placeholder.com/300?text=No+Image';
+                const productLink = `product-detail.html?id=${product._id}`;
+                return `
+                    <div class="wishlist-card glass rounded-3xl p-6">
+                        <div class="flex items-start space-x-4 mb-4">
+                            <a href="${productLink}">
+                                <img src="${img}" alt="${product.name}" class="w-24 h-24 object-cover rounded-xl">
+                            </a>
+                            <div class="flex-1">
+                                <h3 class="font-bold text-white mb-2">
+                                    <a href="${productLink}" class="hover:text-gold-400">${product.name}</a>
+                                </h3>
+                                <p class="text-teal-200 text-sm mb-2">${getCategoryText(product.category)}</p>
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <span class="text-2xl font-bold text-gold-400">${price.toLocaleString()} so'm</span>
+                                    ${discountPercent > 0 ? `<span class="text-red-400 text-sm">${discountPercent}% chegirma</span>` : ''}
+                                </div>
+                                <div class="flex items-center space-x-4 text-sm">
+                                    <button onclick="removeFromWishlist('${item._id}')" class="text-red-400 hover:text-red-300 flex items-center">
+                                        <i class="fas fa-trash mr-1"></i>O'chirish
+                                    </button>
+                                    <button onclick="addToCart('${product._id}')" class="btn-primary px-4 py-1 rounded text-sm">
+                                        <i class="fas fa-shopping-cart mr-1"></i>Savatchaga
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function getCategoryText(category) {
+            const map = {
+                'instagram': 'Instagram Hisoblari',
+                'tiktok': 'TikTok Hisoblari',
+                'youtube': 'YouTube Kanallari',
+                'websites': 'Tayyor Veb-saytlar',
+                'domains': 'Domenlar va Hosting',
+                'likee': 'Likee Hisoblari',
+                'facebook': 'Facebook Hisoblari',
+                'pubg': 'PUBG Hisoblari',
+                'freefire': 'Free Fire hisoblari'
+            };
+            return map[category] || category;
+        }
+
+        async function removeFromWishlist(itemId) {
+            if (!confirm('Sevimlilardan o\'chirishni xohlaysizmi?')) return;
+            const token = localStorage.getItem('token');
+            try {
+                const response = await fetch(`/api/wishlist/${itemId}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (response.ok) {
+                    loadWishlist();
+                    showToast('Sevimlilardan o\'chirildi!');
+                } else {
+                    const data = await response.json();
+                    alert(data.error || 'O\'chirishda xatolik');
+                }
+            } catch (error) {
+                console.error('Xatolik:', error);
+                alert('O\'chirishda xatolik yuz berdi');
+            }
+        }
+
+        async function addToCart(productId) {
+            const token = localStorage.getItem('token');
+            try {
+                const response = await fetch('/api/cart', {
+                    method: 'POST',
+                    headers: { 
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ productId, quantity: 1 })
+                });
+                if (response.ok) {
+                    showToast('Savatchaga qo\'shildi!');
+                    // Savatga o'tish opsiyasi
+                    if (confirm('Savatchaga o\'tmoqchimisiz?')) {
+                        window.location.href = 'savat.html';
+                    }
+                } else {
+                    const data = await response.json();
+                    alert(data.error || 'Savatchaga qo\'shishda xatolik');
+                }
+            } catch (error) {
+                console.error('Xatolik:', error);
+                alert('Savatchaga qo\'shishda xatolik yuz berdi');
+            }
+        }
+
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-xl z-50 shadow-lg';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        function logout() {
+            if (confirm('Chiqmoqchimisiz?')) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                window.location.href = 'register-login.html';
+            }
+        }
+    </script>
+</body>
+</html>

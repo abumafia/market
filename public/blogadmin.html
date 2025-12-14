@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HALLAYM - Admin Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7ZFGK6W9YV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-7ZFGK6W9YV');
+    </script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        teal: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e'
+                        },
+                        gold: {
+                            400: '#facc15',
+                            500: '#eab308',
+                            600: '#ca8a04'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 50%, #0f766e 100%);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #facc15 0%, #eab308 100%);
+            color: #0f766e;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(250, 204, 21, 0.4);
+        }
+        .btn-secondary {
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(20, 184, 166, 0.4);
+        }
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-danger:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.4);
+        }
+        .input-field {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .input-field:focus {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: #facc15;
+            box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.2);
+        }
+        .admin-card {
+            transition: all 0.3s ease;
+        }
+        .admin-card:hover {
+            transform: translateY(-2px);
+        }
+        .modal {
+            transition: opacity 0.3s ease;
+        }
+        .modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen text-white">
+    <!-- Navbar -->
+    <nav class="glass fixed w-full z-50 shadow-xl">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-8">
+                    <a href="index.html" class="text-3xl font-bold bg-gradient-to-r from-gold-500 to-gold-600 bg-clip-text text-transparent">HALLAYM Admin</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span id="adminUserInfo" class="text-teal-100 font-medium"></span>
+                    <button onclick="logout()" class="btn-danger px-6 py-2 rounded-full text-sm">Chiqish</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="pt-20 max-w-7xl mx-auto py-8 px-4">
+        <h1 class="text-4xl font-bold mb-8 text-center">
+            <i class="fas fa-cog mr-3 text-gold-400"></i>
+            Admin Panel
+        </h1>
+
+        <!-- Statistika -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="admin-card glass rounded-2xl p-6 text-center">
+                <i class="fas fa-shopping-cart text-3xl text-teal-400 mb-2"></i>
+                <h3 class="text-xl font-bold">Buyurtmalar</h3>
+                <p id="statsOrders" class="text-2xl font-bold text-gold-400">0</p>
+            </div>
+            <div class="admin-card glass rounded-2xl p-6 text-center">
+                <i class="fas fa-users text-3xl text-teal-400 mb-2"></i>
+                <h3 class="text-xl font-bold">Foydalanuvchilar</h3>
+                <p id="statsUsers" class="text-2xl font-bold text-gold-400">0</p>
+            </div>
+            <div class="admin-card glass rounded-2xl p-6 text-center">
+                <i class="fas fa-chart-line text-3xl text-teal-400 mb-2"></i>
+                <h3 class="text-xl font-bold">Daromad</h3>
+                <p id="statsRevenue" class="text-2xl font-bold text-gold-400">0 so'm</p>
+            </div>
+            <div class="admin-card glass rounded-2xl p-6 text-center">
+                <i class="fas fa-crown text-3xl text-teal-400 mb-2"></i>
+                <h3 class="text-xl font-bold">Premium</h3>
+                <p id="statsPremium" class="text-2xl font-bold text-gold-400">0</p>
+            </div>
+        </div>
+
+        <!-- Asosiy navigatsiya -->
+        <div class="glass rounded-3xl p-6 mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-6 gap-4">
+                <button onclick="showSection('dashboard')" class="btn-secondary p-4 rounded-xl text-center font-semibold">📊 Dashboard</button>
+                <button onclick="showSection('users')" class="btn-secondary p-4 rounded-xl text-center font-semibold">👥 Foydalanuvchilar</button>
+                <button onclick="showSection('products')" class="btn-secondary p-4 rounded-xl text-center font-semibold">📦 Mahsulotlar</button>
+                <button onclick="showSection('orders')" class="btn-secondary p-4 rounded-xl text-center font-semibold">🛒 Buyurtmalar</button>
+                <button onclick="showSection('blog')" class="btn-secondary p-4 rounded-xl text-center font-semibold">📝 Blog</button>
+                <button onclick="showSection('settings')" class="btn-secondary p-4 rounded-xl text-center font-semibold">⚙️ Sozlamalar</button>
+            </div>
+        </div>
+
+        <!-- Dashboard bo'limi -->
+        <div id="dashboardSection" class="admin-section glass rounded-3xl p-6 mb-8 hidden">
+            <h2 class="text-2xl font-bold mb-4">📊 Umumiy Statistika</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="glass p-4 rounded-xl">
+                    <h3 class="font-bold text-teal-200">Kunlik Daromad</h3>
+                    <p id="dailyRevenue" class="text-3xl font-bold text-gold-400">0 so'm</p>
+                </div>
+                <div class="glass p-4 rounded-xl">
+                    <h3 class="font-bold text-teal-200">Yangi Buyurtmalar</h3>
+                    <p id="newOrders" class="text-3xl font-bold text-gold-400">0</p>
+                </div>
+                <div class="glass p-4 rounded-xl">
+                    <h3 class="font-bold text-teal-200">Yangi Foydalanuvchilar</h3>
+                    <p id="newUsers" class="text-3xl font-bold text-gold-400">0</p>
+                </div>
+            </div>
+            <div class="mt-6">
+                <button onclick="loadStats()" class="btn-primary px-6 py-2 rounded-xl font-semibold">
+                    <i class="fas fa-sync mr-2"></i>Yangi ma'lumotlar
+                </button>
+            </div>
+        </div>
+
+        <!-- Foydalanuvchilar bo'limi -->
+        <div id="usersSection" class="admin-section glass rounded-3xl p-6 mb-8 hidden">
+            <h2 class="text-2xl font-bold mb-4 flex justify-between items-center">
+                👥 Foydalanuvchilar
+                <button onclick="openAddUserModal()" class="btn-primary px-4 py-2 rounded-xl font-semibold">
+                    <i class="fas fa-plus mr-2"></i>Yangi qo'shish
+                </button>
+            </h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead class="bg-white/10">
+                        <tr>
+                            <th class="p-3 text-left">Username</th>
+                            <th class="p-3 text-left">Email</th>
+                            <th class="p-3 text-left">Premium</th>
+                            <th class="p-3 text-left">Sana</th>
+                            <th class="p-3 text-left">Amallar</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTable">
+                        <!-- Foydalanuvchilar yuklanadi -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Mahsulotlar bo'limi -->
+        <div id="productsSection" class="admin-section glass rounded-3xl p-6 mb-8 hidden">
+            <h2 class="text-2xl font-bold mb-4">📦 Mahsulotlar</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead class="bg-white/10">
+                        <tr>
+                            <th class="p-3 text-left">Nomi</th>
+                            <th class="p-3 text-left">Sotuvchi</th>
+                            <th class="p-3 text-left">Narx</th>
+                            <th class="p-3 text-left">Stok</th>
+                            <th class="p-3 text-left">Amallar</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productsTable">
+                        <!-- Mahsulotlar yuklanadi -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Buyurtmalar bo'limi -->
+        <div id="ordersSection" class="admin-section glass rounded-3xl p-6 mb-8 hidden">
+            <h2 class="text-2xl font-bold mb-4">🛒 Buyurtmalar</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead class="bg-white/10">
+                        <tr>
+                            <th class="p-3 text-left">ID</th>
+                            <th class="p-3 text-left">Xaridor</th>
+                            <th class="p-3 text-left">Mahsulot</th>
+                            <th class="p-3 text-left">Narx</th>
+                            <th class="p-3 text-left">Status</th>
+                            <th class="p-3 text-left">Amallar</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ordersTable">
+                        <!-- Buyurtmalar yuklanadi -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Blog bo'limi (YANGI: Yangiliklar boshqaruvi) -->
+        <div id="blogSection" class="admin-section glass rounded-3xl p-6 mb-8 hidden">
+            <h2 class="text-2xl font-bold mb-4 flex justify-between items-center">
+                📝 Blog va Yangiliklar
+                <button onclick="openAddBlogModal()" class="btn-primary px-4 py-2 rounded-xl font-semibold">
+                    <i class="fas fa-plus mr-2"></i>Yangi post
+                </button>
+            </h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead class="bg-white/10">
+                        <tr>
+                            <th class="p-3 text-left">Sarlavha</th>
+                            <th class="p-3 text-left">Muallif</th>
+                            <th class="p-3 text-left">Sana</th>
+                            <th class="p-3 text-left">Status</th>
+                            <th class="p-3 text-left">Amallar</th>
+                        </tr>
+                    </thead>
+                    <tbody id="blogTable">
+                        <!-- Blog postlar yuklanadi -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Sozlamalar bo'limi -->
+        <div id="settingsSection" class="admin-section glass rounded-3xl p-6 mb-8 hidden">
+            <h2 class="text-2xl font-bold mb-4">⚙️ Sozlamalar</h2>
+            <div class="space-y-6">
+                <div>
+                    <h3 class="font-bold text-teal-200 mb-2">Komissiya stavkasi (%)</h3>
+                    <input type="number" id="commissionRate" class="input-field w-full px-4 py-2 rounded-xl" placeholder="5">
+                    <button onclick="saveSettings()" class="btn-primary mt-2 px-6 py-2 rounded-xl font-semibold">Saqlash</button>
+                </div>
+                <div>
+                    <h3 class="font-bold text-teal-200 mb-2">Minimal to'lov (so'm)</h3>
+                    <input type="number" id="minPayout" class="input-field w-full px-4 py-2 rounded-xl" placeholder="50000">
+                    <button onclick="saveSettings()" class="btn-primary mt-2 px-6 py-2 rounded-xl font-semibold">Saqlash</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Yangi Blog Post Modal (YANGI) -->
+    <div id="addBlogModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="glass rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-2xl font-bold">Yangi Blog Post</h3>
+                    <button onclick="closeAddBlogModal()" class="text-teal-300 text-2xl">&times;</button>
+                </div>
+                <div class="space-y-4">
+                    <input type="text" id="blogTitle" placeholder="Sarlavha" class="input-field w-full px-4 py-2 rounded-xl">
+                    <input type="text" id="blogAuthor" placeholder="Muallif (ixtiyoriy)" class="input-field w-full px-4 py-2 rounded-xl">
+                    <input type="url" id="blogImage" placeholder="Rasm URL (ixtiyoriy)" class="input-field w-full px-4 py-2 rounded-xl">
+                    <textarea id="blogContent" rows="10" placeholder="To'liq matn (Markdown qo'llab-quvvatlanadi)" class="input-field w-full px-4 py-2 rounded-xl resize-none"></textarea>
+                    <select id="blogStatus" class="input-field w-full px-4 py-2 rounded-xl">
+                        <option value="draft">Draft</option>
+                        <option value="published">Nashr etilgan</option>
+                    </select>
+                    <div class="flex space-x-3">
+                        <button onclick="closeAddBlogModal()" class="flex-1 btn-danger py-2 rounded-xl font-semibold">Bekor</button>
+                        <button onclick="saveBlogPost()" class="flex-1 btn-primary py-2 rounded-xl font-semibold">Saqlash</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Boshqa modallar (misol uchun, foydalanuvchi qo'shish) -->
+    <div id="addUserModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="glass rounded-2xl max-w-md w-full">
+            <div class="p-6">
+                <h3 class="text-2xl font-bold mb-4">Yangi Foydalanuvchi</h3>
+                <div class="space-y-4">
+                    <input type="text" id="newUsername" placeholder="Username" class="input-field w-full px-4 py-2 rounded-xl">
+                    <input type="email" id="newEmail" placeholder="Email" class="input-field w-full px-4 py-2 rounded-xl">
+                    <input type="password" id="newPassword" placeholder="Parol" class="input-field w-full px-4 py-2 rounded-xl">
+                    <div class="flex space-x-3">
+                        <button onclick="closeAddUserModal()" class="flex-1 btn-danger py-2 rounded-xl font-semibold">Bekor</button>
+                        <button onclick="saveNewUser()" class="flex-1 btn-primary py-2 rounded-xl font-semibold">Qo'shish</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+        let currentSection = 'dashboard';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+            loadStats();
+            loadUsers();
+            loadProducts();
+            loadOrders();
+            loadBlogPosts();
+            showSection('dashboard');
+        });
+
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            const user = localStorage.getItem('user');
+            if (!token || !user) {
+                window.location.href = 'login.html'; // Admin uchun alohida login
+                return;
+            }
+            currentUser = JSON.parse(user);
+            if (!currentUser.isAdmin) {
+                window.location.href = 'index.html';
+                return;
+            }
+            document.getElementById('adminUserInfo').textContent = `@${currentUser.username}`;
+        }
+
+        function showSection(section) {
+            document.querySelectorAll('.admin-section').forEach(s => s.classList.add('hidden'));
+            document.getElementById(`${section}Section`).classList.remove('hidden');
+            currentSection = section;
+        }
+
+        async function loadStats() {
+            const token = localStorage.getItem('token');
+            try {
+                const response = await fetch('/api/admin/stats', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (response.ok) {
+                    const stats = await response.json();
+                    document.getElementById('statsOrders').textContent = stats.newOrders;
+                    document.getElementById('statsUsers').textContent = stats.totalUsers;
+                    document.getElementById('statsRevenue').textContent = stats.monthlyRevenue.toLocaleString();
+                    document.getElementById('statsPremium').textContent = stats.premiumSubscriptions;
+                    document.getElementById('dailyRevenue').textContent = stats.dailyRevenue.toLocaleString();
+                    document.getElementById('newOrders').textContent = stats.newOrders;
+                    document.getElementById('newUsers').textContent = stats.newUsers;
+                }
+            } catch (error) {
+                console.error('Statistikani yuklashda xatolik:', error);
+            }
+        }
+
+        async function loadUsers() {
+            const token = localStorage.getItem('token');
+            try {
+                const response = await fetch('/api/admin/users', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (response.ok) {
+                    const { users } = await response.json();
+                    const tbody = document.getElementById('usersTable');
+                    tbody.innerHTML = users.map(user => `
+                        <tr>
+                            <td class="p-3">${user.username}</td>
+                            <td class="p-3">${user.email}</td>
+                            <td class="p-3">${user.isPremium ? 'Ha' : 'Yo\'q'}</td>
+                            <td class="p-3">${new Date(user.createdAt).toLocaleDateString()}</td>
+                            <td class="p-3">
+                                <button onclick="editUser('${user._id}')" class="btn-secondary px-2 py-1 rounded text-xs mr-2">Tahrirlash</button>
+                                <button onclick="deleteUser('${user._id}')" class="btn-danger px-2 py-1 rounded text-xs">O'chirish</button>
+                            </td>
+                        </tr>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('Foydalanuvchilarni yuklashda xatolik:', error);
+            }
+        }
+
+        async function loadProducts() {
+            const token = localStorage.getItem('token');
+            try {
+                const response = await fetch('/api/admin/products', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (response.ok) {
+                    const { products } = await response.json();
+                    const tbody = document.getElementById('productsTable');
+                    tbody.innerHTML = products.map(product => `
+                        <tr>
+                            <td class="p-3">${product.name}</td>
+                            <td class="p-3">${product.seller.username}</td>
+                            <td class="p-3">${product.price} so'm</td>
+                            <td class="p-3">${product.stock}</td>
+                            <td class="p-3">
+                                <button onclick="editProduct('${product._id}')" class="btn-secondary px-2 py-1 rounded text-xs mr-2">Tahrirlash</button>
+                                <button onclick="deleteProduct('${product._id}')" class="btn-danger px-2 py-1 rounded text-xs">O'chirish</button>
+                            </td>
+                        </tr>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('Mahsulotlarni yuklashda xatolik:', error);
+            }
+        }
+
+        async function loadOrders() {
+            const token = localStorage.getItem('token');
+            try {
+                const response = await fetch('/api/admin/orders', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (response.ok) {
+                    const { orders } = await response.json();
+                    const tbody = document.getElementById('ordersTable');
+                    tbody.innerHTML = orders.map(order => `
+                        <tr>
+                            <td class="p-3">#${order._id.slice(-6)}</td>
+                            <td class="p-3">${order.buyer.username}</td>
+                            <td class="p-3">${order.product ? order.product.name : 'Premium'}</td>
+                            <td class="p-3">${order.totalPrice} so'm</td>
+                            <td class="p-3">${order.status}</td>
+                            <td class="p-3">
+                                <button onclick="updateOrderStatus('${order._id}', 'payment_confirmed')" class="btn-secondary px-2 py-1 rounded text-xs mr-2">Tasdiqlash</button>
+                                <button onclick="deleteOrder('${order._id}')" class="btn-danger px-2 py-1 rounded text-xs">O'chirish</button>
+                            </td>
+                        </tr>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('Buyurtmalarni yuklashda xatolik:', error);
+            }
+        }
+
+        async function loadBlogPosts() {
+            const token = localStorage.getItem('token');
+            try {
+                const response = await fetch('/api/admin/blog', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (response.ok) {
+                    const posts = await response.json();
+                    const tbody = document.getElementById('blogTable');
+                    tbody.innerHTML = posts.map(post => `
+                        <tr>
+                            <td class="p-3">${post.title}</td>
+                            <td class="p-3">${post.author || 'Admin'}</td>
+                            <td class="p-3">${new Date(post.createdAt).toLocaleDateString()}</td>
+                            <td class="p-3">${post.status}</td>
+                            <td class="p-3">
+                                <button onclick="editBlogPost('${post._id}')" class="btn-secondary px-2 py-1 rounded text-xs mr-2">Tahrirlash</button>
+                                <button onclick="deleteBlogPost('${post._id}')" class="btn-danger px-2 py-1 rounded text-xs">O'chirish</button>
+                            </td>
+                        </tr>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('Blog postlarni yuklashda xatolik:', error);
+            }
+        }
+
+        function openAddBlogModal() {
+            document.getElementById('addBlogModal').classList.remove('hidden');
+        }
+
+        function closeAddBlogModal() {
+            document.getElementById('addBlogModal').classList.add('hidden');
+        }
+
+        async function saveBlogPost() {
+            const title = document.getElementById('blogTitle').value;
+            const author = document.getElementById('blogAuthor').value;
+            const image = document.getElementById('blogImage').value;
+            const content = document.getElementById('blogContent').value;
+            const status = document.getElementById('blogStatus').value;
+
+            if (!title || !content) {
+                alert('Sarlavha va matn majburiy!');
+                return;
+            }
+
+            const token = localStorage.getItem('token');
+            try {
+                const response = await fetch('/api/admin/blog', {
+                    method: 'POST',
+                    headers: { 
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ title, author, image, content, status })
+                });
+                if (response.ok) {
+                    closeAddBlogModal();
+                    loadBlogPosts();
+                    alert('Post saqlandi!');
+                } else {
+                    alert('Saqlashda xatolik!');
+                }
+            } catch (error) {
+                console.error('Xatolik:', error);
+                alert('Xatolik yuz berdi!');
+            }
+        }
+
+        // Boshqa funksiyalar (misollar)
+        function openAddUserModal() {
+            document.getElementById('addUserModal').classList.remove('hidden');
+        }
+
+        function closeAddUserModal() {
+            document.getElementById('addUserModal').classList.add('hidden');
+        }
+
+        async function saveNewUser() {
+            // Saqlash logikasi
+            closeAddUserModal();
+            loadUsers();
+        }
+
+        async function saveSettings() {
+            // Sozlamalarni saqlash
+            alert('Sozlamalar saqlandi!');
+        }
+
+        function editUser(id) {
+            alert(`Foydalanuvchi ${id} tahrirlanmoqda...`);
+        }
+
+        function deleteUser(id) {
+            if (confirm('O\'chirishni xohlaysizmi?')) {
+                // O'chirish logikasi
+                loadUsers();
+            }
+        }
+
+        // Shunga o'xshash boshqa funksiyalar...
+
+        function logout() {
+            if (confirm('Chiqmoqchimisiz?')) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                window.location.href = 'login.html';
+            }
+        }
+    </script>
+</body>
+</html>

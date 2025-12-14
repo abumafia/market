@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HALLAYM - Xabarlar</title>
+    <link rel="icon" href="https://postimg.cc/pyLX1sj2" type="image/png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Socket.io client -->
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7ZFGK6W9YV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-7ZFGK6W9YV');
+    </script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        teal: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e'
+                        },
+                        gold: {
+                            400: '#facc15',
+                            500: '#eab308',
+                            600: '#ca8a04'
+                        }
+                    },
+                    fontSize: {
+                        'xs-m': '0.75rem',
+                        'sm-m': '0.8125rem',
+                        'base-m': '0.875rem'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 50%, #0f766e 100%);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #facc15 0%, #eab308 100%);
+            color: #0f766e;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(250, 204, 21, 0.4);
+        }
+        .btn-secondary {
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(20, 184, 166, 0.4);
+        }
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-danger:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.4);
+        }
+        .input-field {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .input-field:focus {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: #facc15;
+            box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.2);
+        }
+        .input-field::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        .chat-message {
+            max-width: 70%;
+            margin-bottom: 1rem;
+        }
+        .chat-message.sent {
+            margin-left: auto;
+        }
+        .chat-message.received {
+            margin-right: auto;
+        }
+        .message-bubble {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 18px;
+            padding: 0.75rem 1rem;
+            word-wrap: break-word;
+        }
+        .message-bubble.sent {
+            background: linear-gradient(135deg, #facc15, #eab308);
+            color: #0f766e;
+        }
+        .message-media {
+            max-width: 200px;
+            border-radius: 12px;
+            margin-top: 0.5rem;
+        }
+        .online-indicator {
+            position: relative;
+        }
+        .online-indicator::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 12px;
+            height: 12px;
+            background: #10b981;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+        .typing-indicator {
+            display: none;
+            align-items: center;
+            padding: 0.5rem;
+        }
+        .typing-indicator.show {
+            display: flex;
+        }
+        .typing-dots {
+            display: inline-flex;
+            align-items: center;
+        }
+        .typing-dots span {
+            height: 8px;
+            width: 8px;
+            margin: 0 2px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            display: inline-block;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+        .typing-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dots span:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes typing {
+            0%, 80%, 100% { transform: scale(0); opacity: 0.5; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+        .conversation-item {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .conversation-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .conversation-item.active {
+            background: rgba(250, 204, 21, 0.2);
+            border-right: 3px solid #facc15;
+        }
+        .no-conversations {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        /* Mobil */
+        @media (max-width: 768px) {
+            .chat-sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            .chat-sidebar.open {
+                transform: translateX(0);
+            }
+            .chat-main {
+                width: 100%;
+            }
+            .hamburger-line {
+                transition: all 0.3s ease;
+            }
+            .menu-open .hamburger-line:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+            .menu-open .hamburger-line:nth-child(2) {
+                opacity: 0;
+            }
+            .menu-open .hamburger-line:nth-child(3) {
+                transform: rotate(-45deg) translate(7px, -6px);
+            }
+        }
+        @media (max-width: 640px) {
+            body { font-size: 0.875rem !important; }
+            .p-4 { padding: 0.75rem; }
+            .text-2xl { font-size: 1.25rem; }
+            .flex-col { flex-direction: column; }
+            .space-x-3 { space-x: 0.5rem; }
+        }
+        @media (max-width: 480px) {
+            .px-4 { padding-left: 0.5rem; padding-right: 0.5rem; }
+            .py-4 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+            .text-base { font-size: 0.875rem; }
+            .text-lg { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen text-white overflow-hidden">
+    <!-- Navbar -->
+    <nav class="glass fixed w-full z-50 shadow-xl">
+        <div class="max-w-7xl mx-auto px-2 sm:px-4">
+            <div class="flex justify-between items-center py-2 sm:py-4">
+                <div class="flex items-center space-x-2 sm:space-x-8">
+                    <button id="mobileMenuBtn" class="md:hidden hamburger p-2 rounded-lg hover:bg-white/10 transition-all">
+                        <span class="block w-6 h-0.5 bg-white hamburger-line"></span>
+                        <span class="block w-6 h-0.5 bg-white hamburger-line mt-1.5"></span>
+                        <span class="block w-6 h-0.5 bg-white hamburger-line mt-1.5"></span>
+                    </button>
+                    <a href="index.html" class="text-xl sm:text-3xl font-bold bg-gradient-to-r from-gold-500 to-gold-600 bg-clip-text text-transparent">HALLAYM</a>
+                </div>
+                <div class="hidden md:flex space-x-4 sm:space-x-8">
+                    <a href="market.html" class="text-teal-300 font-semibold hover:text-white transition-colors text-xs sm:text-sm">Market</a>
+                    <a href="history.html" class="text-teal-200 hover:text-teal-100 transition-colors text-xs sm:text-sm">Buyurtmalar</a>
+                    <a href="profile.html" class="text-teal-200 hover:text-teal-100 transition-colors text-xs sm:text-sm">Profil</a>
+                    <a href="add-product.html" id="addProductLink" class="text-gold-400 font-semibold text-xs sm:text-sm hidden">Mahsulot Qo'shish</a>
+                </div>
+                <div class="flex items-center space-x-1 sm:space-x-4">
+                    <span id="userInfo" class="text-teal-100 font-medium hidden sm:inline text-xs sm:text-sm"></span>
+                    <button onclick="logout()" class="btn-danger px-2 sm:px-6 py-1 sm:py-2 rounded-full text-xs sm:text-sm">Chiqish</button>
+                </div>
+            </div>
+            <div id="mobileMenu" class="md:hidden hidden overflow-hidden transition-all duration-300 ease-in-out max-h-0">
+                <div class="px-2 sm:px-4 py-2 sm:py-4 space-y-2 sm:space-y-4 bg-white/10 backdrop-blur-sm">
+                    <a href="market.html" class="block text-teal-200 font-semibold hover:text-white transition-colors py-1 sm:py-2 text-xs sm:text-sm">Market</a>
+                    <a href="history.html" class="block text-teal-200 hover:text-teal-100 transition-colors py-1 sm:py-2 text-xs sm:text-sm">Buyurtmalar</a>
+                    <a href="profile.html" class="block text-teal-200 hover:text-teal-100 transition-colors py-1 sm:py-2 text-xs sm:text-sm">Profil</a>
+                    <a href="add-product.html" id="addProductLinkMobile" class="block text-gold-400 font-semibold py-1 sm:py-2 text-xs sm:text-sm hidden">Mahsulot Qo'shish</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Asosiy kontent -->
+    <div class="pt-16 sm:pt-20 h-[calc(100vh-4rem)] flex flex-col md:flex-row overflow-hidden">
+        <!-- Suhbatlar sidebar -->
+        <div id="chatSidebar" class="chat-sidebar w-full md:w-80 glass flex flex-col border-r border-white/10 md:block">
+            <div class="p-4 border-b border-white/10">
+                <h2 class="text-lg font-bold flex items-center">
+                    <i class="fas fa-comments mr-2"></i>Xabarlar
+                </h2>
+            </div>
+            <div id="conversationsList" class="flex-1 overflow-y-auto p-2 space-y-2">
+                <div class="no-conversations">
+                    <i class="fas fa-inbox text-6xl mb-4 text-teal-300"></i>
+                    <p class="text-teal-200 mb-2">Hali suhbat yo'q</p>
+                    <p class="text-sm text-teal-400">Sotuvchilar bilan bog'laning</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat main area -->
+        <div class="chat-main flex-1 flex flex-col">
+            <!-- Chat header -->
+            <div id="chatHeader" class="glass p-4 border-b border-white/10 hidden">
+                <div class="flex items-center space-x-3">
+                    <img id="chatAvatar" src="" alt="" class="w-10 h-10 rounded-full object-cover">
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center space-x-2">
+                            <h3 id="chatUsername" class="font-bold truncate"></h3>
+                            <span id="chatOnlineIndicator" class="online-indicator hidden"></span>
+                        </div>
+                        <p id="chatLastSeen" class="text-xs text-teal-300">Ofline</p>
+                    </div>
+                    <button onclick="toggleSidebar()" class="md:hidden p-2 hover:bg-white/10 rounded-full">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Chat messages -->
+            <div id="messagesContainer" class="flex-1 overflow-y-auto p-4 space-y-4 hidden">
+                <div class="no-conversations">
+                    <i class="fas fa-comment-dots text-6xl mb-4 text-teal-300"></i>
+                    <p class="text-teal-200 mb-2">Suhbatni tanlang</p>
+                    <p class="text-sm text-teal-400">Chap menyudan suhbat tanlang</p>
+                </div>
+            </div>
+
+            <!-- Message input -->
+            <div id="messageInputContainer" class="glass p-4 border-t border-white/10 hidden">
+                <form id="messageForm" class="flex items-end space-x-2">
+                    <div class="flex-1 relative">
+                        <input type="text" id="messageInput" placeholder="Xabar yozing..." class="input-field w-full px-4 py-3 pr-12 rounded-2xl focus:outline-none text-sm" maxlength="1000">
+                        <button type="button" onclick="toggleMediaUpload()" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-teal-200 hover:text-white">
+                            <i class="fas fa-paperclip text-lg"></i>
+                        </button>
+                        <input type="file" id="mediaInput" accept="image/*,video/*" class="hidden" onchange="handleMediaUpload(event)">
+                    </div>
+                    <button type="submit" class="btn-primary w-12 h-12 rounded-2xl flex items-center justify-center">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+                <div id="typingIndicator" class="typing-indicator mt-2">
+                    <div class="typing-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <span class="ml-2 text-sm text-teal-300">Yozmoqda...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+        let conversations = [];
+        let currentChat = null;
+        let socket = null;
+        let isTyping = false;
+        let typingTimer;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+            setupMobileMenu();
+            setupChat();
+        });
+
+        function setupMobileMenu() {
+            const btn = document.getElementById('mobileMenuBtn');
+            const menu = document.getElementById('mobileMenu');
+            btn.addEventListener('click', () => {
+                const isOpen = menu.classList.contains('hidden');
+                if (isOpen) {
+                    menu.classList.remove('hidden');
+                    menu.style.maxHeight = menu.scrollHeight + 'px';
+                    btn.closest('nav').classList.add('menu-open');
+                } else {
+                    menu.style.maxHeight = '0px';
+                    setTimeout(() => {
+                        menu.classList.add('hidden');
+                        btn.closest('nav').classList.remove('menu-open');
+                    }, 300);
+                }
+            });
+            document.querySelectorAll('#mobileMenu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    menu.style.maxHeight = '0px';
+                    setTimeout(() => menu.classList.add('hidden'), 300);
+                });
+            });
+        }
+
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            const user = localStorage.getItem('user');
+            if (!token || !user) return window.location.href = 'register-login.html';
+            currentUser = JSON.parse(user);
+            document.getElementById('userInfo').textContent = `@${currentUser.username}`;
+            if (currentUser.isPremium) {
+                document.getElementById('addProductLink').classList.remove('hidden');
+                document.getElementById('addProductLinkMobile').classList.remove('hidden');
+            }
+            // Socket ulanishi
+            socket = io({
+                auth: { token }
+            });
+            setupSocketEvents();
+        }
+
+        function setupSocketEvents() {
+            socket.on('connect', () => {
+                console.log('Socket ulandi:', socket.id);
+            });
+
+            socket.on('newMessage', (message) => {
+                if (currentChat && (message.sender._id === currentChat.user._id || message.receiver._id === currentChat.user._id)) {
+                    addMessageToChat(message);
+                }
+                loadConversations(); // Suhbatlar ro'yxatini yangilash
+            });
+
+            socket.on('error', (error) => {
+                showToast(error.message || 'Socket xatosi');
+            });
+        }
+
+        async function loadConversations() {
+            try {
+                const response = await fetch('/api/messages', {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                });
+                if (response.ok) {
+                    const allMessages = await response.json();
+                    // Suhbatlarni guruhlash
+                    const convMap = new Map();
+                    allMessages.forEach(msg => {
+                        const otherUser = msg.sender._id === currentUser._id ? msg.receiver : msg.sender;
+                        if (!convMap.has(otherUser._id)) {
+                            convMap.set(otherUser._id, {
+                                user: otherUser,
+                                lastMessage: msg,
+                                unreadCount: 0
+                            });
+                        }
+                        const conv = convMap.get(otherUser._id);
+                        if (!msg.isRead && msg.receiver._id === currentUser._id) {
+                            conv.unreadCount++;
+                        }
+                        if (new Date(msg.createdAt) > new Date(conv.lastMessage.createdAt)) {
+                            conv.lastMessage = msg;
+                        }
+                    });
+                    conversations = Array.from(convMap.values()).sort((a, b) => new Date(b.lastMessage.createdAt) - new Date(a.lastMessage.createdAt));
+                    displayConversations();
+
+                    // URL dan initialUserId ni tekshirish va avtomatik ochish
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const initialUserId = urlParams.get('userId');
+                    if (initialUserId) {
+                        await handleInitialChat(initialUserId);
+                    }
+                }
+            } catch (error) {
+                console.error('Suhbatlar yuklash xatosi:', error);
+                showToast('Xabarlar yuklashda xatolik');
+            }
+        }
+
+        async function handleInitialChat(userId) {
+            let conv = conversations.find(c => c.user._id === userId);
+            if (conv) {
+                openChat(userId);
+            } else {
+                // Yangi suhbat uchun user ma'lumotlarini olish
+                try {
+                    const response = await fetch(`/api/users/${userId}`, {
+                        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                    });
+                    if (response.ok) {
+                        const user = await response.json();
+                        if (user) {
+                            const newConv = { user, lastMessage: null, unreadCount: 0 };
+                            conversations.unshift(newConv);
+                            displayConversations();
+                            openChat(userId);
+                            showToast(`Suhbat ${user.username} bilan boshlandi`);
+                        } else {
+                            showToast('Foydalanuvchi topilmadi');
+                        }
+                    } else {
+                        showToast('Foydalanuvchi ma\'lumotlarini olishda xatolik');
+                    }
+                } catch (error) {
+                    console.error('User fetch xatosi:', error);
+                    showToast('Xatolik yuz berdi');
+                }
+            }
+        }
+
+        function displayConversations() {
+            const container = document.getElementById('conversationsList');
+            if (conversations.length === 0) {
+                container.innerHTML = `
+                    <div class="no-conversations">
+                        <i class="fas fa-inbox text-6xl mb-4 text-teal-300"></i>
+                        <p class="text-teal-200 mb-2">Hali suhbat yo'q</p>
+                        <p class="text-sm text-teal-400">Sotuvchilar bilan bog'laning</p>
+                    </div>
+                `;
+                return;
+            }
+            container.innerHTML = conversations.map(conv => {
+                const isUnread = conv.unreadCount > 0;
+                const lastMsgPreview = (conv.lastMessage ? conv.lastMessage.message.substring(0, 30) + (conv.lastMessage.message.length > 30 ? '...' : '') : 'Suhbat boshlandi');
+                const lastTime = conv.lastMessage ? new Date(conv.lastMessage.createdAt).toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' }) : '';
+                return `
+                    <div class="conversation-item glass p-3 rounded-xl flex items-center space-x-3 cursor-pointer ${currentChat?._id === conv.user._id ? 'active' : ''}" onclick="openChat('${conv.user._id}')">
+                        <img src="${conv.user.avatar || 'https://via.placeholder.com/48?text=U'}" alt="${conv.user.username}" class="w-12 h-12 rounded-full object-cover">
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <span class="font-semibold text-white truncate">${conv.user.username}</span>
+                                ${lastTime ? `<span class="text-xs text-teal-300">${lastTime}</span>` : ''}
+                            </div>
+                            <p class="text-teal-200 text-sm truncate">${lastMsgPreview}</p>
+                            ${isUnread ? `<span class="bg-red-500 text-white text-xs px-2 py-1 rounded-full">${conv.unreadCount}</span>` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function openChat(userId) {
+            let conv = conversations.find(c => c.user._id === userId);
+            if (!conv) {
+                // Agar topilmasa, user fetch qilish
+                try {
+                    const response = await fetch(`/api/users/${userId}`, {
+                        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                    });
+                    if (response.ok) {
+                        const user = await response.json();
+                        conv = { user, lastMessage: null, unreadCount: 0 };
+                        conversations.unshift(conv);
+                        displayConversations();
+                    } else {
+                        showToast('Suhbat ochib bo\'lmadi');
+                        return;
+                    }
+                } catch (error) {
+                    console.error('User fetch xatosi:', error);
+                    showToast('Xatolik yuz berdi');
+                    return;
+                }
+            }
+
+            currentChat = conv;
+
+            // Header yangilash
+            document.getElementById('chatUsername').textContent = currentChat.user.username;
+            document.getElementById('chatAvatar').src = currentChat.user.avatar || 'https://via.placeholder.com/48?text=U';
+            document.getElementById('chatLastSeen').textContent = 'Ofline'; // Real-time online status uchun kengaytirish mumkin
+            document.getElementById('chatOnlineIndicator').classList.add('hidden');
+
+            // Suhbatlarni ko'rsatish
+            document.getElementById('chatHeader').classList.remove('hidden');
+            document.getElementById('messagesContainer').classList.remove('hidden');
+            document.getElementById('messageInputContainer').classList.remove('hidden');
+            document.getElementById('conversationsList').closest('.chat-sidebar').classList.remove('open'); // Mobil sidebar yopish
+
+            await loadChatMessages(userId);
+
+            // Active class qo'shish
+            document.querySelectorAll('.conversation-item').forEach(item => item.classList.remove('active'));
+            const activeItem = Array.from(document.querySelectorAll('.conversation-item')).find(item => item.onclick.toString().includes(`'${userId}'`));
+            if (activeItem) activeItem.classList.add('active');
+
+            // Scroll pastga
+            scrollToBottom();
+        }
+
+        async function loadChatMessages(userId) {
+            try {
+                const response = await fetch(`/api/messages?withUserId=${userId}&limit=50&page=1`, {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                });
+                if (response.ok) {
+                    const messages = await response.json();
+                    displayMessages(messages);
+                } else {
+                    // Bo'sh chat uchun
+                    displayMessages([]);
+                }
+            } catch (error) {
+                console.error('Xabarlar yuklash xatosi:', error);
+                showToast('Xabarlar yuklashda xatolik');
+                displayMessages([]);
+            }
+        }
+
+        function displayMessages(messages) {
+            const container = document.getElementById('messagesContainer');
+            if (messages.length === 0) {
+                container.innerHTML = `
+                    <div class="no-conversations">
+                        <i class="fas fa-comment-dots text-6xl mb-4 text-teal-300"></i>
+                        <p class="text-teal-200 mb-2">Suhbat boshlandi</p>
+                        <p class="text-sm text-teal-400">Birinchi xabarni yuboring</p>
+                    </div>
+                `;
+                return;
+            }
+            container.innerHTML = messages.map(msg => {
+                const isSent = msg.sender._id === currentUser._id;
+                const time = new Date(msg.createdAt).toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' });
+                let mediaHtml = '';
+                if (msg.media) {
+                    const isImage = msg.media.match(/\.(jpg|jpeg|png|gif)$/i);
+                    mediaHtml = `<img src="${msg.media}" alt="Media" class="message-media ${isImage ? 'cursor-pointer' : ''}" onclick="${isImage ? `window.open('${msg.media}', '_blank')` : ''}">`;
+                }
+                return `
+                    <div class="chat-message ${isSent ? 'sent' : 'received'}">
+                        <div class="message-bubble ${isSent ? 'sent' : ''}">
+                            <p class="text-sm mb-1">${msg.message || ''}</p>
+                            ${mediaHtml}
+                            <span class="text-xs opacity-75 block mt-1">${time}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            scrollToBottom();
+        }
+
+        function scrollToBottom() {
+            const container = document.getElementById('messagesContainer');
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function addMessageToChat(message) {
+            if (currentChat && (message.sender._id === currentChat.user._id || message.receiver._id === currentChat.user._id)) {
+                // Eski messages ni saqlash uchun, lekin soddalik uchun qayta yuklash
+                loadChatMessages(currentChat.user._id);
+            }
+        }
+
+        document.getElementById('messageForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            if (!message && !document.getElementById('mediaInput').files[0]) return;
+
+            if (!currentChat) return showToast('Suhbat tanlanmagan');
+
+            try {
+                const formData = new FormData();
+                formData.append('message', message);
+
+                const file = document.getElementById('mediaInput').files[0];
+                if (file) {
+                    formData.append('media', file);
+                }
+
+                const response = await fetch(`/api/messages/send/${currentChat.user._id}`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+                    body: formData
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    input.value = '';
+                    document.getElementById('mediaInput').value = '';
+                    addMessageToChat(data.message);
+                    loadConversations(); // Suhbatlarni yangilash
+                } else {
+                    const errorData = await response.json();
+                    showToast(errorData.error || 'Xabar yuborishda xatolik');
+                }
+            } catch (error) {
+                console.error('Xabar yuborish xatosi:', error);
+                showToast('Xatolik yuz berdi');
+            }
+        });
+
+        function handleMediaUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                document.getElementById('messageForm').dispatchEvent(new Event('submit'));
+            }
+        }
+
+        function toggleMediaUpload() {
+            document.getElementById('mediaInput').click();
+        }
+
+        // Typing indicator (soddalashtirilgan)
+        document.getElementById('messageInput').addEventListener('input', () => {
+            if (currentChat && !isTyping) {
+                isTyping = true;
+                document.getElementById('typingIndicator').classList.add('show');
+                socket.emit('typing', { receiverId: currentChat.user._id, isTyping: true });
+                clearTimeout(typingTimer);
+                typingTimer = setTimeout(() => {
+                    isTyping = false;
+                    document.getElementById('typingIndicator').classList.remove('show');
+                    socket.emit('typing', { receiverId: currentChat.user._id, isTyping: false });
+                }, 1000);
+            }
+        });
+
+        function toggleSidebar() {
+            document.getElementById('chatSidebar').classList.toggle('open');
+        }
+
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-xl z-50 shadow-lg';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        function logout() {
+            if (confirm('Chiqmoqchimisiz?')) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                if (socket) socket.disconnect();
+                window.location.href = 'register-login.html';
+            }
+        }
+
+        // Sahifa yuklanganda suhbatlarni yuklash
+        setupChat = () => {
+            loadConversations();
+        };
+    </script>
+</body>
+</html>

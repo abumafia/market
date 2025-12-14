@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HALLAYM - Sayt Xaritasi (Sitemap)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7ZFGK6W9YV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-7ZFGK6W9YV');
+    </script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        teal: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e'
+                        },
+                        gold: {
+                            400: '#facc15',
+                            500: '#eab308',
+                            600: '#ca8a04'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 50%, #0f766e 100%);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #facc15 0%, #eab308 100%);
+            color: #0f766e;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(250, 204, 21, 0.4);
+        }
+        .btn-secondary {
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(20, 184, 166, 0.4);
+        }
+        .input-field {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .input-field:focus {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: #facc15;
+            box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.2);
+        }
+        .sitemap-item {
+            transition: all 0.3s ease;
+        }
+        .sitemap-item:hover {
+            transform: translateX(4px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen text-white">
+    <!-- Navbar -->
+    <nav class="glass fixed w-full z-50 shadow-xl">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-8">
+                    <a href="index.html" class="text-3xl font-bold bg-gradient-to-r from-gold-500 to-gold-600 bg-clip-text text-transparent">HALLAYM</a>
+                    <div class="hidden md:flex space-x-8">
+                        <a href="market.html" class="text-teal-300 font-semibold hover:text-white transition-colors">Market</a>
+                        <a href="history.html" class="text-teal-200 hover:text-teal-100 transition-colors">Buyurtmalar</a>
+                        <a href="sold-products.html" class="text-teal-200 hover:text-teal-100 transition-colors">Sotilganlar</a>
+                        <a href="profile.html" class="text-teal-200 hover:text-teal-100 transition-colors">Profil</a>
+                        <a href="add-product.html" id="addProductLink" class="text-teal-200 hover:text-teal-100 transition-colors hidden">Mahsulot Qo'shish</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span id="userInfo" class="text-teal-100 font-medium"></span>
+                    <button onclick="logout()" class="btn-danger px-6 py-2 rounded-full text-sm">Chiqish</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="pt-20 max-w-6xl mx-auto py-8 px-4">
+        <h1 class="text-4xl font-bold mb-8 flex items-center justify-center">
+            <i class="fas fa-sitemap mr-3 text-gold-400"></i>
+            Sayt Xaritasi (Sitemap)
+        </h1>
+
+        <p class="text-center text-teal-200 mb-12 text-lg">Quyida HALLAYM saytining barcha asosiy sahifalari ro'yxati keltirilgan. Har bir sahifa qisqa tavsif bilan berilgan.</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Bosh sahifa -->
+            <a href="index.html" class="sitemap-item glass rounded-2xl p-6 text-center">
+                <i class="fas fa-home text-3xl text-gold-400 mb-4"></i>
+                <h3 class="text-xl font-bold mb-2">Bosh Sahifa</h3>
+                <p class="text-teal-200 text-sm">Platformaning asosiy sahifasi va kirish nuqtasi.</p>
+            </a>
+
+            <!-- Market -->
+            <a href="market.html" class="sitemap-item glass rounded-2xl p-6 text-center">
+                <i class="fas fa-store text-3xl text-gold-400 mb-4"></i>
+                <h3 class="text-xl font-bold mb-2">Market</h3>
+                <p class="text-teal-200 text-sm">Mahsulotlar katalogi va qidiruv.</p>
+            </a>
+
+            <!-- Buyurtmalar -->
+            <a href="history.html" class="sitemap-item glass rounded-2xl p-6 text-center">
+                <i class="fas fa-history text-3xl text-gold-400 mb-4"></i>
+                <h3 class="text-xl font-bold mb-2">Buyurtmalar</h3>
+                <p class="text-teal-200 text-sm">Sizning buyurtma tarixingiz va holati.</p>
+            </a>
+
+            <!-- Sotilganlar -->
+            <a href="sold-products.html" class="sitemap-item glass rounded-2xl p-6 text-center">
+                <i class="fas fa-fire text-3xl text-gold-400 mb-4"></i>
+                <h3 class="text-xl font-bold mb-2">Sotilgan Mahsulotlar</h3>
+                <p class="text-teal-200 text-sm">Eng ko'p sotilgan mahsulotlar ro'yxati.</p>
+            </a>
+
+            <!-- Profil -->
+            <a href="profile.html" class="sitemap-item glass rounded-2xl p-6 text-center">
+                <i class="fas fa-user text-3xl text-gold-400 mb-4"></i>
+                <h3 class="text-xl font-bold mb-2">Profil</h3>
+                <p class="text-teal-200 text-sm">Shaxsiy profil va sozlamalar.</p>
+            </a>
+
+            <!-- Mahsulot Qo'shish -->
+            <a href="add-product.html" class="sitemap-item glass rounded-2xl p-6 text-center">
+                <i class="fas fa-plus text-3xl text-gold-400 mb-4"></i>
+                <h3 class="text-xl font-bold mb-2">Mahsulot Qo'shish</h3>
+                <p class="text-teal-200 text-sm">Yangi mahsulot yuklash (premium uchun).</p>
+            </a>
+
+            <!-- Mahsulot Tafsilotlari -->
+            <a href="product-detail.html" class="sitemap-item glass rounded-2xl p-6 text-center">
+                <i class="fas fa-info-circle text-3xl text-gold-400 mb-4"></i>
+                <h3 class="text-xl font-bold mb-2">Mahsulot Tafsilotlari</h3>
+                <p class="text-teal-200 text-sm">Bitta mahsulotning batafsil sahifasi.</p>
+            </a>
+
+            <!-- To'lov -->
+            <a href="payment.html" class="sitemap-item glass rounded-2xl p-6 text-center">
+                <i class="fas fa-credit-card text-3xl text-gold-400 mb-4"></i>
+                <h3 class="text-xl font-bold mb-2">To'lov</h3>
+                <p class="text-teal-200 text-sm">Buyurtma to'lov sahifasi.</p>
+            </a>
+
+            <!-- Suhbatlar -->
+            <a href="messages.html" class="sitemap-item glass rounded-2xl p-6 text-center">
+                <i class="fas fa-comments text-3xl text-gold-400 mb-4"></i>
+                <h3 class="text-xl font-bold mb-2">Suhbatlar</h3>
+                <p class="text-teal-200 text-sm">Foydalanuvchilar orasidagi xabarlar.</p>
+            </a>
+
+            <!-- Ro'yxatdan o'tish/Kirish -->
+            <a href="register-login.html" class="sitemap-item glass rounded-2xl p-6 text-center">
+                <i class="fas fa-sign-in-alt text-3xl text-gold-400 mb-4"></i>
+                <h3 class="text-xl font-bold mb-2">Kirish/Ro'yxat</h3>
+                <p class="text-teal-200 text-sm">Foydalanuvchi autentifikatsiyasi.</p>
+            </a>
+
+            <!-- FAQ -->
+            <a href="faq.html" class="sitemap-item glass rounded-2xl p-6 text-center">
+                <i class="fas fa-question-circle text-3xl text-gold-400 mb-4"></i>
+                <h3 class="text-xl font-bold mb-2">FAQ</h3>
+                <p class="text-teal-200 text-sm">Tez-tez so'raladigan savollar.</p>
+            </a>
+
+            <!-- Shartlar -->
+            <a href="terms.html" class="sitemap-item glass rounded-2xl p-6 text-center">
+                <i class="fas fa-file-contract text-3xl text-gold-400 mb-4"></i>
+                <h3 class="text-xl font-bold mb-2">Foydalanish Shartlari</h3>
+                <p class="text-teal-200 text-sm">Platforma qoidalari va shartlari.</p>
+            </a>
+
+            <!-- Maxfiylik -->
+            <a href="privacy.html" class="sitemap-item glass rounded-2xl p-6 text-center">
+                <i class="fas fa-lock text-3xl text-gold-400 mb-4"></i>
+                <h3 class="text-xl font-bold mb-2">Maxfiylik Siyosati</h3>
+                <p class="text-teal-200 text-sm">Shaxsiy ma'lumotlar himoyasi.</p>
+            </a>
+
+            <!-- Sitemap -->
+            <a href="sitemap.html" class="sitemap-item glass rounded-2xl p-6 text-center">
+                <i class="fas fa-sitemap text-3xl text-gold-400 mb-4"></i>
+                <h3 class="text-xl font-bold mb-2">Sayt Xaritasi</h3>
+                <p class="text-teal-200 text-sm">Sahifalar ro'yxati (joriy sahifa).</p>
+            </a>
+        </div>
+
+        <div class="text-center mt-12">
+            <p class="text-teal-300 mb-4">Oxirgi yangilanish: <strong>14-dekabr, 2025</strong></p>
+            <a href="index.html" class="btn-primary inline-block px-8 py-3 rounded-xl font-semibold">
+                <i class="fas fa-home mr-2"></i>Bosh Sahifaga Qaytish
+            </a>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+        });
+
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            const user = localStorage.getItem('user');
+            if (!token || !user) {
+                window.location.href = 'register-login.html';
+                return;
+            }
+            currentUser = JSON.parse(user);
+            document.getElementById('userInfo').textContent = `@${currentUser.username}`;
+            if (currentUser.isPremium) {
+                document.getElementById('addProductLink').classList.remove('hidden');
+            }
+        }
+
+        function logout() {
+            if (confirm('Chiqmoqchimisiz?')) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                window.location.href = 'register-login.html';
+            }
+        }
+    </script>
+</body>
+</html>

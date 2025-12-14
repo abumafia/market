@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HALLAYM - Buyurtmalar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7ZFGK6W9YV"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-7ZFGK6W9YV');
+</script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        teal: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e'
+                        },
+                        gold: {
+                            400: '#facc15',
+                            500: '#eab308',
+                            600: '#ca8a04'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 50%, #0f766e 100%);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #facc15 0%, #eab308 100%);
+            color: #0f766e;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(250, 204, 21, 0.4);
+        }
+        .btn-secondary {
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(20, 184, 166, 0.4);
+        }
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-danger:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.4);
+        }
+        .input-field {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .input-field:focus {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: #facc15;
+            box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.2);
+        }
+        .input-field::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        .order-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        .order-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .status-pending { background: rgba(250, 204, 21, 0.2); color: #eab308; }
+        .status-confirmed { background: rgba(20, 184, 166, 0.2); color: #14b8a6; }
+        .status-shipped { background: rgba(251, 146, 60, 0.2); color: #f97316; }
+        .status-delivered { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
+        .status-pickup { background: rgba(139, 92, 246, 0.2); color: #8b5cf6; }
+        .status-cancelled { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+        .status-subscribed { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen text-white">
+    <!-- Navbar -->
+    <nav class="glass fixed w-full z-50 shadow-xl">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-8">
+                    <a href="index.html" class="text-3xl font-bold bg-gradient-to-r from-gold-500 to-gold-600 bg-clip-text text-transparent">HALLAYM</a>
+                    <div class="hidden md:flex space-x-8">
+                        <a href="market.html" class="text-teal-300 font-semibold hover:text-white transition-colors">Market</a>
+                        <a href="history.html" class="text-gold-400 font-semibold">Buyurtmalar</a>
+                        <a href="profile.html" class="text-teal-200 hover:text-teal-100 transition-colors">Profil</a>
+                        <a href="add-product.html" id="addProductLink" class="text-teal-200 hover:text-teal-100 transition-colors hidden">Mahsulot Qo'shish</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span id="userInfo" class="text-teal-100 font-medium"></span>
+                    <button onclick="logout()" class="btn-danger px-6 py-2 rounded-full text-sm">Chiqish</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="pt-20 max-w-7xl mx-auto py-6 px-4">
+        <h1 class="text-4xl font-bold mb-6 flex items-center">
+            <svg class="w-8 h-8 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+            </svg>
+            Buyurtma Tarixi
+        </h1>
+       
+        <!-- Filtrlar -->
+        <div class="glass p-6 rounded-3xl shadow-2xl mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div>
+                    <label class="block text-sm font-semibold text-teal-100 mb-3">Turi bo'yicha</label>
+                    <select id="typeFilter" class="input-field w-full px-4 py-3 rounded-xl focus:outline-none focus:ring-0">
+                        <option value="">Barchasi</option>
+                        <option value="product">Mahsulot</option>
+                        <option value="premium">Premium</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-teal-100 mb-3">Status bo'yicha</label>
+                    <select id="statusFilter" class="input-field w-full px-4 py-3 rounded-xl focus:outline-none focus:ring-0">
+                        <option value="">Barchasi</option>
+                        <option value="pending">Kutilmoqda</option>
+                        <option value="payment_confirmed">To'lov tasdiqlandi</option>
+                        <option value="shipped">Yo'lga chiqdi</option>
+                        <option value="delivered">Yetkazib berildi</option>
+                        <option value="ready_for_pickup">Olib ketishga tayyor</option>
+                        <option value="cancelled">Bekor qilindi</option>
+                        <option value="subscribed">Obuna faollashtirildi</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-teal-100 mb-3">Sana bo'yicha</label>
+                    <input type="date" id="dateFilter" class="input-field w-full px-4 py-3 rounded-xl focus:outline-none focus:ring-0">
+                </div>
+                <div class="flex items-end space-x-3">
+                    <button onclick="applyOrderFilters()" class="btn-secondary px-6 py-3 rounded-xl font-semibold">
+                        <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+                        </svg>
+                        Filtrlash
+                    </button>
+                    <button onclick="clearOrderFilters()" class="bg-white/20 text-white px-6 py-3 rounded-xl font-semibold hover:bg-white/30 transition-all">
+                        Tozalash
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Buyurtmalar ro'yxati -->
+        <div id="ordersContainer" class="space-y-6">
+            <!-- Buyurtmalar shu yerda yuklanadi -->
+        </div>
+        <!-- Yuklash indikatori -->
+        <div id="loadingIndicator" class="text-center py-12 hidden">
+            <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-gold-400 border-t-transparent"></div>
+            <p class="mt-4 text-teal-200 font-semibold">Buyurtmalar yuklanmoqda...</p>
+        </div>
+        <!-- Agar buyurtma yo'q bo'lsa -->
+        <div id="noOrdersMessage" class="text-center py-16 hidden">
+            <div class="text-teal-300 text-8xl mb-6">📋</div>
+            <h3 class="text-3xl font-bold text-white mb-4">Buyurtma topilmadi</h3>
+            <p class="text-teal-200 text-lg mb-6">Hali hech qanday buyurtma bermagansiz. Yangi xaridlarni boshlang!</p>
+            <a href="market.html" class="btn-primary inline-block px-8 py-4 rounded-xl font-semibold text-lg">
+                Marketga o'ting va xarid qiling
+            </a>
+        </div>
+    </div>
+    <script>
+        let currentUser = null;
+        // Sahifa yuklanganda
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+            loadOrders();
+            setupEventListeners();
+        });
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            const user = localStorage.getItem('user');
+           
+            if (!token || !user) {
+                window.location.href = 'register-login.html';
+                return;
+            }
+           
+            currentUser = JSON.parse(user);
+            document.getElementById('userInfo').textContent = `@${currentUser.username}`;
+           
+            // Premium bo'lsa, qo'shish tugmasini ko'rsatish
+            if (currentUser.isPremium) {
+                document.getElementById('addProductLink').classList.remove('hidden');
+            }
+        }
+        function setupEventListeners() {
+            document.getElementById('typeFilter').addEventListener('change', loadOrders);
+            document.getElementById('statusFilter').addEventListener('change', loadOrders);
+            document.getElementById('dateFilter').addEventListener('change', loadOrders);
+        }
+        async function loadOrders() {
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const ordersContainer = document.getElementById('ordersContainer');
+            const noOrdersMessage = document.getElementById('noOrdersMessage');
+           
+            loadingIndicator.classList.remove('hidden');
+            ordersContainer.innerHTML = '';
+            noOrdersMessage.classList.add('hidden');
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert('Sessiya tugadi. Qayta kiring.');
+                window.location.href = 'register-login.html';
+                return;
+            }
+            try {
+                const type = document.getElementById('typeFilter').value;
+                const status = document.getElementById('statusFilter').value;
+                const date = document.getElementById('dateFilter').value;
+                const params = new URLSearchParams();
+                if (type) params.append('type', type);
+                if (status) params.append('status', status);
+                if (date) params.append('date', date);
+                const response = await fetch(`/api/orders?${params}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const data = await response.json();
+               
+                if (!response.ok) {
+                    throw new Error(data.error || 'Buyurtmalarni yuklashda xatolik yuz berdi');
+                }
+                displayOrders(data);
+            } catch (error) {
+                console.error('Buyurtmalarni yuklashda xatolik:', error);
+                ordersContainer.innerHTML = `
+                    <div class="glass p-6 rounded-3xl text-center">
+                        <svg class="w-16 h-16 text-red-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <p class="text-red-300 font-semibold text-xl mb-2">Xatolik!</p>
+                        <p class="text-teal-200">${error.message}</p>
+                        <button onclick="loadOrders()" class="btn-danger mt-4 px-6 py-3 rounded-xl font-semibold">
+                            Qayta yuklash
+                        </button>
+                    </div>
+                `;
+            } finally {
+                loadingIndicator.classList.add('hidden');
+            }
+        }
+        function displayOrders(orders) {
+            const container = document.getElementById('ordersContainer');
+            const noOrdersMessage = document.getElementById('noOrdersMessage');
+           
+            if (orders.length === 0) {
+                noOrdersMessage.classList.remove('hidden');
+                return;
+            }
+            container.innerHTML = orders.map(order => {
+                const statusClass = getStatusColor(order.status);
+                const productImage = order.product && order.product.images && order.product.images.length > 0
+                    ? order.product.images[0]
+                    : 'https://via.placeholder.com/80?text=No+Image';
+                const productName = order.type === 'premium' ? 'Premium obuna' : (order.product ? order.product.name : 'Noma\'lum mahsulot');
+                const sellerName = order.seller ? order.seller.username : 'N/A';
+                const orderType = order.type === 'premium' ? 'Premium' : 'Mahsulot';
+                return `
+                <div class="order-card rounded-3xl p-6 order-card">
+                    <div class="flex justify-between items-start mb-6">
+                        <h3 class="text-2xl font-bold text-white">Buyurtma #${order._id.slice(-6)} (${orderType})</h3>
+                        <span class="px-4 py-2 rounded-full text-sm font-semibold ${statusClass}">
+                            ${getStatusText(order.status)}
+                        </span>
+                    </div>
+                   
+                    <div class="flex items-center space-x-6 mb-6">
+                        ${order.type === 'premium' ? `
+                            <div class="w-24 h-24 bg-gradient-to-br from-purple-500 to-blue-600 rounded-2xl flex items-center justify-center">
+                                <i class="fas fa-crown text-white text-3xl"></i>
+                            </div>
+                        ` : `
+                            <img src="${productImage}" alt="${productName}" class="w-24 h-24 object-cover rounded-2xl shadow-lg">
+                        `}
+                        <div class="flex-1">
+                            <h4 class="font-bold text-xl text-white mb-2">${productName}</h4>
+                            ${order.type !== 'premium' ? `<p class="text-teal-200 text-lg mb-1">Sotuvchi: @${sellerName}</p>` : ''}
+                            ${order.type !== 'premium' ? `<p class="text-teal-200 text-lg">Miqdor: ${order.quantity} dona</p>` : ''}
+                        </div>
+                        <div class="text-right">
+                            <p class="text-3xl font-bold text-gold-400">${order.totalPrice.toLocaleString()} so'm</p>
+                            ${order.type !== 'premium' ? `<p class="text-teal-200 text-sm">${order.deliveryMethod === 'delivery' ? '🚚 Yetkazib berish' : '🏪 Olib ketish'}</p>` : ''}
+                        </div>
+                    </div>
+                   
+                    <div class="flex space-x-3 mb-6">
+                        ${order.paymentMethod ? `<span class="px-3 py-2 bg-teal-500/20 text-teal-300 rounded-full text-sm font-semibold">💳 To'lov: ${order.paymentMethod}</span>` : ''}
+                        ${order.paymentScreenshot ? `<a href="${order.paymentScreenshot}" target="_blank" class="px-3 py-2 bg-gold-500/20 text-gold-300 rounded-full text-sm font-semibold hover:bg-gold-500/30 transition-all">📸 Skrinshot</a>` : ''}
+                        ${order.promoCode ? `<span class="px-3 py-2 bg-purple-500/20 text-purple-300 rounded-full text-sm font-semibold">🎁 ${order.promoCode}</span>` : ''}
+                    </div>
+                   
+                    <div class="border-t border-white/20 pt-6">
+                        <p class="text-teal-200 text-sm mb-4">📅 Sana: ${new Date(order.createdAt).toLocaleDateString('uz-UZ')} ${new Date(order.createdAt).toLocaleTimeString('uz-UZ', {hour: '2-digit', minute:'2-digit'})}</p>
+                        ${order.status === 'pending' ? `
+                            <button onclick="cancelOrder('${order._id}')" class="btn-danger px-6 py-3 rounded-xl font-semibold text-sm">
+                                ❌ Bekor qilish
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+                `;
+            }).join('');
+        }
+        function getStatusColor(status) {
+            switch (status) {
+                case 'pending': return 'status-pending';
+                case 'payment_confirmed': return 'status-confirmed';
+                case 'shipped': return 'status-shipped';
+                case 'delivered': return 'status-delivered';
+                case 'ready_for_pickup': return 'status-pickup';
+                case 'cancelled': return 'status-cancelled';
+                case 'subscribed': return 'status-subscribed';
+                default: return 'bg-gray-500/20 text-gray-300';
+            }
+        }
+        function getStatusText(status) {
+            switch (status) {
+                case 'pending': return 'Kutilmoqda (Admin tasdiqlashini kuting)';
+                case 'payment_confirmed': return 'To\'lov tasdiqlandi';
+                case 'shipped': return 'Yo\'lga chiqdi';
+                case 'delivered': return 'Yetkazib berildi';
+                case 'ready_for_pickup': return 'Olib ketishga tayyor';
+                case 'cancelled': return 'Bekor qilindi';
+                case 'subscribed': return 'Obuna faollashtirildi';
+                default: return status;
+            }
+        }
+        function applyOrderFilters() {
+            loadOrders();
+        }
+        function clearOrderFilters() {
+            document.getElementById('typeFilter').value = '';
+            document.getElementById('statusFilter').value = '';
+            document.getElementById('dateFilter').value = '';
+            loadOrders();
+        }
+        async function cancelOrder(orderId) {
+            if (!confirm('Buyurtmani bekor qilishni xohlaysizmi?')) return;
+           
+            const token = localStorage.getItem('token');
+            try {
+                const response = await fetch(`/api/orders/${orderId}/status`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ status: 'cancelled' })
+                });
+                if (response.ok) {
+                    alert('Buyurtma bekor qilindi');
+                    loadOrders();
+                } else {
+                    const data = await response.json();
+                    alert(data.error || 'Bekor qilishda xatolik');
+                }
+            } catch (error) {
+                console.error('Bekor qilishda xatolik:', error);
+                alert('Bekor qilishda xatolik yuz berdi');
+            }
+        }
+        function logout() {
+            if (confirm('Chiqmoqchimisiz?')) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                window.location.href = 'register-login.html';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HALLAYM - YouTube Kanallari</title>
+    <link rel="icon" href="https://postimg.cc/pyLX1sj2" type="image/png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7ZFGK6W9YV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-7ZFGK6W9YV');
+    </script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        teal: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e'
+                        },
+                        gold: {
+                            400: '#facc15',
+                            500: '#eab308',
+                            600: '#ca8a04'
+                        }
+                    },
+                    fontSize: {
+                        'xs-m': '0.75rem',
+                        'sm-m': '0.8125rem',
+                        'base-m': '0.875rem'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 50%, #0f766e 100%);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #facc15 0%, #eab308 100%);
+            color: #0f766e;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(250, 204, 21, 0.4);
+        }
+        .btn-secondary {
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(20, 184, 166, 0.4);
+        }
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-danger:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.4);
+        }
+        .input-field {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .input-field:focus {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: #facc15;
+            box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.2);
+        }
+        .input-field::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+            transform: translateY(0);
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .premium-highlight {
+            background: linear-gradient(135deg, rgba(250, 204, 21, 0.1) 0%, rgba(234, 179, 8, 0.1) 100%);
+            border: 1px solid rgba(250, 204, 21, 0.3);
+        }
+        .discount-badge {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .line-clamp-1 {
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        /* Animatsiyalar */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+        .hero-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.1;
+            z-index: -1;
+        }
+        /* Dinamik maydonlar */
+        .dynamic-field {
+            display: none;
+        }
+        .dynamic-field.show {
+            display: block;
+            animation: fadeIn 0.3s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Mobil hamburger */
+        .hamburger-line {
+            transition: all 0.3s ease;
+        }
+        .menu-open .hamburger-line:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .menu-open .hamburger-line:nth-child(2) {
+            opacity: 0;
+        }
+        .menu-open .hamburger-line:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+        /* Mobil */
+        @media (max-width: 640px) {
+            .card-hover:hover { transform: none; }
+            .btn-primary:hover, .btn-secondary:hover, .btn-danger:hover { transform: none; }
+            body { font-size: 0.875rem !important; }
+            h1, h2, h3 { line-height: 1.2 !important; }
+            p { line-height: 1.4 !important; }
+            .grid-cols-1 { grid-template-columns: 1fr; }
+            .gap-6 { gap: 1rem; }
+            .p-4 { padding: 0.75rem; }
+            .text-2xl { font-size: 1.25rem; }
+            .text-4xl { font-size: 1.875rem; }
+            .h-64 { height: 12rem; }
+            .h-80 { height: 14rem; }
+            .flex-col { flex-direction: column; }
+            .space-x-3 { space-x: 0.5rem; }
+        }
+        @media (max-width: 480px) {
+            .px-4 { padding-left: 0.5rem; padding-right: 0.5rem; }
+            .py-4 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+            .text-base { font-size: 0.875rem; }
+            .text-lg { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen text-white">
+    <!-- Navbar -->
+    <nav class="glass fixed w-full z-50 shadow-xl">
+        <div class="max-w-7xl mx-auto px-2 sm:px-4">
+            <div class="flex justify-between items-center py-2 sm:py-4">
+                <div class="flex items-center space-x-2 sm:space-x-8">
+                    <button id="mobileMenuBtn" class="md:hidden hamburger p-2 rounded-lg hover:bg-white/10 transition-all">
+                        <span class="block w-6 h-0.5 bg-white hamburger-line"></span>
+                        <span class="block w-6 h-0.5 bg-white hamburger-line mt-1.5"></span>
+                        <span class="block w-6 h-0.5 bg-white hamburger-line mt-1.5"></span>
+                    </button>
+                    <a href="index.html" class="text-xl sm:text-3xl font-bold bg-gradient-to-r from-gold-500 to-gold-600 bg-clip-text text-transparent">HALLAYM</a>
+                </div>
+                <div class="hidden md:flex space-x-4 sm:space-x-8">
+                    <a href="market.html" class="text-teal-300 font-semibold hover:text-white transition-colors text-xs sm:text-sm">Market</a>
+                    <a href="history.html" class="text-teal-200 hover:text-teal-100 transition-colors text-xs sm:text-sm">Buyurtmalar</a>
+                    <a href="sold-products.html" class="text-teal-200 hover:text-teal-100 transition-colors text-xs sm:text-sm">Sotilganlar</a>
+                    <a href="profile.html" class="text-teal-200 hover:text-teal-100 transition-colors text-xs sm:text-sm">Profil</a>
+                    <a href="add-product.html" id="addProductLink" class="text-gold-400 font-semibold text-xs sm:text-sm hidden">Mahsulot Qo'shish</a>
+                </div>
+                <div class="flex items-center space-x-1 sm:space-x-4">
+                    <span id="userInfo" class="text-teal-100 font-medium hidden sm:inline text-xs sm:text-sm"></span>
+                    <button onclick="logout()" class="btn-danger px-2 sm:px-6 py-1 sm:py-2 rounded-full text-xs sm:text-sm">Chiqish</button>
+                </div>
+            </div>
+            <div id="mobileMenu" class="md:hidden hidden overflow-hidden transition-all duration-300 ease-in-out max-h-0">
+                <div class="px-2 sm:px-4 py-2 sm:py-4 space-y-2 sm:space-y-4 bg-white/10 backdrop-blur-sm">
+                    <a href="market.html" class="block text-teal-200 font-semibold hover:text-white transition-colors py-1 sm:py-2 text-xs sm:text-sm">Market</a>
+                    <a href="history.html" class="block text-teal-200 hover:text-teal-100 transition-colors py-1 sm:py-2 text-xs sm:text-sm">Buyurtmalar</a>
+                    <a href="sold-products.html" class="block text-teal-200 hover:text-teal-100 transition-colors py-1 sm:py-2 text-xs sm:text-sm">Sotilganlar</a>
+                    <a href="profile.html" class="block text-teal-200 hover:text-teal-100 transition-colors py-1 sm:py-2 text-xs sm:text-sm">Profil</a>
+                    <a href="add-product.html" id="addProductLinkMobile" class="block text-gold-400 font-semibold py-1 sm:py-2 text-xs sm:text-sm hidden">Mahsulot Qo'shish</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="pt-16 sm:pt-20 max-w-7xl mx-auto py-2 sm:py-8 px-1 sm:px-4">
+        <!-- Hero bo'limi -->
+        <section class="glass rounded-3xl p-4 sm:p-8 mb-6 sm:mb-8 shadow-2xl text-center premium-highlight relative overflow-hidden fade-in-up">
+            <video autoplay muted loop class="hero-video">
+                <source src="https://assets.mixkit.co/videos/preview/mixkit-waving-hand-1249-large.mp4" type="video/mp4">
+            </video>
+            <div class="text-4xl sm:text-6xl mb-4 sm:mb-6">📺</div>
+            <h1 class="text-2xl sm:text-4xl font-bold mb-2 sm:mb-4">YouTube Kanallari Bozor</h1>
+            <p class="text-teal-200 text-sm sm:text-lg mb-4 sm:mb-8 max-w-2xl mx-auto leading-relaxed">Monetizatsiyalangan va yuqori ko'rishli YouTube kanallarini sotib oling. Obunachilar, ko'rishlar va niche bo'yicha filtrlang. <strong class="text-gold-400">500+ kanal mavjud!</strong> Barcha kanallar admin tomonidan tekshirilgan, xavfsiz transfer va daromad kafolati bilan. Animatsiyali videolar va interaktiv kontent uchun ideal!</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a href="add-product.html" class="btn-primary px-6 sm:px-8 py-3 sm:py-4 rounded-2xl font-semibold text-sm sm:text-lg shadow-lg flex items-center animate-pulse">
+                    <i class="fas fa-plus mr-2"></i>Sotuvchi bo'ling
+                </a>
+                <button onclick="loadProducts()" class="btn-secondary px-6 sm:px-8 py-3 sm:py-4 rounded-2xl font-semibold text-sm sm:text-lg shadow-lg flex items-center">
+                    <i class="fas fa-sync-alt mr-2"></i>Yangilash
+                </button>
+            </div>
+        </section>
+        <!-- Filtrlar toggle tugmasi -->
+        <button id="toggleFiltersBtn" class="glass p-4 sm:p-6 rounded-2xl shadow-xl mb-4 sm:mb-6 w-full text-left flex items-center justify-between dynamic-field fade-in-up">
+            <span class="text-base sm:text-xl font-bold text-white flex items-center">
+                <i class="fas fa-filter mr-2"></i>Filtrlar va Saralash
+            </span>
+            <i id="toggleIcon" class="fas fa-chevron-down text-teal-300 transition-transform"></i>
+        </button>
+        <!-- Filtrlar -->
+        <div id="filtersSection" class="glass rounded-2xl shadow-2xl p-4 sm:p-6 mb-6 sm:mb-8 dynamic-field show overflow-hidden fade-in-up">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <!-- Qidiruv -->
+                <div>
+                    <label class="block text-sm sm:text-base font-semibold text-teal-100 mb-2 flex items-center">
+                        <i class="fas fa-search mr-1"></i>Qidiruv (Kanal nomi)
+                    </label>
+                    <input type="text" id="searchInput" placeholder="YouTube kanal nomi..."
+                           class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none text-base sm:text-lg">
+                </div>
+              
+                <!-- Sub-kategoriya: Obunachilar soni -->
+                <div>
+                    <label class="block text-sm sm:text-base font-semibold text-teal-100 mb-2 flex items-center">
+                        <i class="fas fa-users mr-1"></i>Obunachilar soni
+                    </label>
+                    <select id="categoryFilter" class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none text-base sm:text-lg">
+                        <option value="">Barchasi</option>
+                        <option value="1k-10k">1K - 10K</option>
+                        <option value="10k-100k">10K - 100K</option>
+                        <option value="100k-1m">100K - 1M</option>
+                        <option value="1m+">1M+</option>
+                    </select>
+                </div>
+              
+                <!-- Narx oralig'i -->
+                <div class="md:col-span-2 space-y-2">
+                    <label class="block text-sm sm:text-base font-semibold text-teal-100 mb-2 flex items-center">
+                        <i class="fas fa-money-bill mr-1"></i>Narx oralig'i (so'm)
+                    </label>
+                    <div class="flex space-x-2">
+                        <input type="number" id="minPrice" placeholder="Min" min="0"
+                               class="input-field flex-1 px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none text-base sm:text-lg">
+                        <input type="number" id="maxPrice" placeholder="Max" min="0"
+                               class="input-field flex-1 px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none text-base sm:text-lg">
+                    </div>
+                </div>
+              
+                <!-- Saralash -->
+                <div>
+                    <label class="block text-sm sm:text-base font-semibold text-teal-100 mb-2 flex items-center">
+                        <i class="fas fa-sort mr-1"></i>Saralash
+                    </label>
+                    <select id="sortBy" class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none text-base sm:text-lg">
+                        <option value="newest">Yangi</option>
+                        <option value="price_asc">Narx (past → yuqori)</option>
+                        <option value="price_desc">Narx (yuqori → past)</option>
+                        <option value="popular">Mashhur (obunachilar bo'yicha)</option>
+                    </select>
+                </div>
+            </div>
+          
+            <div class="flex flex-col sm:flex-row gap-4 pt-4 border-t border-white/20 mt-4">
+                <button onclick="applyFilters()" class="flex-1 btn-primary py-3 sm:py-4 rounded-2xl font-semibold text-base sm:text-lg shadow-lg">
+                    <i class="fas fa-search mr-2"></i>Filtrlash
+                </button>
+                <button onclick="clearFilters()" class="flex-1 btn-danger py-3 sm:py-4 rounded-2xl font-semibold text-base sm:text-lg shadow-lg">
+                    <i class="fas fa-times mr-2"></i>Tozalash
+                </button>
+            </div>
+        </div>
+        <!-- Mahsulotlar -->
+        <div id="productsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+            <!-- Mahsulotlar shu yerda yuklanadi -->
+        </div>
+        <!-- Yuklash indikatori -->
+        <div id="loadingIndicator" class="text-center py-8 sm:py-12 hidden col-span-full">
+            <div class="inline-block animate-spin rounded-full h-8 sm:h-12 w-8 sm:w-12 border-4 border-gold-400 border-t-transparent"></div>
+            <p class="mt-2 sm:mt-4 text-teal-200 font-semibold text-base sm:text-lg">YouTube kanallari yuklanmoqda...</p>
+        </div>
+        <!-- Hech narsa topilmadi -->
+        <div id="noResults" class="hidden col-span-full text-center py-8 sm:py-16">
+            <div class="text-6xl sm:text-8xl mb-4 sm:mb-8">📺</div>
+            <h3 class="text-xl sm:text-3xl font-bold text-white mb-2 sm:mb-4">YouTube kanali topilmadi</h3>
+            <p class="text-teal-300 text-base sm:text-xl">Boshqa filtrlarni sinab ko'ring yoki yangilang!</p>
+            <button onclick="loadProducts()" class="btn-primary mt-4 px-6 py-3 rounded-2xl font-semibold">Yangilash</button>
+        </div>
+    </div>
+    <script>
+        let currentUser = null;
+        let likedProducts = new Set();
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+            setupMobileMenu();
+            setupFiltersToggle();
+            setupEventListeners();
+            loadProducts();
+        });
+        function setupMobileMenu() {
+            const btn = document.getElementById('mobileMenuBtn');
+            const menu = document.getElementById('mobileMenu');
+            btn.addEventListener('click', () => {
+                const isOpen = menu.classList.contains('hidden');
+                if (isOpen) {
+                    menu.classList.remove('hidden');
+                    menu.style.maxHeight = menu.scrollHeight + 'px';
+                    btn.closest('nav').classList.add('menu-open');
+                } else {
+                    menu.style.maxHeight = '0px';
+                    setTimeout(() => {
+                        menu.classList.add('hidden');
+                        btn.closest('nav').classList.remove('menu-open');
+                    }, 300);
+                }
+            });
+            document.querySelectorAll('#mobileMenu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    menu.style.maxHeight = '0px';
+                    setTimeout(() => menu.classList.add('hidden'), 300);
+                });
+            });
+        }
+        function setupFiltersToggle() {
+            const toggleBtn = document.getElementById('toggleFiltersBtn');
+            const filtersSection = document.getElementById('filtersSection');
+            const toggleIcon = document.getElementById('toggleIcon');
+            toggleBtn.addEventListener('click', function() {
+                const isHidden = filtersSection.classList.contains('dynamic-field');
+                if (isHidden) {
+                    filtersSection.classList.add('show');
+                    toggleIcon.classList.add('fa-chevron-up');
+                    toggleIcon.classList.remove('fa-chevron-down');
+                } else {
+                    filtersSection.classList.remove('show');
+                    toggleIcon.classList.add('fa-chevron-down');
+                    toggleIcon.classList.remove('fa-chevron-up');
+                }
+            });
+        }
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            const user = localStorage.getItem('user');
+           
+            if (!token || !user) {
+                window.location.href = 'register-login.html';
+                return;
+            }
+           
+            currentUser = JSON.parse(user);
+            document.getElementById('userInfo').textContent = `@${currentUser.username}`;
+            if (currentUser.isPremium) {
+                document.getElementById('addProductLink').classList.remove('hidden');
+                document.getElementById('addProductLinkMobile').classList.remove('hidden');
+            }
+        }
+        function setupEventListeners() {
+            document.getElementById('searchInput').addEventListener('input', debounce(loadProducts, 500));
+            document.getElementById('categoryFilter').addEventListener('change', loadProducts);
+            document.getElementById('sortBy').addEventListener('change', loadProducts);
+            document.getElementById('minPrice').addEventListener('input', debounce(loadProducts, 500));
+            document.getElementById('maxPrice').addEventListener('input', debounce(loadProducts, 500));
+        }
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+        async function loadProducts() {
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const productsContainer = document.getElementById('productsContainer');
+            const noResults = document.getElementById('noResults');
+          
+            loadingIndicator.classList.remove('hidden');
+            productsContainer.innerHTML = '';
+            noResults.classList.add('hidden');
+            try {
+                const subCategory = document.getElementById('categoryFilter').value;
+                const minPrice = document.getElementById('minPrice').value;
+                const maxPrice = document.getElementById('maxPrice').value;
+                const search = document.getElementById('searchInput').value.trim();
+                const sortBy = document.getElementById('sortBy').value;
+                const params = new URLSearchParams({
+                    category: 'youtube'
+                });
+                if (subCategory) params.append('subCategory', subCategory);
+                if (minPrice) params.append('minPrice', minPrice);
+                if (maxPrice) params.append('maxPrice', maxPrice);
+                if (search) params.append('search', search);
+                if (sortBy) params.append('sortBy', sortBy);
+              
+                const response = await fetch(`/api/products?${params.toString()}`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+                if (!response.ok) throw new Error('Yuklashda xatolik');
+                const products = await response.json();
+                displayProducts(products);
+            } catch (error) {
+                console.error('Xatolik:', error);
+                noResults.classList.remove('hidden');
+            } finally {
+                loadingIndicator.classList.add('hidden');
+            }
+        }
+        function displayProducts(products) {
+            const container = document.getElementById('productsContainer');
+            const noResults = document.getElementById('noResults');
+          
+            if (products.length === 0) {
+                noResults.classList.remove('hidden');
+                container.innerHTML = '';
+                return;
+            }
+            noResults.classList.add('hidden');
+            container.innerHTML = products.map((product, index) => {
+                const isLiked = likedProducts.has(product._id);
+                const price = product.discountPrice || product.price;
+                const originalPrice = product.discountPrice ? product.price : null;
+                const discountPercent = originalPrice ? Math.round((1 - price / originalPrice) * 100) : 0;
+                const categoryIcon = '📺';
+                return `
+                    <div class="glass rounded-2xl p-4 sm:p-6 card-hover shadow-2xl fade-in-up" style="animation-delay: ${index * 0.1}s">
+                        <div class="relative mb-4 sm:mb-6">
+                            <img src="${product.images && product.images[0] ? product.images[0] : 'https://via.placeholder.com/300x200?text=YouTube+Kanal'}"
+                                 alt="${product.name}"
+                                 class="w-full h-32 sm:h-48 object-cover rounded-2xl shadow-xl cursor-pointer"
+                                 onclick="viewProduct('${product._id}')">
+                            <button onclick="toggleLike('${product._id}', event)" class="absolute top-2 right-2 bg-white/20 backdrop-blur-sm p-2 rounded-full hover:bg-white/30 transition-all">
+                                <i class="fas fa-heart ${isLiked ? 'text-red-400' : 'text-teal-300'}"></i>
+                            </button>
+                            ${discountPercent > 0 ? `
+                                <div class="absolute top-2 left-2 discount-badge">
+                                    <i class="fas fa-percentage mr-1"></i>${discountPercent}% OFF
+                                </div>
+                            ` : ''}
+                        </div>
+                       
+                        <h3 class="font-bold text-base sm:text-xl mb-2 cursor-pointer hover:text-gold-400 line-clamp-1 transition-colors text-white"
+                            onclick="viewProduct('${product._id}')">
+                            ${product.name} (${product.username || 'kanal'})
+                        </h3>
+                       
+                        <p class="text-teal-200 text-sm line-clamp-2 mb-4 sm:mb-6">${product.description || 'Monetizatsiyalangan YouTube kanali, yuqori ko\'rishlar'}</p>
+                       
+                        <div class="space-y-2 mb-4 sm:mb-6">
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="text-teal-300"><i class="fas fa-users mr-1"></i>Obunachilar</span>
+                                <span class="font-semibold">${product.subscribers ? product.subscribers.toLocaleString() : 0}</span>
+                            </div>
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="text-teal-300"><i class="fas fa-eye mr-1"></i>Ko'rishlar</span>
+                                <span class="font-semibold">${product.views ? product.views.toLocaleString() : 0}</span>
+                            </div>
+                            ${product.watchHours ? `<div class="flex items-center justify-between text-sm">
+                                <span class="text-teal-300"><i class="fas fa-clock mr-1"></i>Ko'rilgan soatlar</span>
+                                <span class="font-semibold">${product.watchHours}</span>
+                            </div>` : ''}
+                            ${product.monetized === 'yes' ? `<div class="flex items-center justify-center text-sm bg-green-500/20 text-green-300 rounded-full px-2 py-1">
+                                <i class="fas fa-crown mr-1"></i>Monetizatsiya
+                            </div>` : ''}
+                        </div>
+                       
+                        <div class="flex items-center justify-between mb-4 sm:mb-6">
+                            <span class="text-xl sm:text-2xl font-bold text-gold-400">
+                                ${price.toLocaleString()} so'm
+                            </span>
+                            ${originalPrice ? `<span class="text-lg text-teal-200 line-through">${originalPrice.toLocaleString()} so'm</span>` : ''}
+                        </div>
+                       
+                        <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+                            <button onclick="viewProduct('${product._id}')"
+                                    class="flex-1 btn-secondary py-2 sm:py-3 rounded-xl font-semibold text-sm hover:shadow-lg">
+                                <i class="fas fa-eye mr-1"></i>Batafsil
+                            </button>
+                            <button onclick="addToCart('${product._id}')"
+                                    class="flex-1 btn-primary py-2 sm:py-3 rounded-xl font-semibold text-sm hover:shadow-lg">
+                                <i class="fas fa-shopping-cart mr-1"></i>Savatga
+                            </button>
+                        </div>
+                       
+                        <div class="text-xs text-teal-300 mt-2 flex items-center justify-center">
+                            <i class="fas fa-fire mr-1"></i>${product.monthlySales || 0} sotuv/oy
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        function applyFilters() {
+            loadProducts();
+        }
+        function clearFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('categoryFilter').value = '';
+            document.getElementById('minPrice').value = '';
+            document.getElementById('maxPrice').value = '';
+            document.getElementById('sortBy').value = 'newest';
+            loadProducts();
+        }
+        function viewProduct(productId) {
+            window.location.href = `product-detail.html?id=${productId}`;
+        }
+        async function toggleLike(productId, event) {
+            event.stopPropagation();
+            const token = localStorage.getItem('token');
+            if (!token) return;
+            try {
+                const response = await fetch(`/api/products/${productId}/like`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                if (response.ok) {
+                    if (likedProducts.has(productId)) {
+                        likedProducts.delete(productId);
+                    } else {
+                        likedProducts.add(productId);
+                    }
+                    loadProducts();
+                } else {
+                    const data = await response.json();
+                    alert(data.error || 'Like qilishda xatolik');
+                }
+            } catch (error) {
+                console.error('Like qilishda xatolik:', error);
+                alert('Like qilishda xatolik yuz berdi');
+            }
+        }
+        async function addToCart(productId) {
+            // Bu yerda savat logikasi qo'shiladi
+            alert('Savatga qo\'shildi! (Keyinchalik to\'ldiriladi)');
+        }
+        function logout() {
+            if (confirm('Chiqmoqchimisiz?')) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                window.location.href = 'register-login.html';
+            }
+        }
+    </script>
+</body>
+</html>

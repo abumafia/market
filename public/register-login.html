@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HALLAYM - Kirish / Ro'yxatdan o'tish</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7ZFGK6W9YV"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-7ZFGK6W9YV');
+</script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        teal: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e'
+                        },
+                        gold: {
+                            400: '#facc15',
+                            500: '#eab308',
+                            600: '#ca8a04'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 50%, #0f766e 100%);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #facc15 0%, #eab308 100%);
+            color: #0f766e;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(250, 204, 21, 0.4);
+        }
+        .btn-login {
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-login:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(20, 184, 166, 0.4);
+        }
+        .btn-register {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-register:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.4);
+        }
+        .input-field {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .input-field:focus {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: #facc15;
+            box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.2);
+        }
+        .input-field::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        .form-toggle {
+            transition: opacity 0.3s ease;
+        }
+        .form-toggle.hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen flex items-center justify-center py-12 px-4">
+    <!-- Navbar -->
+    <nav class="glass fixed w-full z-50 shadow-xl top-0">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <a href="index.html" class="text-3xl font-bold bg-gradient-to-r from-gold-500 to-gold-600 bg-clip-text text-transparent">HALLAYM</a>
+                <a href="index.html" class="text-teal-200 hover:text-white transition-colors">Bosh sahifa</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-20 w-full max-w-md">
+        <div class="glass rounded-3xl p-8 shadow-2xl">
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-bold bg-gradient-to-r from-gold-500 to-gold-600 bg-clip-text text-transparent mb-2">HALLAYM</h1>
+                <p class="text-teal-200 text-lg">Hisobingizga kiring yoki yangi hisob yarating va ajoyib xarid tajribasini boshlang</p>
+            </div>
+
+            <!-- Kirish formasi -->
+            <div id="loginForm" class="form-toggle">
+                <h2 class="text-2xl font-bold text-white mb-6 text-center">Kirish</h2>
+                <div class="space-y-4">
+                    <div class="relative">
+                        <label class="block text-teal-100 mb-2 font-semibold" for="loginUsername">Foydalanuvchi nomi</label>
+                        <div class="relative">
+                            <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-teal-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                            </svg>
+                            <input type="text" id="loginUsername" class="input-field w-full pl-10 pr-4 py-3 rounded-xl focus:outline-none focus:ring-0" placeholder="Loginni kiriting" required>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <label class="block text-teal-100 mb-2 font-semibold" for="loginPassword">Parol</label>
+                        <div class="relative">
+                            <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-teal-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                            </svg>
+                            <input type="password" id="loginPassword" class="input-field w-full pl-10 pr-4 py-3 rounded-xl focus:outline-none focus:ring-0" placeholder="Parolni kiriting" required>
+                        </div>
+                    </div>
+                    <button onclick="login()" class="w-full btn-login py-3 rounded-xl font-semibold text-lg">
+                        Kirish
+                    </button>
+                    <p class="text-center text-teal-200">
+                        Hisobingiz yo'qmi? 
+                        <button onclick="showRegister()" class="text-gold-400 hover:text-gold-300 font-semibold transition-colors">Ro'yxatdan o'ting</button>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Ro'yxatdan o'tish formasi -->
+            <div id="registerForm" class="form-toggle hidden">
+                <h2 class="text-2xl font-bold text-white mb-6 text-center">Ro'yxatdan o'tish</h2>
+                <div class="space-y-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="relative">
+                            <label class="block text-teal-100 mb-2 font-semibold" for="firstName">Ism</label>
+                            <input type="text" id="firstName" class="input-field w-full py-3 px-4 rounded-xl focus:outline-none focus:ring-0" placeholder="Ismingiz" required>
+                        </div>
+                        <div class="relative">
+                            <label class="block text-teal-100 mb-2 font-semibold" for="lastName">Familiya</label>
+                            <input type="text" id="lastName" class="input-field w-full py-3 px-4 rounded-xl focus:outline-none focus:ring-0" placeholder="Familiyangiz" required>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <label class="block text-teal-100 mb-2 font-semibold" for="registerUsername">Foydalanuvchi nomi</label>
+                        <div class="relative">
+                            <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-teal-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                            </svg>
+                            <input type="text" id="registerUsername" class="input-field w-full pl-10 pr-4 py-3 rounded-xl focus:outline-none focus:ring-0" placeholder="Loginni tanlang" required>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <label class="block text-teal-100 mb-2 font-semibold" for="email">Email</label>
+                        <div class="relative">
+                            <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-teal-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                            </svg>
+                            <input type="email" id="email" class="input-field w-full pl-10 pr-4 py-3 rounded-xl focus:outline-none focus:ring-0" placeholder="Email manzilingiz" required>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <label class="block text-teal-100 mb-2 font-semibold" for="registerPassword">Parol</label>
+                        <div class="relative">
+                            <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-teal-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                            </svg>
+                            <input type="password" id="registerPassword" class="input-field w-full pl-10 pr-4 py-3 rounded-xl focus:outline-none focus:ring-0" placeholder="Kuchli parol (min. 6 belgi)" required minlength="6">
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <label class="block text-teal-100 mb-2 font-semibold" for="confirmPassword">Parolni tasdiqlang</label>
+                        <div class="relative">
+                            <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-teal-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <input type="password" id="confirmPassword" class="input-field w-full pl-10 pr-4 py-3 rounded-xl focus:outline-none focus:ring-0" placeholder="Parolni qaytadan kiriting" required>
+                        </div>
+                    </div>
+                    <button onclick="register()" class="w-full btn-register py-3 rounded-xl font-semibold text-lg">
+                        Ro'yxatdan o'tish
+                    </button>
+                    <p class="text-center text-teal-200">
+                        Allaqachon hisobingiz bormi? 
+                        <button onclick="showLogin()" class="text-gold-400 hover:text-gold-300 font-semibold transition-colors">Kirish</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="glass mt-12 py-6 rounded-2xl text-center">
+            <p class="text-teal-200">&copy; 2025 HALLAYM. Barcha huquqlar himoyalangan.</p>
+        </footer>
+    </main>
+
+    <script>
+        function showRegister() {
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('registerForm').classList.remove('hidden');
+        }
+
+        function showLogin() {
+            document.getElementById('registerForm').classList.add('hidden');
+            document.getElementById('loginForm').classList.remove('hidden');
+        }
+
+        async function login() {
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            if (!username || !password) {
+                alert('Barcha maydonlarni to\'ldiring');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    window.location.href = 'market.html';
+                } else {
+                    alert(data.error || 'Kirishda xatolik');
+                }
+            } catch (error) {
+                console.error('Login xatosi:', error);
+                alert('Kirishda xatolik yuz berdi. Internet aloqasini tekshiring.');
+            }
+        }
+
+        async function register() {
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const username = document.getElementById('registerUsername').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (!firstName || !lastName || !username || !email || !password || !confirmPassword) {
+                alert('Barcha maydonlarni to\'ldiring');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                alert('Parollar mos kelmadi');
+                return;
+            }
+
+            if (password.length < 6) {
+                alert('Parol kamida 6 ta belgidan iborat bo\'lishi kerak');
+                return;
+            }
+
+            // Oddiy email validatsiya
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Noto\'g\'ri email format');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ 
+                        firstName, 
+                        lastName, 
+                        username, 
+                        email, 
+                        password 
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    alert('Muvaffaqiyatli ro\'yxatdan o\'tdingiz!');
+                    window.location.href = 'market.html';
+                } else {
+                    alert(data.error || 'Ro\'yxatdan o\'tishda xatolik');
+                }
+            } catch (error) {
+                console.error('Register xatosi:', error);
+                alert('Ro\'yxatdan o\'tishda xatolik yuz berdi. Internet aloqasini tekshiring.');
+            }
+        }
+
+        // Token mavjud bo'lsa avtomatik market sahifasiga o'tkazish
+        window.addEventListener('load', () => {
+            const token = localStorage.getItem('token');
+            if (token) {
+                // Token ni tekshirish uchun oddiy request (ixtiyoriy, server da token verify qilish uchun)
+                fetch('/api/products', { headers: { 'Authorization': `Bearer ${token}` } })
+                    .then(() => window.location.href = 'market.html')
+                    .catch(() => {
+                        localStorage.removeItem('token');
+                        localStorage.removeItem('user');
+                    });
+            }
+        });
+    </script>
+</body>
+</html>

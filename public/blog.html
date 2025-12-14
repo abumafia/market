@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HALLAYM - Blog va Yangiliklar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7ZFGK6W9YV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-7ZFGK6W9YV');
+    </script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        teal: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e'
+                        },
+                        gold: {
+                            400: '#facc15',
+                            500: '#eab308',
+                            600: '#ca8a04'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 50%, #0f766e 100%);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #facc15 0%, #eab308 100%);
+            color: #0f766e;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(250, 204, 21, 0.4);
+        }
+        .btn-secondary {
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(20, 184, 166, 0.4);
+        }
+        .input-field {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .input-field:focus {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: #facc15;
+            box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.2);
+        }
+        .blog-card {
+            transition: all 0.3s ease;
+        }
+        .blog-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .post-excerpt {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen text-white">
+    <!-- Navbar -->
+    <nav class="glass fixed w-full z-50 shadow-xl">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-8">
+                    <a href="index.html" class="text-3xl font-bold bg-gradient-to-r from-gold-500 to-gold-600 bg-clip-text text-transparent">HALLAYM</a>
+                    <div class="hidden md:flex space-x-8">
+                        <a href="market.html" class="text-teal-300 font-semibold hover:text-white transition-colors">Market</a>
+                        <a href="history.html" class="text-teal-200 hover:text-teal-100 transition-colors">Buyurtmalar</a>
+                        <a href="sold-products.html" class="text-teal-200 hover:text-teal-100 transition-colors">Sotilganlar</a>
+                        <a href="blog.html" class="text-gold-400 font-semibold">Blog</a>
+                        <a href="profile.html" class="text-teal-200 hover:text-teal-100 transition-colors">Profil</a>
+                        <a href="add-product.html" id="addProductLink" class="text-teal-200 hover:text-teal-100 transition-colors hidden">Mahsulot Qo'shish</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span id="userInfo" class="text-teal-100 font-medium"></span>
+                    <button onclick="logout()" class="btn-danger px-6 py-2 rounded-full text-sm">Chiqish</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="pt-20 max-w-6xl mx-auto py-8 px-4">
+        <h1 class="text-4xl font-bold mb-8 flex items-center justify-center">
+            <i class="fas fa-blog mr-3 text-gold-400"></i>
+            Blog va Yangiliklar
+        </h1>
+
+        <p class="text-center text-teal-200 mb-12 text-lg">Platformamizdagi yangiliklar, o'zgarishlar va foydali maslahatlar haqida maqolalar. Eng so'nggi postlar tepada ko'rsatiladi.</p>
+
+        <div id="blogPostsContainer" class="space-y-8">
+            <!-- Blog postlar yuklanadi -->
+        </div>
+
+        <!-- Yuklash indikatori -->
+        <div id="loadingIndicator" class="text-center py-12 hidden">
+            <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-gold-400 border-t-transparent"></div>
+            <p class="mt-4 text-teal-200 font-semibold">Yangiliklar yuklanmoqda...</p>
+        </div>
+
+        <!-- Agar topilmasa -->
+        <div id="noPostsMessage" class="text-center py-16 hidden">
+            <div class="text-teal-300 text-8xl mb-6">📝</div>
+            <h3 class="text-3xl font-bold text-white mb-4">Hali yangiliklar yo'q</h3>
+            <p class="text-teal-200 text-lg mb-6">Tez orada yangi postlar paydo bo'ladi. Bosh sahifaga qayting!</p>
+            <a href="index.html" class="btn-primary inline-block px-8 py-4 rounded-xl font-semibold text-lg">
+                Bosh Sahifaga
+            </a>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+        let blogPosts = [];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+            loadBlogPosts();
+        });
+
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            const user = localStorage.getItem('user');
+            if (!token || !user) {
+                window.location.href = 'register-login.html';
+                return;
+            }
+            currentUser = JSON.parse(user);
+            document.getElementById('userInfo').textContent = `@${currentUser.username}`;
+            if (currentUser.isPremium) {
+                document.getElementById('addProductLink').classList.remove('hidden');
+            }
+        }
+
+        async function loadBlogPosts() {
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const container = document.getElementById('blogPostsContainer');
+            const noMessage = document.getElementById('noPostsMessage');
+
+            loadingIndicator.classList.remove('hidden');
+            container.innerHTML = '';
+            noMessage.classList.add('hidden');
+
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert('Sessiya tugadi. Qayta kiring.');
+                window.location.href = 'register-login.html';
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/blog/posts', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Yangiliklarni yuklashda xatolik');
+                }
+
+                blogPosts = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                displayBlogPosts(blogPosts);
+            } catch (error) {
+                console.error('Xatolik:', error);
+                container.innerHTML = `
+                    <div class="glass p-6 rounded-3xl text-center">
+                        <i class="fas fa-exclamation-triangle text-6xl text-red-400 mb-4"></i>
+                        <p class="text-red-300 font-semibold text-xl mb-2">Xatolik!</p>
+                        <p class="text-teal-200">${error.message}</p>
+                        <button onclick="loadBlogPosts()" class="btn-danger mt-4 px-6 py-3 rounded-xl font-semibold">
+                            Qayta yuklash
+                        </button>
+                    </div>
+                `;
+            } finally {
+                loadingIndicator.classList.add('hidden');
+            }
+        }
+
+        function displayBlogPosts(posts) {
+            const container = document.getElementById('blogPostsContainer');
+            const noMessage = document.getElementById('noPostsMessage');
+
+            if (posts.length === 0) {
+                noMessage.classList.remove('hidden');
+                return;
+            }
+
+            container.innerHTML = posts.map(post => {
+                const postLink = `blog-post.html?id=${post._id}`;
+                const date = new Date(post.createdAt).toLocaleDateString('uz-UZ');
+                return `
+                    <article class="blog-card glass rounded-3xl p-6">
+                        <div class="flex items-start space-x-4 mb-4">
+                            <img src="${post.image || 'https://via.placeholder.com/80?text=Blog'}" alt="${post.title}" class="w-20 h-20 rounded-xl object-cover">
+                            <div class="flex-1">
+                                <h2 class="text-xl font-bold text-white mb-2">
+                                    <a href="${postLink}" class="hover:text-gold-400 transition-colors">${post.title}</a>
+                                </h2>
+                                <p class="text-teal-300 text-sm mb-2">Sana: ${date} | Muallif: ${post.author || 'Admin'}</p>
+                                <p class="post-excerpt text-teal-200">${post.excerpt || post.content.substring(0, 150)}...</p>
+                            </div>
+                        </div>
+                        <a href="${postLink}" class="btn-secondary inline-block px-6 py-2 rounded-xl font-semibold">
+                            <i class="fas fa-arrow-right mr-2"></i>To'liq o'qish
+                        </a>
+                    </article>
+                `;
+            }).join('');
+        }
+
+        function logout() {
+            if (confirm('Chiqmoqchimisiz?')) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                window.location.href = 'register-login.html';
+            }
+        }
+    </script>
+</body>
+</html>

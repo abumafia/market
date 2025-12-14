@@ -1,0 +1,1476 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HALLAYM - Admin Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7ZFGK6W9YV"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-7ZFGK6W9YV');
+</script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        teal: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e'
+                        },
+                        gold: {
+                            400: '#facc15',
+                            500: '#eab308',
+                            600: '#ca8a04'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .line-clamp-1 {
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 50%, #0f766e 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+            transform: translateY(0);
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(20, 184, 166, 0.4);
+        }
+        .btn-secondary {
+            background: linear-gradient(135deg, #facc15 0%, #eab308 100%);
+            color: #0f766e;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(250, 204, 21, 0.4);
+        }
+        .btn-logout {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-logout:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.4);
+        }
+        .btn-success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-success:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.4);
+        }
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-danger:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.4);
+        }
+        .btn-warning {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-warning:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(245, 158, 11, 0.4);
+        }
+        .status-badge {
+            backdrop-filter: blur(5px);
+        }
+        .tab-button {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        .tab-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .active-tab {
+            background: rgba(255, 255, 255, 0.3);
+            border-bottom-color: #facc15;
+        }
+        .data-table {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        .data-table th {
+            color: rgba(255, 255, 255, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .data-table td {
+            color: white;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .modal {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+        .fade-in {
+            animation: fadeIn 0.3s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .chart-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen text-white">
+    <!-- Navbar -->
+    <nav class="glass fixed w-full z-50 shadow-xl">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-8">
+                    <a href="market.html" class="text-3xl font-bold bg-gradient-to-r from-gold-500 to-gold-600 bg-clip-text text-transparent">HALLAYM</a>
+                    <div class="hidden md:flex space-x-8">
+                        <a href="market.html" class="text-teal-300 font-semibold hover:text-white transition-colors">Market</a>
+                        <a href="history.html" class="text-teal-200 hover:text-teal-100 transition-colors">Buyurtmalar</a>
+                        <a href="profile.html" class="text-teal-200 hover:text-teal-100 transition-colors">Profil</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span id="userInfo" class="text-teal-100 font-medium bg-teal-500/20 px-3 py-1 rounded-full"></span>
+                    <button onclick="logout()" class="btn-logout text-white px-6 py-2 rounded-full text-sm">Chiqish</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="pt-20 max-w-7xl mx-auto py-8 px-4">
+        <!-- Admin tekshirish -->
+        <div id="adminCheck" class="hidden">
+            <div class="glass p-8 rounded-2xl text-center shadow-2xl card-hover">
+                <div class="text-6xl mb-4">🚫</div>
+                <h2 class="text-2xl font-bold text-white mb-2">Admin Ruxsati Yo'q</h2>
+                <p class="text-teal-200 text-lg mb-4">Sizda admin paneliga kirish uchun ruxsat yo'q</p>
+                <button onclick="window.location.href='profile.html'" class="btn-danger text-white px-6 py-3 rounded-xl font-semibold">
+                    Profilga qaytish
+                </button>
+            </div>
+        </div>
+        <!-- Admin panel -->
+        <div id="adminPanel" class="hidden">
+            <!-- Statistika kartalari -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="glass rounded-2xl shadow-xl p-6 border border-teal-300/30 fade-in card-hover">
+                    <div class="flex items-center">
+                        <div class="p-3 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl mr-4 shadow-lg">
+                            <i class="fas fa-chart-line text-2xl text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-teal-200 font-medium">Kunlik Daromad</p>
+                            <p class="text-3xl font-bold text-gold-400" id="dailyRevenue">0 so'm</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass rounded-2xl shadow-xl p-6 border border-teal-300/30 fade-in card-hover">
+                    <div class="flex items-center">
+                        <div class="p-3 bg-gradient-to-r from-green-500 to-green-600 rounded-xl mr-4 shadow-lg">
+                            <i class="fas fa-shopping-cart text-2xl text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-teal-200 font-medium">Yangi Buyurtmalar</p>
+                            <p class="text-3xl font-bold text-green-300" id="newOrders">0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass rounded-2xl shadow-xl p-6 border border-teal-300/30 fade-in card-hover">
+                    <div class="flex items-center">
+                        <div class="p-3 bg-gradient-to-r from-purple-500 to-purple-600 rounded-xl mr-4 shadow-lg">
+                            <i class="fas fa-users text-2xl text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-teal-200 font-medium">Yangi Foydalanuvchilar</p>
+                            <p class="text-3xl font-bold text-purple-300" id="newUsers">0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass rounded-2xl shadow-xl p-6 border border-teal-300/30 fade-in card-hover">
+                    <div class="flex items-center">
+                        <div class="p-3 bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-xl mr-4 shadow-lg">
+                            <i class="fas fa-crown text-2xl text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-teal-200 font-medium">Premium Obunalar</p>
+                            <p class="text-3xl font-bold text-gold-400" id="premiumSubs">0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Grafiklar -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <div class="chart-container rounded-2xl shadow-xl p-6 fade-in">
+                    <h3 class="text-xl font-semibold mb-4 flex items-center text-white">
+                        <i class="fas fa-chart-line mr-2 text-gold-400"></i>Daromad Oqimi (30 kun)
+                    </h3>
+                    <canvas id="revenueChart" height="300"></canvas>
+                </div>
+                <div class="chart-container rounded-2xl shadow-xl p-6 fade-in">
+                    <h3 class="text-xl font-semibold mb-4 flex items-center text-white">
+                        <i class="fas fa-chart-pie mr-2 text-gold-400"></i>Mahsulot Kategoriyalari
+                    </h3>
+                    <canvas id="categoryChart" height="300"></canvas>
+                </div>
+            </div>
+            <!-- Tab panel -->
+            <div class="glass rounded-2xl shadow-xl overflow-hidden">
+                <div class="border-b border-teal-300/20">
+                    <nav class="flex overflow-x-auto">
+                        <button onclick="showTab('orders')"
+                                class="tab-button py-4 px-8 text-center border-b-2 font-semibold text-sm flex items-center min-w-max whitespace-nowrap text-teal-200 hover:text-white transition-colors"
+                                id="ordersTab">
+                            <i class="fas fa-box mr-2"></i>Buyurtmalar
+                        </button>
+                        <button onclick="showTab('premium')"
+                                class="tab-button py-4 px-8 text-center border-b-2 font-semibold text-sm flex items-center min-w-max whitespace-nowrap text-teal-200 hover:text-white transition-colors"
+                                id="premiumTab">
+                            <i class="fas fa-crown mr-2"></i>Premium Obunalar
+                        </button>
+                        <button onclick="showTab('payments')"
+                                class="tab-button py-4 px-8 text-center border-b-2 font-semibold text-sm flex items-center min-w-max whitespace-nowrap text-teal-200 hover:text-white transition-colors"
+                                id="paymentsTab">
+                            <i class="fas fa-credit-card mr-2"></i>To'lovlar
+                        </button>
+                        <button onclick="showTab('products')"
+                                class="tab-button py-4 px-8 text-center border-b-2 font-semibold text-sm flex items-center min-w-max whitespace-nowrap text-teal-200 hover:text-white transition-colors"
+                                id="productsTab">
+                            <i class="fas fa-store mr-2"></i>Mahsulotlar
+                        </button>
+                        <button onclick="showTab('users')"
+                                class="tab-button py-4 px-8 text-center border-b-2 font-semibold text-sm flex items-center min-w-max whitespace-nowrap text-teal-200 hover:text-white transition-colors"
+                                id="usersTab">
+                            <i class="fas fa-users mr-2"></i>Foydalanuvchilar
+                        </button>
+                        <button onclick="showTab('settings')"
+                                class="tab-button py-4 px-8 text-center border-b-2 font-semibold text-sm flex items-center min-w-max whitespace-nowrap text-teal-200 hover:text-white transition-colors"
+                                id="settingsTab">
+                            <i class="fas fa-cog mr-2"></i>Sozlamalar
+                        </button>
+                    </nav>
+                </div>
+                <!-- Tab kontentlari -->
+                <div class="p-6">
+                    <!-- Buyurtmalar -->
+                    <div id="ordersTabContent" class="tab-content">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-xl font-semibold text-white">Barcha Buyurtmalar</h3>
+                            <div class="flex space-x-3">
+                                <select id="orderStatusFilter" onchange="loadOrders(currentPage.orders)"
+                                        class="px-4 py-3 bg-white/20 border border-teal-300/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent transition-all text-white">
+                                    <option value="">Barcha statuslar</option>
+                                    <option value="pending">Kutilmoqda</option>
+                                    <option value="payment_confirmed">To'lov tasdiqlandi</option>
+                                    <option value="shipped">Yo'lga chiqdi</option>
+                                    <option value="delivered">Yetkazib berildi</option>
+                                    <option value="subscribed">Obuna faollashtirildi</option>
+                                    <option value="cancelled">Bekor qilindi</option>
+                                </select>
+                                <input type="date" id="orderDateFilter" onchange="loadOrders(currentPage.orders)"
+                                       class="px-4 py-3 bg-white/20 border border-teal-300/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent transition-all text-white">
+                                <select id="orderTypeFilter" onchange="loadOrders(currentPage.orders)"
+                                        class="px-4 py-3 bg-white/20 border border-teal-300/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent transition-all text-white">
+                                    <option value="">Barcha turlar</option>
+                                    <option value="product">Mahsulot</option>
+                                    <option value="premium">Premium</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto rounded-xl">
+                            <table class="data-table min-w-full divide-y divide-teal-300/20">
+                                <thead class="bg-teal-500/10">
+                                    <tr>
+                                        <th class="px-6 py-4 text-left text-xs font-medium text-teal-100 uppercase tracking-wider">ID</th>
+                                        <th class="px-6 py-4 text-left text-xs font-medium text-teal-100 uppercase tracking-wider">Mahsulot/Turi</th>
+                                        <th class="px-6 py-4 text-left text-xs font-medium text-teal-100 uppercase tracking-wider">Xaridor</th>
+                                        <th class="px-6 py-4 text-left text-xs font-medium text-teal-100 uppercase tracking-wider">Sotuvchi</th>
+                                        <th class="px-6 py-4 text-left text-xs font-medium text-teal-100 uppercase tracking-wider">Summa</th>
+                                        <th class="px-6 py-4 text-left text-xs font-medium text-teal-100 uppercase tracking-wider">Status</th>
+                                        <th class="px-6 py-4 text-left text-xs font-medium text-teal-100 uppercase tracking-wider">Sana</th>
+                                        <th class="px-6 py-4 text-left text-xs font-medium text-teal-100 uppercase tracking-wider">Amallar</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ordersTableBody" class="divide-y divide-teal-300/10">
+                                    <!-- Buyurtmalar shu yerda yuklanadi -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="ordersPagination" class="mt-4 flex justify-center space-x-2"></div>
+                    </div>
+                    <!-- Premium Obunalar -->
+                    <div id="premiumTabContent" class="tab-content hidden">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-xl font-semibold text-white">Premium Obuna Boshqaruvi</h3>
+                            <div class="flex space-x-3">
+                                <select id="premiumStatusFilter" onchange="loadPremiumOrders(currentPage.premium)"
+                                        class="px-4 py-3 bg-white/20 border border-teal-300/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent transition-all text-white">
+                                    <option value="">Barcha statuslar</option>
+                                    <option value="pending">Kutilmoqda</option>
+                                    <option value="payment_confirmed">To'lov tasdiqlandi</option>
+                                    <option value="subscribed">Faol</option>
+                                    <option value="cancelled">Bekor qilingan</option>
+                                </select>
+                                <input type="date" id="premiumDateFilter" onchange="loadPremiumOrders(currentPage.premium)"
+                                       class="px-4 py-3 bg-white/20 border border-teal-300/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent transition-all text-white">
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto rounded-xl">
+                            <table class="data-table min-w-full divide-y divide-teal-300/20">
+                                <thead class="bg-teal-500/10">
+                                    <tr>
+                                        <th class="px-6 py-4 text-left text-xs font-medium text-teal-100 uppercase tracking-wider">ID</th>
+                                        <th class="px-6 py-4 text-left text-xs font-medium text-teal-100 uppercase tracking-wider">Xaridor</th>
+                                        <th class="px-6 py-4 text-left text-xs font-medium text-teal-100 uppercase tracking-wider">Email</th>
+                                        <th class="px-6 py-4 text-left text-xs font-medium text-teal-100 uppercase tracking-wider">To'lov Usuli</th>
+                                        <th class="px-6 py-4 text-left text-xs font-medium text-teal-100 uppercase tracking-wider">Summa</th>
+                                        <th class="px-6 py-4 text-left text-xs font-medium text-teal-100 uppercase tracking-wider">Skrinshot</th>
+                                        <th class="px-6 py-4 text-left text-xs font-medium text-teal-100 uppercase tracking-wider">Status</th>
+                                        <th class="px-6 py-4 text-left text-xs font-medium text-teal-100 uppercase tracking-wider">Sana</th>
+                                        <th class="px-6 py-4 text-left text-xs font-medium text-teal-100 uppercase tracking-wider">Amallar</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="premiumTableBody" class="divide-y divide-teal-300/10">
+                                    <!-- Premium buyurtmalar shu yerda yuklanadi -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="premiumPagination" class="mt-4 flex justify-center space-x-2"></div>
+                    </div>
+                    <!-- To'lovlar -->
+                    <div id="paymentsTabContent" class="tab-content hidden">
+                        <h3 class="text-xl font-semibold text-white mb-6 flex items-center">
+                            <i class="fas fa-credit-card mr-2 text-gold-400"></i>To'lovlarni Tasdiqlash
+                        </h3>
+                        <div class="overflow-x-auto rounded-xl">
+                            <table class="data-table min-w-full divide-y divide-teal-300/20">
+                                <thead class="bg-teal-500/10">
+                                    <tr>
+                                        <th class="px-6 py-4 text-left text-xs font-medium text-teal-100 uppercase tracking-wider">ID</th>
+                                        <th class="px-6 py-4 text-left text-xs font-medium text-teal-100 uppercase tracking-wider">Xaridor</th>
+                                        <th class="px-6 py-4 text-left text-xs font-medium text-teal-100 uppercase tracking-wider">To'lov usuli</th>
+                                        <th class="px-6 py-4 text-left text-xs font-medium text-teal-100 uppercase tracking-wider">Summa</th>
+                                        <th class="px-6 py-4 text-left text-xs font-medium text-teal-100 uppercase tracking-wider">Skrinshot</th>
+                                        <th class="px-6 py-4 text-left text-xs font-medium text-teal-100 uppercase tracking-wider">Status</th>
+                                        <th class="px-6 py-4 text-left text-xs font-medium text-teal-100 uppercase tracking-wider">Amallar</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="paymentsTableBody" class="divide-y divide-teal-300/10">
+                                    <!-- To'lovlar shu yerda yuklanadi -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="paymentsPagination" class="mt-4 flex justify-center space-x-2"></div>
+                    </div>
+                    <!-- Mahsulotlar -->
+                    <div id="productsTabContent" class="tab-content hidden">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-xl font-semibold text-white">Barcha Mahsulotlar</h3>
+                            <button onclick="openAddProductModal()" class="btn-success text-white px-6 py-3 rounded-xl font-semibold flex items-center">
+                                <i class="fas fa-plus mr-2"></i>Yangi qo'shish
+                            </button>
+                            <div class="flex space-x-3">
+                                <input type="text" id="productSearch" placeholder="Qidirish..."
+                                       class="px-4 py-3 bg-white/20 border border-teal-300/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent transition-all text-white"
+                                       oninput="debouncedLoadProducts()">
+                                <select id="productCategoryFilter" onchange="loadProducts(currentPage.products)"
+                                        class="px-4 py-3 bg-white/20 border border-teal-300/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent transition-all text-white">
+                                    <option value="">Barcha kategoriyalar</option>
+                                    <option value="electronics">Elektronika</option>
+                                    <option value="fashion">Moda</option>
+                                    <option value="home">Uy-ro'zg'or</option>
+                                    <option value="sports">Sport</option>
+                                    <option value="books">Kitoblar</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto rounded-xl">
+                            <table class="data-table min-w-full divide-y divide-teal-300/20">
+                                <thead class="bg-teal-500/10">
+                                    <tr>
+                                        <th class="px-6 py-4 text-left text-xs font-medium text-teal-100 uppercase tracking-wider">ID</th>
+                                        <th class="px-6 py-4 text-left text-xs font-medium text-teal-100 uppercase tracking-wider">Mahsulot</th>
+                                        <th class="px-6 py-4 text-left text-xs font-medium text-teal-100 uppercase tracking-wider">Sotuvchi</th>
+                                        <th class="px-6 py-4 text-left text-xs font-medium text-teal-100 uppercase tracking-wider">Narx</th>
+                                        <th class="px-6 py-4 text-left text-xs font-medium text-teal-100 uppercase tracking-wider">Kategoriya</th>
+                                        <th class="px-6 py-4 text-left text-xs font-medium text-teal-100 uppercase tracking-wider">Sotuvlar</th>
+                                        <th class="px-6 py-4 text-left text-xs font-medium text-teal-100 uppercase tracking-wider">Status</th>
+                                        <th class="px-6 py-4 text-left text-xs font-medium text-teal-100 uppercase tracking-wider">Amallar</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="productsTableBody" class="divide-y divide-teal-300/10">
+                                    <!-- Mahsulotlar shu yerda yuklanadi -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="productsPagination" class="mt-4 flex justify-center space-x-2"></div>
+                    </div>
+                    <!-- Foydalanuvchilar -->
+                    <div id="usersTabContent" class="tab-content hidden">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-xl font-semibold text-white">Barcha Foydalanuvchilar</h3>
+                            <div class="flex space-x-3">
+                                <input type="text" id="userSearch" placeholder="Qidirish..." oninput="debouncedLoadUsers()"
+                                       class="px-4 py-3 bg-white/20 border border-teal-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent transition-all text-white">
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto rounded-xl">
+                            <table class="data-table min-w-full divide-y divide-teal-500/20">
+                                <thead class="bg-teal-500/20">
+                                    <tr>
+                                        <th class="px-6 py-4 text-left text-xs font-medium text-teal-100 uppercase tracking-wider">ID</th>
+                                        <th class="px-6 py-4 text-left text-xs font-medium text-teal-100 uppercase tracking-wider">Foydalanuvchi</th>
+                                        <th class="px-6 py-4 text-left text-xs font-medium text-teal-100 uppercase tracking-wider">Email</th>
+                                        <th class="px-6 py-4 text-left text-xs font-medium text-teal-100 uppercase tracking-wider">Premium</th>
+                                        <th class="px-6 py-4 text-left text-xs font-medium text-teal-100 uppercase tracking-wider">Sana</th>
+                                        <th class="px-6 py-4 text-left text-xs font-medium text-teal-100 uppercase tracking-wider">Amallar</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="usersTableBody" class="divide-y divide-teal-500/20">
+                                    <!-- Foydalanuvchilar shu yerda yuklanadi -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="usersPagination" class="mt-4 flex justify-center space-x-2"></div>
+                    </div>
+                    <!-- Sozlamalar -->
+                    <div id="settingsTabContent" class="tab-content hidden">
+                        <h3 class="text-xl font-semibold text-white mb-6 flex items-center">
+                            <i class="fas fa-cog mr-2 text-gold-400"></i>Platforma Sozlamalari
+                        </h3>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            <!-- To'lov usullari -->
+                            <div class="glass rounded-2xl p-6 border border-teal-300/30">
+                                <h4 class="text-lg font-semibold mb-4 text-white">To'lov Usullari</h4>
+                                <div id="paymentMethodsSettings" class="space-y-3">
+                                    <!-- To'lov usullari shu yerda yuklanadi -->
+                                </div>
+                            </div>
+                            <!-- Platforma sozlamalari -->
+                            <div class="glass rounded-2xl p-6 border border-teal-300/30">
+                                <h4 class="text-lg font-semibold mb-4 text-white">Umumiy Sozlamalar</h4>
+                                <div class="space-y-6">
+                                    <div>
+                                        <label class="block text-sm font-medium text-teal-200 mb-2">Komissiya foizi (%)</label>
+                                        <input type="number" id="commissionRate" step="0.1" min="0" max="50"
+                                               class="w-full px-4 py-3 bg-white/20 border border-teal-300/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent transition-all text-white">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-teal-200 mb-2">Minimal to'lov (so'm)</label>
+                                        <input type="number" id="minPayout" min="0"
+                                               class="w-full px-4 py-3 bg-white/20 border border-teal-300/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent transition-all text-white">
+                                    </div>
+                                    <button onclick="saveSettings()"
+                                            class="w-full btn-primary text-white py-3 rounded-xl font-semibold">
+                                        <i class="fas fa-save mr-2"></i>Sozlamalarni Saqlash
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Mahsulot qo'shish modal -->
+    <div id="addProductModal" class="fixed inset-0 modal hidden z-50 flex items-center justify-center p-4">
+        <div class="glass rounded-2xl p-6 w-full max-w-2xl max-h-screen overflow-y-auto border border-teal-300/30">
+            <h3 class="text-xl font-semibold mb-4 text-white">Yangi Mahsulot Qo'shish</h3>
+            <form id="addProductForm" enctype="multipart/form-data">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <input type="text" name="name" placeholder="Mahsulot nomi" required class="p-3 bg-white/20 border border-teal-300/50 rounded-xl text-white w-full focus:outline-none focus:ring-2 focus:ring-gold-400">
+                    <input type="number" name="price" placeholder="Narx (so'm)" required class="p-3 bg-white/20 border border-teal-300/50 rounded-xl text-white w-full focus:outline-none focus:ring-2 focus:ring-gold-400">
+                    <input type="number" name="discountPrice" placeholder="Chegirma narxi" class="p-3 bg-white/20 border border-teal-300/50 rounded-xl text-white w-full focus:outline-none focus:ring-2 focus:ring-gold-400">
+                    <input type="number" name="costPrice" placeholder="Xarajat narxi" class="p-3 bg-white/20 border border-teal-300/50 rounded-xl text-white w-full focus:outline-none focus:ring-2 focus:ring-gold-400">
+                    <select name="category" required class="p-3 bg-white/20 border border-teal-300/50 rounded-xl text-white w-full focus:outline-none focus:ring-2 focus:ring-gold-400">
+                        <option value="">Kategoriya tanlang</option>
+                        <option value="instagram" class="text-teal-200">Instagram Hisoblari</option>
+                        <option value="tiktok" class="text-teal-200">TikTok Hisoblari</option>
+                        <option value="youtube" class="text-teal-200">YouTube Kanallari</option>
+                        <option value="websites" class="text-teal-200">Veb-saytlar</option>
+                        <option value="domains" class="text-teal-200">Domenlar</option>
+                    </select>
+                    <input type="text" name="color" placeholder="Rang" class="p-3 bg-white/20 border border-teal-300/50 rounded-xl text-white w-full focus:outline-none focus:ring-2 focus:ring-gold-400">
+                    <input type="text" name="size" placeholder="O'lcham" class="p-3 bg-white/20 border border-teal-300/50 rounded-xl text-white w-full focus:outline-none focus:ring-2 focus:ring-gold-400">
+                </div>
+                <textarea name="description" placeholder="Tavsif" rows="3" class="w-full p-3 bg-white/20 border border-teal-300/50 rounded-xl text-white mb-4 focus:outline-none focus:ring-2 focus:ring-gold-400"></textarea>
+                <input type="file" name="images" multiple accept="image/*" class="w-full p-3 bg-white/20 border border-teal-300/50 rounded-xl text-white mb-4 focus:outline-none focus:ring-2 focus:ring-gold-400">
+                <div class="flex justify-end space-x-3">
+                    <button type="button" onclick="closeAddProductModal()" class="px-6 py-3 bg-teal-500/20 text-teal-100 rounded-xl hover:bg-teal-500/30">Bekor qilish</button>
+                    <button type="submit" class="btn-primary px-6 py-3 text-white rounded-xl">Saqlash</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Buyurtma batafsil modal -->
+    <div id="orderDetailsModal" class="fixed inset-0 modal hidden z-50 flex items-center justify-center p-4">
+        <div class="glass rounded-2xl p-6 w-full max-w-4xl max-h-screen overflow-y-auto border border-teal-300/30">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-semibold text-white">Buyurtma Batafsil Ma'lumotlari</h3>
+                <button onclick="closeOrderDetailsModal()" class="text-teal-200 hover:text-white">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div id="orderDetailsContent" class="space-y-4">
+                <!-- Buyurtma ma'lumotlari shu yerda yuklanadi -->
+            </div>
+        </div>
+    </div>
+    <script>
+        let currentUser = null;
+        let currentTab = 'orders';
+        let revenueChart = null;
+        let categoryChart = null;
+        let currentPage = { orders: 1, products: 1, users: 1, premium: 1, payments: 1 };
+        let itemsPerPage = 10;
+        // Debounce funksiyasi
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+        // Global debounced funksiyalar
+        const debouncedLoadProducts = debounce(() => loadProducts(1), 300);
+        const debouncedLoadUsers = debounce(() => loadUsers(1), 300);
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+            checkAdminStatus();
+            document.getElementById('addProductForm').addEventListener('submit', addProduct);
+        });
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            const userStr = localStorage.getItem('user');
+            if (!token || !userStr) {
+                window.location.href = 'register-login.html';
+                return;
+            }
+            currentUser = JSON.parse(userStr);
+            const roleText = currentUser.isAdmin ? ' (Admin)' : ' (Foydalanuvchi)';
+            document.getElementById('userInfo').textContent = `@${currentUser.username}${roleText}`;
+        }
+        async function checkAdminStatus() {
+            try {
+                const response = await fetch('/api/admin/check', {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                });
+                if (response.ok) {
+                    document.getElementById('adminCheck').classList.add('hidden');
+                    document.getElementById('adminPanel').classList.remove('hidden');
+                    loadDashboardStats();
+                    loadChartsData();
+                    showTab('orders');
+                } else {
+                    const errorData = await response.json().catch(() => ({ error: 'Noma\'lum xato' }));
+                    console.error('Admin check xatosi:', errorData);
+                    document.getElementById('adminCheck').classList.remove('hidden');
+                    document.getElementById('adminPanel').classList.add('hidden');
+                }
+            } catch (error) {
+                console.error('Admin status tekshiruvida xatolik:', error);
+                document.getElementById('adminCheck').classList.remove('hidden');
+                document.getElementById('adminPanel').classList.add('hidden');
+            }
+        }
+        async function loadDashboardStats() {
+            try {
+                const response = await fetch('/api/admin/stats', {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                });
+                if (response.ok) {
+                    const stats = await response.json();
+                    updateStatsDisplay(stats);
+                }
+            } catch (error) {
+                console.error('Xatolik:', error);
+            }
+        }
+        function updateStatsDisplay(stats) {
+            document.getElementById('dailyRevenue').textContent = `${stats.dailyRevenue.toLocaleString()} so'm`;
+            document.getElementById('newOrders').textContent = stats.newOrders;
+            document.getElementById('newUsers').textContent = stats.newUsers;
+            document.getElementById('premiumSubs').textContent = stats.premiumSubscriptions;
+        }
+        async function loadChartsData() {
+            try {
+                const [revenueRes, categoryRes] = await Promise.all([
+                    fetch('/api/admin/revenue-chart', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } }),
+                    fetch('/api/admin/category-chart', { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } })
+                ]);
+                if (revenueRes.ok && categoryRes.ok) {
+                    const revenueData = await revenueRes.json();
+                    const categoryData = await categoryRes.json();
+                    updateRevenueChart(revenueData);
+                    updateCategoryChart(categoryData);
+                }
+            } catch (error) {
+                console.error('Grafiklar yuklashda xatolik:', error);
+            }
+        }
+        function updateRevenueChart(data) {
+            if (revenueChart) revenueChart.destroy();
+            const ctx = document.getElementById('revenueChart').getContext('2d');
+            revenueChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.labels,
+                    datasets: [{
+                        label: 'Daromad (so\'m)',
+                        data: data.data,
+                        borderColor: '#facc15',
+                        backgroundColor: 'rgba(250, 204, 21, 0.1)',
+                        tension: 0.4,
+                        fill: true,
+                        pointBackgroundColor: '#facc15',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2,
+                        pointRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { display: false, labels: { color: 'white' } } },
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: 'white' } },
+                        x: { grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: 'white' } }
+                    }
+                }
+            });
+        }
+        function updateCategoryChart(data) {
+            if (categoryChart) categoryChart.destroy();
+            const ctx = document.getElementById('categoryChart').getContext('2d');
+            categoryChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: data.labels,
+                    datasets: [{
+                        data: data.data,
+                        backgroundColor: ['#14b8a6', '#10b981', '#8b5cf6', '#facc15', '#ef4444'],
+                        borderWidth: 0,
+                        hoverOffset: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { position: 'bottom', labels: { color: 'white' } } }
+                }
+            });
+        }
+        function showTab(tabName) {
+            // Barcha tab-larni yashirish
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
+            // Barcha button-larni reset qilish
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active-tab');
+            });
+            // Faol tab-ni ko'rsatish
+            document.getElementById(`${tabName}TabContent`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`${tabName}Tab`);
+            activeBtn.classList.add('active-tab');
+            currentTab = tabName;
+            // Tab bo'yicha yuklash
+            switch(tabName) {
+                case 'orders':
+                    loadOrders(1);
+                    break;
+                case 'premium':
+                    loadPremiumOrders(1);
+                    break;
+                case 'payments':
+                    loadPayments(1);
+                    break;
+                case 'products':
+                    loadProducts(1);
+                    break;
+                case 'users':
+                    loadUsers(1);
+                    break;
+                case 'settings':
+                    loadSettings();
+                    break;
+            }
+        }
+        // Buyurtmalar yuklash (pagination bilan)
+        async function loadOrders(page = 1) {
+            currentPage.orders = page;
+            try {
+                const statusFilter = document.getElementById('orderStatusFilter').value;
+                const dateFilter = document.getElementById('orderDateFilter').value;
+                const typeFilter = document.getElementById('orderTypeFilter').value;
+                let url = `/api/admin/orders?page=${page}&limit=${itemsPerPage}`;
+                const params = new URLSearchParams();
+                if (statusFilter) params.append('status', statusFilter);
+                if (dateFilter) params.append('date', dateFilter);
+                if (typeFilter) params.append('type', typeFilter);
+                if (params.toString()) url += `&${params.toString()}`;
+                const response = await fetch(url, {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                });
+                if (response.ok) {
+                    const { orders, totalPages } = await response.json();
+                    displayOrders(orders);
+                    renderPagination('orders', totalPages, page);
+                } else {
+                    console.error('Buyurtmalar yuklashda xatolik');
+                    document.getElementById('ordersTableBody').innerHTML = '<tr><td colspan="8" class="text-center py-8 text-teal-200">Xatolik yuz berdi</td></tr>';
+                }
+            } catch (error) {
+                console.error('Xatolik:', error);
+                document.getElementById('ordersTableBody').innerHTML = '<tr><td colspan="8" class="text-center py-8 text-teal-200">Xatolik yuz berdi</td></tr>';
+            }
+        }
+        // Premium obunalar yuklash
+        async function loadPremiumOrders(page = 1) {
+            currentPage.premium = page;
+            try {
+                const statusFilter = document.getElementById('premiumStatusFilter').value;
+                const dateFilter = document.getElementById('premiumDateFilter').value;
+                let url = `/api/admin/premium-orders?page=${page}&limit=${itemsPerPage}`;
+                const params = new URLSearchParams();
+                if (statusFilter) params.append('status', statusFilter);
+                if (dateFilter) params.append('date', dateFilter);
+                if (params.toString()) url += `&${params.toString()}`;
+                const response = await fetch(url, {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                });
+                if (response.ok) {
+                    const { orders, totalPages } = await response.json();
+                    displayPremiumOrders(orders);
+                    renderPagination('premium', totalPages, page);
+                } else {
+                    console.error('Premium buyurtmalar yuklashda xatolik');
+                    document.getElementById('premiumTableBody').innerHTML = '<tr><td colspan="9" class="text-center py-8 text-teal-200">Xatolik yuz berdi</td></tr>';
+                }
+            } catch (error) {
+                console.error('Xatolik:', error);
+                document.getElementById('premiumTableBody').innerHTML = '<tr><td colspan="9" class="text-center py-8 text-teal-200">Xatolik yuz berdi</td></tr>';
+            }
+        }
+        // To'lovlar yuklash (pending orders)
+        async function loadPayments(page = 1) {
+            currentPage.payments = page;
+            try {
+                const response = await fetch(`/api/admin/orders?page=${page}&limit=${itemsPerPage}&status=pending`, {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                });
+                if (response.ok) {
+                    const { orders, totalPages } = await response.json();
+                    displayPayments(orders);
+                    renderPagination('payments', totalPages, page);
+                } else {
+                    console.error('To\'lovlar yuklashda xatolik');
+                }
+            } catch (error) {
+                console.error('Xatolik:', error);
+            }
+        }
+        // Mahsulotlar yuklash
+        async function loadProducts(page = 1) {
+            currentPage.products = page;
+            try {
+                const search = document.getElementById('productSearch').value;
+                const category = document.getElementById('productCategoryFilter').value;
+                let url = `/api/admin/products?page=${page}&limit=${itemsPerPage}`;
+                const params = new URLSearchParams();
+                if (search) params.append('search', search);
+                if (category) params.append('category', category);
+                if (params.toString()) url += `&${params.toString()}`;
+                const response = await fetch(url, {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                });
+                if (response.ok) {
+                    const { products, totalPages } = await response.json();
+                    displayProducts(products);
+                    renderPagination('products', totalPages, page);
+                } else {
+                    console.error('Mahsulotlar yuklashda xatolik');
+                }
+            } catch (error) {
+                console.error('Xatolik:', error);
+            }
+        }
+        // Foydalanuvchilar yuklash
+        async function loadUsers(page = 1) {
+            currentPage.users = page;
+            try {
+                const search = document.getElementById('userSearch').value;
+                let url = `/api/admin/users?page=${page}&limit=${itemsPerPage}`;
+                if (search) url += `&search=${encodeURIComponent(search)}`;
+                const response = await fetch(url, {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                });
+                if (response.ok) {
+                    const { users, totalPages } = await response.json();
+                    displayUsers(users);
+                    renderPagination('users', totalPages, page);
+                } else {
+                    console.error('Foydalanuvchilar yuklashda xatolik');
+                    document.getElementById('usersTableBody').innerHTML = '<tr><td colspan="6" class="text-center py-8 text-teal-200">Xatolik yuz berdi</td></tr>';
+                }
+            } catch (error) {
+                console.error('Xatolik:', error);
+                document.getElementById('usersTableBody').innerHTML = '<tr><td colspan="6" class="text-center py-8 text-teal-200">Xatolik yuz berdi</td></tr>';
+            }
+        }
+        // Display funksiyalari
+        function displayOrders(orders) {
+            const tbody = document.getElementById('ordersTableBody');
+            if (orders.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" class="text-center py-8 text-teal-200">Buyurtma topilmadi</td></tr>';
+                return;
+            }
+            tbody.innerHTML = orders.map(order => `
+                <tr class="hover:bg-teal-500/10">
+                    <td class="px-6 py-4 font-mono text-sm text-teal-100">${order._id.slice(-8)}</td>
+                    <td class="px-6 py-4 text-sm font-medium text-white">
+                        ${order.type === 'premium' ? `<span class="text-gold-400"><i class="fas fa-crown mr-1"></i>Premium</span>` : order.product?.name || 'Noma\'lum'}
+                    </td>
+                    <td class="px-6 py-4 text-sm text-teal-100">
+                        <div class="flex items-center">
+                            <img src="${order.buyer?.avatar || 'https://via.placeholder.com/32?text=U'}" alt="" class="w-8 h-8 rounded-full mr-2">
+                            <span>${order.buyer?.firstName || ''} ${order.buyer?.lastName || ''} (@${order.buyer?.username || 'Noma\'lum'})</span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 text-sm text-teal-100">${order.seller?.username || '-'}</td>
+                    <td class="px-6 py-4 text-sm font-semibold text-gold-400">${order.totalPrice.toLocaleString()} so'm</td>
+                    <td class="px-6 py-4 text-sm">
+                        <span class="px-3 py-1 rounded-full text-xs font-medium ${getStatusClass(order.status)} status-badge">
+                            ${getStatusText(order.status)}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-sm text-teal-200">${new Date(order.createdAt).toLocaleDateString('uz-UZ')}</td>
+                    <td class="px-6 py-4 text-sm text-teal-100">
+                        <div class="flex space-x-2">
+                            ${order.status === 'pending' ? `
+                                <button onclick="updateOrderStatus('${order._id}', 'payment_confirmed')"
+                                        class="btn-success text-white px-3 py-1 rounded-xl text-xs">
+                                    <i class="fas fa-check mr-1"></i>Tasdiqlash
+                                </button>
+                                <button onclick="updateOrderStatus('${order._id}', 'cancelled')"
+                                        class="btn-danger text-white px-3 py-1 rounded-xl text-xs">
+                                    <i class="fas fa-times mr-1"></i>Rad etish
+                                </button>
+                            ` : ''}
+                            <button onclick="viewOrderDetails('${order._id}')"
+                                    class="btn-primary text-white px-3 py-1 rounded-xl text-xs">
+                                <i class="fas fa-eye mr-1"></i>Batafsil
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        function displayPremiumOrders(orders) {
+            const tbody = document.getElementById('premiumTableBody');
+            if (orders.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="9" class="text-center py-8 text-teal-200">Premium buyurtmalar topilmadi</td></tr>';
+                return;
+            }
+            tbody.innerHTML = orders.map(order => `
+                <tr class="hover:bg-teal-500/10">
+                    <td class="px-6 py-4 font-mono text-sm text-teal-100">${order._id.slice(-8)}</td>
+                    <td class="px-6 py-4 text-sm text-teal-100">
+                        <div class="flex items-center">
+                            <img src="${order.buyer?.avatar || 'https://via.placeholder.com/32?text=U'}" alt="" class="w-8 h-8 rounded-full mr-2">
+                            <span>${order.buyer?.firstName || ''} ${order.buyer?.lastName || ''} (@${order.buyer?.username || 'Noma\'lum'})</span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 text-sm text-teal-100">${order.buyer?.email || 'Noma\'lum'}</td>
+                    <td class="px-6 py-4 text-sm font-medium text-white">${order.paymentMethod?.toUpperCase() || 'Noma\'lum'}</td>
+                    <td class="px-6 py-4 text-sm font-semibold text-gold-400">${order.totalPrice.toLocaleString()} so'm</td>
+                    <td class="px-6 py-4 text-sm text-teal-100">
+                        ${order.paymentScreenshot ? `
+                            <a href="${order.paymentScreenshot}" target="_blank" class="text-teal-300 hover:underline flex items-center">
+                                <i class="fas fa-image mr-1"></i>Ko'rish
+                            </a>
+                        ` : 'Yo\'q'}
+                    </td>
+                    <td class="px-6 py-4 text-sm">
+                        <span class="px-3 py-1 rounded-full text-xs font-medium ${getStatusClass(order.status)} status-badge">
+                            ${getStatusText(order.status)}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-sm text-teal-200">${new Date(order.createdAt).toLocaleDateString('uz-UZ')}</td>
+                    <td class="px-6 py-4 text-sm text-teal-100">
+                        <div class="flex space-x-2">
+                            ${order.status === 'pending' ? `
+                                <button onclick="updateOrderStatus('${order._id}', 'payment_confirmed')"
+                                        class="btn-success text-white px-3 py-1 rounded-xl text-xs">
+                                    <i class="fas fa-check mr-1"></i>To'lov tasdiqlash
+                                </button>
+                                <button onclick="updateOrderStatus('${order._id}', 'cancelled')"
+                                        class="btn-danger text-white px-3 py-1 rounded-xl text-xs">
+                                    <i class="fas fa-times mr-1"></i>Bekor qilish
+                                </button>
+                            ` : order.status === 'payment_confirmed' ? `
+                                <button onclick="updateOrderStatus('${order._id}', 'subscribed')"
+                                        class="btn-warning text-white px-3 py-1 rounded-xl text-xs">
+                                    <i class="fas fa-crown mr-1"></i>Premium faollashtirish
+                                </button>
+                                <button onclick="updateOrderStatus('${order._id}', 'cancelled')"
+                                        class="btn-danger text-white px-3 py-1 rounded-xl text-xs">
+                                    <i class="fas fa-times mr-1"></i>Bekor qilish
+                                </button>
+                            ` : ''}
+                            <button onclick="viewOrderDetails('${order._id}')"
+                                    class="btn-primary text-white px-3 py-1 rounded-xl text-xs">
+                                <i class="fas fa-eye mr-1"></i>Batafsil
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        function displayPayments(orders) {
+            const tbody = document.getElementById('paymentsTableBody');
+            if (orders.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center py-8 text-teal-200">Tasdiqlash uchun to\'lovlar yo\'q</td></tr>';
+                return;
+            }
+            tbody.innerHTML = orders.map(order => `
+                <tr class="hover:bg-teal-500/10">
+                    <td class="px-6 py-4 font-mono text-sm text-teal-100">${order._id.slice(-8)}</td>
+                    <td class="px-6 py-4 text-sm text-teal-100">
+                        <div class="flex items-center">
+                            <img src="${order.buyer?.avatar || 'https://via.placeholder.com/32?text=U'}" alt="" class="w-8 h-8 rounded-full mr-2">
+                            <span>${order.buyer?.username || 'Noma\'lum'}</span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 text-sm font-medium text-white">${order.paymentMethod?.toUpperCase() || 'Noma\'lum'}</td>
+                    <td class="px-6 py-4 text-sm font-semibold text-gold-400">${order.totalPrice.toLocaleString()} so'm</td>
+                    <td class="px-6 py-4 text-sm text-teal-100">
+                        ${order.paymentScreenshot ? `
+                            <a href="${order.paymentScreenshot}" target="_blank" class="text-teal-300 hover:underline flex items-center">
+                                <i class="fas fa-image mr-1"></i>Ko'rish
+                            </a>
+                        ` : 'Yo\'q'}
+                    </td>
+                    <td class="px-6 py-4 text-sm">
+                        <span class="px-3 py-1 rounded-full text-xs font-medium bg-yellow-500/20 text-yellow-100 status-badge">
+                            Kutilmoqda
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-sm text-teal-100">
+                        <button onclick="updateOrderStatus('${order._id}', 'payment_confirmed')"
+                                class="btn-success text-white px-3 py-1 rounded-xl text-xs mr-2">
+                            <i class="fas fa-check mr-1"></i>Tasdiqlash
+                        </button>
+                        <button onclick="updateOrderStatus('${order._id}', 'cancelled')"
+                                class="btn-danger text-white px-3 py-1 rounded-xl text-xs">
+                            <i class="fas fa-times mr-1"></i>Rad etish
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        function displayProducts(products) {
+            const tbody = document.getElementById('productsTableBody');
+            if (products.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" class="text-center py-8 text-teal-200">Mahsulot topilmadi</td></tr>';
+                return;
+            }
+            tbody.innerHTML = products.map(product => `
+                <tr class="hover:bg-teal-500/10">
+                    <td class="px-6 py-4 font-mono text-sm text-teal-100">${product._id.slice(-8)}</td>
+                    <td class="px-6 py-4 text-sm font-medium text-white">
+                        <div class="flex items-center">
+                            <img src="${product.images[0] || 'https://via.placeholder.com/32?text=P'}" alt="" class="w-8 h-8 rounded mr-2">
+                            <span class="truncate max-w-32 line-clamp-1">${product.name}</span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 text-sm text-teal-100">${product.seller?.username || 'Noma\'lum'}</td>
+                    <td class="px-6 py-4 text-sm font-semibold text-gold-400">${product.price.toLocaleString()} so'm</td>
+                    <td class="px-6 py-4 text-sm capitalize text-teal-100">${product.category}</td>
+                    <td class="px-6 py-4 text-sm text-teal-100">${product.monthlySales || 0}</td>
+                    <td class="px-6 py-4 text-sm">
+                        <span class="px-3 py-1 rounded-full text-xs font-medium ${product.isActive ? 'bg-green-500/20 text-green-100' : 'bg-red-500/20 text-red-100'} status-badge">
+                            ${product.isActive ? 'Faol' : 'Nofaol'}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-sm text-teal-100">
+                        <div class="flex space-x-2">
+                            <button onclick="editProduct('${product._id}')" class="btn-primary text-white px-2 py-1 rounded-xl text-xs">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button onclick="deleteProduct('${product._id}')" class="btn-danger text-white px-2 py-1 rounded-xl text-xs">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        function displayUsers(users) {
+            const tbody = document.getElementById('usersTableBody');
+            if (users.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="text-center py-8 text-teal-200">Foydalanuvchi topilmadi</td></tr>';
+                return;
+            }
+            tbody.innerHTML = users.map(user => `
+                <tr class="hover:bg-teal-500/10">
+                    <td class="px-6 py-4 font-mono text-sm text-teal-100">${user._id.slice(-8)}</td>
+                    <td class="px-6 py-4 text-sm font-medium text-white">
+                        <div class="flex items-center">
+                            <img src="${user.avatar || 'https://via.placeholder.com/32?text=U'}" alt="" class="w-8 h-8 rounded-full mr-2">
+                            <span>${user.firstName} ${user.lastName}</span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 text-sm text-teal-100">${user.email}</td>
+                    <td class="px-6 py-4 text-sm">
+                        <span class="px-3 py-1 rounded-full text-xs font-medium ${user.isPremium ? 'bg-gold-500/20 text-gold-100' : 'bg-teal-500/20 text-teal-100'} status-badge">
+                            ${user.isPremium ? (new Date(user.premiumExpiry) > new Date() ? 'Faol' : 'Muddati tugagan') : 'Oddiy'}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-sm text-teal-200">${new Date(user.createdAt).toLocaleDateString('uz-UZ')}</td>
+                    <td class="px-6 py-4 text-sm text-teal-100">
+                        <div class="flex space-x-2">
+                            <button onclick="grantPremium('${user._id}')" class="btn-warning text-white px-2 py-1 rounded-xl text-xs">
+                                <i class="fas fa-crown"></i>
+                            </button>
+                            <button onclick="editUser('${user._id}')" class="btn-primary text-white px-2 py-1 rounded-xl text-xs">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button onclick="deleteUser('${user._id}')" class="btn-danger text-white px-2 py-1 rounded-xl text-xs">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        // Sozlamalar yuklash
+        async function loadSettings() {
+            try {
+                const response = await fetch('/api/admin/settings', {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                });
+                if (response.ok) {
+                    const settings = await response.json();
+                    document.getElementById('commissionRate').value = settings.commissionRate;
+                    document.getElementById('minPayout').value = settings.minPayout;
+                }
+            } catch (error) {
+                console.error('Xatolik:', error);
+            }
+            // To'lov usullari
+            loadPaymentMethodsSettings();
+        }
+        async function loadPaymentMethodsSettings() {
+            try {
+                const response = await fetch('/api/admin/payment-methods', {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                });
+                if (response.ok) {
+                    const methods = await response.json();
+                    const container = document.getElementById('paymentMethodsSettings');
+                    container.innerHTML = methods.map(method => `
+                        <div class="flex items-center justify-between p-3 glass rounded-xl border border-teal-300/30 hover:bg-teal-500/10 fade-in">
+                            <div class="flex items-center space-x-3">
+                                <div class="p-2 bg-${method.color}-500/20 rounded-xl">
+                                    <i class="${method.icon} text-${method.color}-300"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium text-white">${method.name}</p>
+                                    <p class="text-sm text-teal-200">${method.description}</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" ${method.isActive ? 'checked' : ''} class="sr-only peer" onchange="togglePaymentMethod('${method._id}', this.checked)">
+                                    <div class="w-11 h-6 bg-teal-500/20 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-gold-400 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-teal-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gold-400"></div>
+                                </label>
+                                <button onclick="editPaymentMethod('${method._id}')" class="text-teal-300 hover:text-white">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('Xatolik:', error);
+            }
+        }
+        async function saveSettings() {
+            const settings = {
+                commissionRate: parseFloat(document.getElementById('commissionRate').value),
+                minPayout: parseInt(document.getElementById('minPayout').value)
+            };
+            try {
+                const response = await fetch('/api/admin/settings', {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(settings)
+                });
+                if (response.ok) {
+                    showToast('Sozlamalar saqlandi!', 'success');
+                } else {
+                    showToast('Sozlamalarni saqlashda xatolik', 'error');
+                }
+            } catch (error) {
+                console.error('Xatolik:', error);
+                showToast('Sozlamalarni saqlashda xatolik', 'error');
+            }
+        }
+        async function togglePaymentMethod(id, isActive) {
+            try {
+                await fetch(`/api/admin/payment-methods/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ isActive })
+                });
+                loadPaymentMethodsSettings();
+                showToast('To\'lov usuli yangilandi!', 'success');
+            } catch (error) {
+                console.error('Xatolik:', error);
+                showToast('Xatolik yuz berdi', 'error');
+            }
+        }
+        function renderPagination(tab, totalPages, currentPageNum) {
+            const containerId = `${tab}Pagination`;
+            const container = document.getElementById(containerId);
+            if (totalPages <= 1) {
+                container.innerHTML = '';
+                return;
+            }
+            let pagination = '';
+            for (let i = 1; i <= totalPages; i++) {
+                const funcName = tab.charAt(0).toUpperCase() + tab.slice(1);
+                pagination += `
+                    <button onclick="load${funcName}(${i})"
+                            class="px-3 py-2 rounded-xl ${i === currentPageNum ? 'btn-primary text-white' : 'bg-teal-500/20 text-teal-100 border border-teal-300/50'} hover:btn-primary hover:text-white transition-all">
+                        ${i}
+                    </button>
+                `;
+            }
+            container.innerHTML = pagination;
+        }
+        function getStatusClass(status) {
+            const classes = {
+                'pending': 'bg-yellow-500/20 text-yellow-100',
+                'payment_confirmed': 'bg-teal-500/20 text-teal-100',
+                'shipped': 'bg-purple-500/20 text-purple-100',
+                'delivered': 'bg-green-500/20 text-green-100',
+                'subscribed': 'bg-gold-500/20 text-gold-100',
+                'cancelled': 'bg-red-500/20 text-red-100'
+            };
+            return classes[status] || 'bg-teal-500/20 text-teal-100';
+        }
+        function getStatusText(status) {
+            const texts = {
+                'pending': 'Kutilmoqda',
+                'payment_confirmed': 'To\'lov tasdiqlandi',
+                'shipped': 'Yo\'lga chiqdi',
+                'delivered': 'Yetkazib berildi',
+                'subscribed': 'Obuna faollashtirildi',
+                'cancelled': 'Bekor qilindi'
+            };
+            return texts[status] || status;
+        }
+        async function updateOrderStatus(orderId, newStatus) {
+            if (!confirm(`Buyurtma statusini "${getStatusText(newStatus)}" ga o'zgartirishni tasdiqlaysizmi?`)) return;
+            try {
+                const response = await fetch(`/api/orders/${orderId}/status`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ status: newStatus })
+                });
+                if (response.ok) {
+                    if (currentTab === 'premium') {
+                        loadPremiumOrders(currentPage.premium);
+                    } else if (currentTab === 'payments') {
+                        loadPayments(currentPage.payments);
+                    } else {
+                        loadOrders(currentPage.orders);
+                    }
+                    showToast('Buyurtma statusi yangilandi!', 'success');
+                } else {
+                    const errorData = await response.json().catch(() => ({ error: 'Noma\'lum xato' }));
+                    showToast(errorData.error || 'Statusni yangilashda xatolik', 'error');
+                }
+            } catch (error) {
+                console.error('Xatolik:', error);
+                showToast('Xatolik yuz berdi', 'error');
+            }
+        }
+        function showToast(message, type) {
+            const toast = document.createElement('div');
+            toast.className = `fixed top-4 right-4 z-50 p-4 rounded-xl shadow-xl ${type === 'success' ? 'bg-green-500' : 'bg-red-500'} text-white fade-in`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+        function logout() {
+            if (confirm('Admin paneldan chiqmoqchimisiz?')) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                window.location.href = 'register-login.html';
+            }
+        }
+        // Qo'shimcha funksiyalar
+        function openAddProductModal() {
+            document.getElementById('addProductModal').classList.remove('hidden');
+        }
+        function closeAddProductModal() {
+            document.getElementById('addProductModal').classList.add('hidden');
+        }
+        async function addProduct(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            try {
+                const response = await fetch('/api/admin/products', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+                    body: formData
+                });
+                if (response.ok) {
+                    showToast('Mahsulot qo\'shildi!', 'success');
+                    closeAddProductModal();
+                    e.target.reset();
+                    loadProducts(currentPage.products);
+                } else {
+                    showToast('Mahsulot qo\'shishda xatolik', 'error');
+                }
+            } catch (error) {
+                console.error('Xatolik:', error);
+                showToast('Xatolik yuz berdi', 'error');
+            }
+        }
+        async function grantPremium(userId) {
+            if (!confirm('Bu foydalanuvchiga premium obuna berishni tasdiqlaysizmi?')) return;
+            try {
+                const response = await fetch(`/api/admin/users/${userId}/premium`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                if (response.ok) {
+                    showToast('Premium berildi!', 'success');
+                    loadUsers(currentPage.users);
+                } else {
+                    showToast('Premium berishda xatolik', 'error');
+                }
+            } catch (error) {
+                console.error('Xatolik:', error);
+                showToast('Xatolik yuz berdi', 'error');
+            }
+        }
+        // To'liq implement qilingan funksiyalar
+        async function editProduct(id) {
+            const name = prompt('Yangi nomni kiriting:');
+            if (!name) return;
+            try {
+                const response = await fetch(`/api/admin/products/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name })
+                });
+                if (response.ok) {
+                    showToast('Mahsulot tahrirlandi!', 'success');
+                    loadProducts(currentPage.products);
+                } else {
+                    showToast('Tahrirlashda xatolik', 'error');
+                }
+            } catch (error) {
+                console.error('Xatolik:', error);
+                showToast('Xatolik yuz berdi', 'error');
+            }
+        }
+        async function deleteProduct(id) {
+            if (!confirm('Mahsulotni o\'chirishni tasdiqlaysizmi?')) return;
+            try {
+                const response = await fetch(`/api/admin/products/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                });
+                if (response.ok) {
+                    showToast('Mahsulot o\'chirildi!', 'success');
+                    loadProducts(currentPage.products);
+                } else {
+                    showToast('O\'chirishda xatolik', 'error');
+                }
+            } catch (error) {
+                console.error('Xatolik:', error);
+                showToast('Xatolik yuz berdi', 'error');
+            }
+        }
+        async function editUser(id) {
+            const email = prompt('Yangi emailni kiriting:');
+            if (!email) return;
+            try {
+                const response = await fetch(`/api/admin/users/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email })
+                });
+                if (response.ok) {
+                    showToast('Foydalanuvchi tahrirlandi!', 'success');
+                    loadUsers(currentPage.users);
+                } else {
+                    showToast('Tahrirlashda xatolik', 'error');
+                }
+            } catch (error) {
+                console.error('Xatolik:', error);
+                showToast('Xatolik yuz berdi', 'error');
+            }
+        }
+        async function deleteUser(id) {
+            if (!confirm('Foydalanuvchini o\'chirishni tasdiqlaysizmi?')) return;
+            try {
+                const response = await fetch(`/api/admin/users/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                });
+                if (response.ok) {
+                    showToast('Foydalanuvchi o\'chirildi!', 'success');
+                    loadUsers(currentPage.users);
+                } else {
+                    showToast('O\'chirishda xatolik', 'error');
+                }
+            } catch (error) {
+                console.error('Xatolik:', error);
+                showToast('Xatolik yuz berdi', 'error');
+            }
+        }
+        async function viewOrderDetails(id) {
+            try {
+                const response = await fetch(`/api/admin/orders/${id}`, {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                });
+                if (response.ok) {
+                    const order = await response.json();
+                    displayOrderDetails(order);
+                    document.getElementById('orderDetailsModal').classList.remove('hidden');
+                } else {
+                    showToast('Buyurtma ma\'lumotlarini yuklashda xatolik', 'error');
+                }
+            } catch (error) {
+                console.error('Xatolik:', error);
+                showToast('Xatolik yuz berdi', 'error');
+            }
+        }
+        function displayOrderDetails(order) {
+            const content = document.getElementById('orderDetailsContent');
+            const screenshotsHtml = order.paymentScreenshot ? `<img src="${order.paymentScreenshot}" alt="Skrinshot" class="w-full max-w-md rounded-xl">` : '<p class="text-teal-200">Skrinshot yo\'q</p>';
+            const cardsHtml = order.seller?.cardNumbers?.length > 0 ? 
+                order.seller.cardNumbers.map(card => `
+                    <div class="bg-teal-500/20 p-3 rounded-xl">
+                        <p class="font-semibold text-white">Karta: **** **** **** ${card.cardNumber.slice(-4)}</p>
+                        <p class="text-teal-200">Egasi: ${card.cardHolder}</p>
+                    </div>
+                `).join('') : '<p class="text-teal-200">Karta ma\'lumotlari yo\'q</p>';
+            content.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="text-lg font-semibold text-white mb-2">Umumiy Ma\'lumotlar</h4>
+                        <p><strong>ID:</strong> ${order._id}</p>
+                        <p><strong>Turi:</strong> ${order.type === 'premium' ? 'Premium' : 'Mahsulot'}</p>
+                        <p><strong>Summa:</strong> ${order.totalPrice.toLocaleString()} so'm</p>
+                        <p><strong>To\'lov usuli:</strong> ${order.paymentMethod || 'Noma\'lum'}</p>
+                        <p><strong>Status:</strong> <span class="px-2 py-1 rounded-full text-xs ${getStatusClass(order.status)}">${getStatusText(order.status)}</span></p>
+                        <p><strong>Sana:</strong> ${new Date(order.createdAt).toLocaleString('uz-UZ')}</p>
+                        ${order.promoCode ? `<p><strong>Promo kod:</strong> ${order.promoCode} (Chegirma: ${order.discountAmount || 0} so'm)</p>` : ''}
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-semibold text-white mb-2">Xaridor Ma\'lumotlari</h4>
+                        <p><strong>Ism:</strong> ${order.buyer.firstName} ${order.buyer.lastName}</p>
+                        <p><strong>Username:</strong> @${order.buyer.username}</p>
+                        <p><strong>Email:</strong> ${order.buyer.email}</p>
+                        ${order.type === 'product' ? `
+                            <div class="mt-4">
+                                <h4 class="text-lg font-semibold text-white mb-2">Mahsulot Ma\'lumotlari</h4>
+                                <p><strong>Nomi:</strong> ${order.product.name}</p>
+                                <p><strong>Narxi:</strong> ${order.product.price.toLocaleString()} so'm</p>
+                                <p><strong>Kategoriya:</strong> ${order.product.category}</p>
+                                <img src="${order.product.images[0]}" alt="Mahsulot" class="w-full max-w-sm rounded-xl mt-2">
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <h4 class="text-lg font-semibold text-white mb-2">To\'lov Skrinshotlari</h4>
+                    ${screenshotsHtml}
+                </div>
+                ${order.seller ? `
+                    <div class="mt-6">
+                        <h4 class="text-lg font-semibold text-white mb-2">Sotuvchi Kartalari (Admin to\'lov uchun)</h4>
+                        ${cardsHtml}
+                    </div>
+                ` : ''}
+            `;
+        }
+        function closeOrderDetailsModal() {
+            document.getElementById('orderDetailsModal').classList.add('hidden');
+        }
+        function editPaymentMethod(id) { alert(`To\'lov usuli ${id} tahrirlanmoqda`); }
+    </script>
+</body>
+</html>

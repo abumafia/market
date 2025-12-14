@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HALLAYM - Maxfiylik Siyosati</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7ZFGK6W9YV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-7ZFGK6W9YV');
+    </script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        teal: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e'
+                        },
+                        gold: {
+                            400: '#facc15',
+                            500: '#eab308',
+                            600: '#ca8a04'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 50%, #0f766e 100%);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #facc15 0%, #eab308 100%);
+            color: #0f766e;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(250, 204, 21, 0.4);
+        }
+        .btn-secondary {
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(20, 184, 166, 0.4);
+        }
+        .input-field {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .input-field:focus {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: #facc15;
+            box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.2);
+        }
+        .privacy-section {
+            background: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid #facc15;
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen text-white">
+    <!-- Navbar -->
+    <nav class="glass fixed w-full z-50 shadow-xl">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-8">
+                    <a href="index.html" class="text-3xl font-bold bg-gradient-to-r from-gold-500 to-gold-600 bg-clip-text text-transparent">HALLAYM</a>
+                    <div class="hidden md:flex space-x-8">
+                        <a href="market.html" class="text-teal-300 font-semibold hover:text-white transition-colors">Market</a>
+                        <a href="history.html" class="text-teal-200 hover:text-teal-100 transition-colors">Buyurtmalar</a>
+                        <a href="sold-products.html" class="text-teal-200 hover:text-teal-100 transition-colors">Sotilganlar</a>
+                        <a href="profile.html" class="text-teal-200 hover:text-teal-100 transition-colors">Profil</a>
+                        <a href="add-product.html" id="addProductLink" class="text-teal-200 hover:text-teal-100 transition-colors hidden">Mahsulot Qo'shish</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span id="userInfo" class="text-teal-100 font-medium"></span>
+                    <button onclick="logout()" class="btn-danger px-6 py-2 rounded-full text-sm">Chiqish</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="pt-20 max-w-4xl mx-auto py-8 px-4">
+        <h1 class="text-4xl font-bold mb-8 flex items-center justify-center">
+            <i class="fas fa-lock mr-3 text-gold-400"></i>
+            Maxfiylik Siyosati
+        </h1>
+
+        <div class="space-y-8">
+            <div class="glass rounded-2xl p-6 privacy-section">
+                <h2 class="text-2xl font-bold mb-4 flex items-center">
+                    <i class="fas fa-info-circle mr-2 text-teal-400"></i>
+                    Kirish
+                </h2>
+                <p class="text-teal-200 mb-4">HALLAYM platformasi foydalanuvchilarning maxfiyligini hurmat qiladi. Ushbu siyosat biz qanday ma'lumot yig'amiz, ishlatamiz va himoya qilamizni tushuntiradi. Foydalanish orqali siz ushbu siyosatni qabul qilasiz.</p>
+            </div>
+
+            <div class="glass rounded-2xl p-6 privacy-section">
+                <h2 class="text-2xl font-bold mb-4 flex items-center">
+                    <i class="fas fa-user mr-2 text-teal-400"></i>
+                    Yig'iladigan Ma'lumotlar
+                </h2>
+                <ul class="text-teal-200 space-y-2 list-disc pl-6">
+                    <li><strong>Shaxsiy ma'lumotlar:</strong> Username, email, ism, telefon (ixtiyoriy).</li>
+                    <li><strong>To'lov ma'lumotlari:</strong> Karta raqamlari (xavfsiz saqlanadi, PCI DSS standartiga muvofiq).</li>
+                    <li><strong>Mahsulot ma'lumotlari:</strong> Yuklangan rasmlar va tavsiflar (Cloudinary orqali saqlanadi).</li>
+                    <li><strong>Foydalanish ma'lumotlari:</strong> IP manzil, brauzer turi, faoliyat loglari (analitika uchun).</li>
+                </ul>
+            </div>
+
+            <div class="glass rounded-2xl p-6 privacy-section">
+                <h2 class="text-2xl font-bold mb-4 flex items-center">
+                    <i class="fas fa-share mr-2 text-teal-400"></i>
+                    Ma'lumotlar Ishlatilishi
+                </h2>
+                <ul class="text-teal-200 space-y-2 list-disc pl-6">
+                    <li>Platforma funksiyalarini ta'minlash (buyurtmalar, suhbatlar).</li>
+                    <li>Xavfsizlik va firibgarlikni oldini olish.</li>
+                    <li>Marketing va yangiliklar yuborish (email orqali, ixtiyoriy).</li>
+                    <li>Analitika va yaxshilash (Google Analytics orqali anonim).</li>
+                    <li>Qonun talablariga rioya qilish.</li>
+                </ul>
+            </div>
+
+            <div class="glass rounded-2xl p-6 privacy-section">
+                <h2 class="text-2xl font-bold mb-4 flex items-center">
+                    <i class="fas fa-shield-alt mr-2 text-teal-400"></i>
+                    Ma'lumotlar Himoyasi
+                </h2>
+                <ul class="text-teal-200 space-y-2 list-disc pl-6">
+                    <li>Ma'lumotlar shifrlangan holda saqlanadi (MongoDB Atlas).</li>
+                    <li>HTTPS protokoli orqali uzatiladi.</li>
+                    <li>JWT tokenlar orqali autentifikatsiya.</li>
+                    <li>Cloudinary va boshqa xizmatlar GDPR ga mos.</li>
+                    <li>Xavfsizlik buzilishida foydalanuvchilarga bildirishnoma yuboriladi.</li>
+                </ul>
+            </div>
+
+            <div class="glass rounded-2xl p-6 privacy-section">
+                <h2 class="text-2xl font-bold mb-4 flex items-center">
+                    <i class="fas fa-share-alt mr-2 text-teal-400"></i>
+                    Ma'lumotlar Ulashish
+                </h2>
+                <ul class="text-teal-200 space-y-2 list-disc pl-6">
+                    <li>Uchinchi tomonlarga ulashilmaydi (faqat qonun talabi bo'lsa).</li>
+                    <li>Cloudinary (rasmlar uchun), Google Analytics (anonim statistika).</li>
+                    <li>Sotuvchilar va xaridorlar o'rtasidagi suhbatlar himoyalangan.</li>
+                </ul>
+            </div>
+
+            <div class="glass rounded-2xl p-6 privacy-section">
+                <h2 class="text-2xl font-bold mb-4 flex items-center">
+                    <i class="fas fa-clock mr-2 text-teal-400"></i>
+                    Ma'lumotlar Saqlanish Muddatlari
+                </h2>
+                <p class="text-teal-200 mb-4">Hisob ma'lumotlari hisob faol bo'lguncha saqlanadi. Buyurtma tarixi 2 yil, loglar 1 yil. O'chirish so'roviga 30 kun ichida javob beriladi.</p>
+            </div>
+
+            <div class="glass rounded-2xl p-6 privacy-section">
+                <h2 class="text-2xl font-bold mb-4 flex items-center">
+                    <i class="fas fa-child mr-2 text-teal-400"></i>
+                    Bolalar Maxfiyligi
+                </h2>
+                <p class="text-teal-200 mb-4">Platforma 18 yoshdan kichiklar uchun emas. Agar shunday ma'lumot topilsa, o'chiriladi.</p>
+            </div>
+
+            <div class="glass rounded-2xl p-6 privacy-section">
+                <h2 class="text-2xl font-bold mb-4 flex items-center">
+                    <i class="fas fa-gavel mr-2 text-teal-400"></i>
+                    Huquqlar va O'zgarishlar
+                </h2>
+                <p class="text-teal-200 mb-4">Siz ma'lumotlaringizni ko'rish, o'zgartirish yoki o'chirish huquqiga egasiz. Siyosat o'zgarishi mumkin; o'zgarishlar e'lon qilinadi.</p>
+                <p class="text-teal-300 text-sm">Oxirgi yangilanish: 14-dekabr, 2025</p>
+                <p class="text-teal-300 text-sm">Savollar uchun: support@hallaym.uz</p>
+            </div>
+        </div>
+
+        <div class="text-center mt-12">
+            <a href="terms.html" class="btn-secondary inline-block px-8 py-3 rounded-xl font-semibold mr-4">
+                <i class="fas fa-file-contract mr-2"></i>Terms of Service
+            </a>
+            <a href="faq.html" class="btn-primary inline-block px-8 py-3 rounded-xl font-semibold">
+                <i class="fas fa-question-circle mr-2"></i>FAQ
+            </a>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+        });
+
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            const user = localStorage.getItem('user');
+            if (!token || !user) {
+                window.location.href = 'register-login.html';
+                return;
+            }
+            currentUser = JSON.parse(user);
+            document.getElementById('userInfo').textContent = `@${currentUser.username}`;
+            if (currentUser.isPremium) {
+                document.getElementById('addProductLink').classList.remove('hidden');
+            }
+        }
+
+        function logout() {
+            if (confirm('Chiqmoqchimisiz?')) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                window.location.href = 'register-login.html';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HALLAYM - To'lov</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- QR Code generation uchun kutubxona (foydali funksiya) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7ZFGK6W9YV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-7ZFGK6W9YV');
+    </script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        teal: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e'
+                        },
+                        gold: {
+                            400: '#facc15',
+                            500: '#eab308',
+                            600: '#ca8a04'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 50%, #0f766e 100%);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #facc15 0%, #eab308 100%);
+            color: #0f766e;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(250, 204, 21, 0.4);
+        }
+        .btn-secondary {
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(20, 184, 166, 0.4);
+        }
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-danger:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.4);
+        }
+        .input-field {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .input-field:focus {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: #facc15;
+            box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.2);
+        }
+        .input-file::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        .payment-card {
+            transition: all 0.3s ease;
+            transform: translateY(0);
+        }
+        .payment-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .card-glow {
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
+        }
+        .toggle-switch {
+            position: relative;
+            width: 60px;
+            height: 34px;
+        }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.2);
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: #facc15;
+        }
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        .premium-highlight {
+            background: linear-gradient(135deg, rgba(250, 204, 21, 0.1) 0%, rgba(234, 179, 8, 0.1) 100%);
+            border: 1px solid rgba(250, 204, 21, 0.3);
+        }
+        .delivery-fee {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+        .promo-code-section {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+        .qr-code-container {
+            background: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+        }
+        .countdown-timer {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #facc15;
+        }
+        .expired {
+            color: #ef4444;
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen text-white">
+    <!-- Navbar -->
+    <nav class="glass fixed w-full z-50 shadow-xl top-0">
+        <div class="max-w-4xl mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-6">
+                    <a href="profile.html" class="text-2xl font-bold bg-gradient-to-r from-gold-500 to-gold-600 bg-clip-text text-transparent flex items-center">
+                        <i class="fas fa-arrow-left mr-2 text-teal-300"></i>HALLAYM
+                    </a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span id="userInfo" class="text-teal-100 font-medium bg-teal-500/20 px-3 py-1 rounded-full"></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="pt-20 max-w-4xl mx-auto py-8 px-4">
+        <!-- Progress bar -->
+        <div class="glass rounded-3xl shadow-2xl p-6 mb-8">
+            <div class="flex items-center justify-between mb-6">
+                <h1 class="text-3xl font-bold text-white flex items-center" id="paymentTitle">To'lov</h1>
+                <div class="flex items-center space-x-2 text-sm text-teal-200">
+                    <div class="w-10 h-10 bg-teal-500/20 rounded-full flex items-center justify-center border-2 border-teal-500/30">
+                        <i class="fas fa-check text-teal-400 text-lg"></i>
+                    </div>
+                    <div class="w-10 h-10 bg-gold-500/20 rounded-full flex items-center justify-center border-2 border-gold-500/30">
+                        <i class="fas fa-credit-card text-gold-400 text-lg"></i>
+                    </div>
+                    <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center border-2 border-white/30">
+                        <i class="fas fa-shield-alt text-teal-300 text-lg"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="w-full bg-white/20 rounded-full h-3 overflow-hidden">
+                <div class="bg-gradient-to-r from-teal-500 to-gold-500 h-3 rounded-full transition-all" style="width: 33%"></div>
+            </div>
+        </div>
+        <!-- Buyurtma ma'lumotlari -->
+        <div class="glass rounded-3xl shadow-2xl p-6 mb-8">
+            <h3 class="text-2xl font-bold text-white mb-6 flex items-center">
+                <i class="fas fa-receipt mr-2 text-gold-400"></i>Buyurtma ma'lumotlari
+            </h3>
+            <div id="orderInfo" class="space-y-4">
+                <!-- Buyurtma ma'lumotlari shu yerda yuklanadi -->
+            </div>
+            <div class="border-t border-white/20 pt-6 mt-6">
+                <div class="flex justify-between items-center text-xl">
+                    <span class="text-teal-200 font-semibold">Jami to'lov:</span>
+                    <span class="text-3xl font-bold text-gold-400" id="totalAmount">0 so'm</span>
+                </div>
+            </div>
+        </div>
+        <!-- Promo kod bo'limi (yangi funksiya) -->
+        <div class="glass rounded-3xl shadow-2xl p-6 mb-8 promo-code-section">
+            <h4 class="text-xl font-bold text-white mb-4 flex items-center">
+                <i class="fas fa-gift mr-2 text-purple-400"></i>Promo kod (ixtiyoriy)
+            </h4>
+            <div class="flex space-x-3">
+                <input type="text" id="promoCode" placeholder="Promo kod kiriting (masalan: SUMMER20)"
+                       class="input-field flex-1 px-4 py-3 rounded-xl focus:outline-none focus:ring-0">
+                <button onclick="applyPromoCode()"
+                        class="btn-primary px-6 py-3 rounded-xl font-semibold">
+                    Qo'llash
+                </button>
+            </div>
+            <p id="promoMessage" class="text-sm text-teal-300 mt-2 hidden">Promo kod qo'llanildi! 10% chegirma.</p>
+            <!-- Promo takliflar (yangi foydali funksiya) -->
+            <div id="promoSuggestions" class="mt-4 hidden grid grid-cols-2 md:grid-cols-4 gap-2">
+                <!-- Takliflar dinamik yuklanadi -->
+            </div>
+        </div>
+        <!-- To'lov usullari tanlash (faqat kartalar) -->
+        <div class="glass rounded-3xl shadow-2xl p-6 mb-8">
+            <h3 class="text-2xl font-bold text-white mb-6 flex items-center">
+                <i class="fas fa-credit-card mr-2 text-teal-300"></i>Karta tanlang (faqat milliy va xalqaro kartalar)
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="paymentMethodsContainer">
+                <!-- To'lov usullari shu yerda yuklanadi -->
+            </div>
+        </div>
+        <!-- Tanlangan to'lov usuli ma'lumotlari -->
+        <div id="paymentDetailsSection" class="hidden">
+            <div class="glass rounded-3xl shadow-2xl p-6 mb-8">
+                <h4 class="text-2xl font-bold text-white mb-6 flex items-center" id="selectedMethodTitle">
+                    <i class="fas fa-info-circle mr-2 text-gold-400"></i>To'lov ma'lumotlari
+                </h4>
+                <div id="methodInstructions" class="space-y-6 mb-8">
+                    <!-- To'lov usuli bo'yicha ko'rsatmalar -->
+                </div>
+              
+                <div class="bg-white/20 p-6 rounded-3xl border border-white/30">
+                    <label class="block text-lg font-semibold text-teal-100 mb-4 flex items-center">
+                        <i class="fas fa-camera mr-2 text-gold-400"></i>To'lov tasdiq skrinshoti (majburiy)
+                    </label>
+                    <input type="file" id="paymentScreenshot" accept="image/*"
+                           class="input-field w-full px-4 py-3 rounded-2xl focus:outline-none focus:ring-0 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gold-500/20 file:text-gold-400 hover:file:bg-gold-500/30"
+                           onchange="handleScreenshotUpload()">
+                    <div id="screenshotPreview" class="mt-6 hidden">
+                        <img class="w-full h-48 rounded-2xl object-cover shadow-xl" alt="Skrinshot preview">
+                        <p class="text-sm text-teal-200 mt-4 text-center">Skrinshot yuklandi. Admin tasdiqlashini kuting (24 soat ichida).</p>
+                    </div>
+                </div>
+                <!-- QR kod (yangi foydali funksiya: kartalar uchun QR generatsiya) -->
+                <div id="qrCodeSection" class="mt-6 hidden">
+                    <div class="text-center mb-4">
+                        <p class="text-teal-100 font-semibold">QR kod orqali to'lov (ixtiyoriy)</p>
+                    </div>
+                    <div id="qrCodeContainer" class="qr-code-container mx-auto" style="width: 200px; height: 200px;"></div>
+                    <p class="text-sm text-teal-300 mt-2 text-center">QR kodni skan qilib to'lov qiling (faqat O'zbekiston bank ilovalari)</p>
+                </div>
+            </div>
+        </div>
+        <!-- To'lov muddati (yangi: 30 daqiqa timer) -->
+        <div id="paymentTimer" class="glass rounded-3xl p-4 mb-4 hidden">
+            <div class="text-center">
+                <p class="text-teal-200 mb-2">To'lov muddati: <span id="countdown" class="countdown-timer"></span></p>
+                <p class="text-sm text-teal-300">Vaqt tugagach, buyurtma bekor qilinadi. Yangi buyurtma bering.</p>
+            </div>
+        </div>
+        <!-- Tasdiqlash bo'limi -->
+        <div class="glass rounded-3xl shadow-2xl p-6 sticky bottom-4">
+            <div class="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
+                <div class="text-center sm:text-left">
+                    <p class="text-sm text-teal-200 mb-1">To'lovni amalga oshirgach, skrinshotni yuklang va tasdiqlang</p>
+                    <p class="text-xs text-teal-300">Admin 24 soat ichida tasdiqlaydi va buyurtma holatini yangilaydi</p>
+                </div>
+                <button onclick="submitPayment()"
+                        class="w-full sm:w-auto btn-secondary px-8 py-4 rounded-2xl hover:shadow-xl font-semibold text-lg shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                        id="submitBtn" disabled>
+                    <i class="fas fa-lock mr-2"></i>To'lovni tasdiqlash
+                </button>
+            </div>
+        </div>
+    </div>
+    <script>
+        let currentUser = null;
+        let selectedPaymentMethod = null;
+        let orderData = null;
+        let baseAmount = 0; // Serverga yuboriladigan asosiy narx (chegirmasiz, delivery bilan)
+        let uiDiscountedAmount = 0; // UI uchun chegirmali narx
+        let promoCodeApplied = null;
+        let promoDiscount = 0;
+        let completedOrders = 0; // Tugallangan buyurtmalar soni
+        let paymentTimer = null; // Timer interval
+        let paymentMethods = []; // Global
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+            loadCompletedOrders();
+            loadOrderData();
+            loadPaymentMethods();
+            setupTimer(); // Yangi: to'lov timerini sozlash
+        });
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            const user = localStorage.getItem('user');
+          
+            if (!token || !user) {
+                window.location.href = 'register-login.html';
+                return;
+            }
+          
+            currentUser = JSON.parse(user);
+            document.getElementById('userInfo').textContent = `@${currentUser.username}`;
+        }
+        // Yangi funksiya: Tugallangan buyurtmalarni yuklash (WELCOME uchun)
+        async function loadCompletedOrders() {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch('/api/orders?type=product&status=payment_confirmed', { // Faqat tasdiqlangan product buyurtmalari
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (response.ok) {
+                    const orders = await response.json();
+                    completedOrders = orders.length;
+                    console.log('Tugallangan buyurtmalar soni:', completedOrders);
+                }
+            } catch (error) {
+                console.error('Buyurtmalarni yuklashda xatolik:', error);
+                completedOrders = 0; // Fallback
+            }
+        }
+        // Yangi: To'lov timerini sozlash (30 daqiqa)
+        function setupTimer() {
+            const thirtyMinutes = 30 * 60 * 1000;
+            let startTime = Date.now();
+            paymentTimer = setInterval(() => {
+                const elapsed = Date.now() - startTime;
+                const remaining = Math.max(0, thirtyMinutes - elapsed);
+                const minutes = Math.floor(remaining / 60000);
+                const seconds = Math.floor((remaining % 60000) / 1000);
+                document.getElementById('countdown').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                if (remaining === 0) {
+                    clearInterval(paymentTimer);
+                    document.getElementById('countdown').classList.add('expired');
+                    alert('To\'lov muddati tugadi! Iltimos, qaytadan buyurtma bering.');
+                    window.location.href = 'market.html';
+                }
+            }, 1000);
+            document.getElementById('paymentTimer').classList.remove('hidden');
+        }
+        function loadOrderData() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const type = urlParams.get('type') || 'product';
+            let rawAmount = parseFloat(urlParams.get('amount')) || 0;
+            const description = decodeURIComponent(urlParams.get('description') || 'Buyurtma');
+           
+            if (type === 'premium') {
+                baseAmount = rawAmount; // Premium uchun chegirmasiz
+                orderData = {
+                    type: 'premium',
+                    amount: baseAmount,
+                    description: 'Premium obuna ' + description,
+                    deliveryMethod: 'N/A'
+                };
+                document.getElementById('paymentTitle').innerHTML = `
+                    <i class="fas fa-crown text-gold-400 mr-2"></i>Premium Obuna To'lovi
+                `;
+            } else {
+                // Product uchun: rawAmount = price * qty, delivery qo'shish
+                const deliveryFee = urlParams.get('deliveryMethod') === 'delivery' ? 30000 : 0;
+                baseAmount = rawAmount + deliveryFee;
+                orderData = {
+                    type: 'product',
+                    productId: urlParams.get('productId'),
+                    quantity: parseInt(urlParams.get('quantity')) || 1,
+                    deliveryMethod: urlParams.get('deliveryMethod') || 'pickup',
+                    amount: rawAmount, // Serverga product narxini yuborish, u delivery va promo qo'shadi
+                    deliveryFee: deliveryFee
+                };
+            }
+            uiDiscountedAmount = baseAmount; // Dastlab chegirmasiz
+            // Order info ni yangilash
+            updateOrderInfo();
+            updateTotalAmount();
+        }
+        function updateOrderInfo() {
+            document.getElementById('orderInfo').innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-lg">
+                    ${orderData.type === 'premium' ? `
+                        <div class="col-span-2">
+                            <div class="glass p-6 rounded-2xl premium-highlight">
+                                <h4 class="font-bold text-white mb-3 flex items-center">
+                                    <i class="fas fa-crown mr-2 text-gold-400"></i>${orderData.description}
+                                </h4>
+                                <p class="text-teal-200">Obuna muddati: 30 kun (Birinchi oy chegirmali - 50% chegirma!)</p>
+                                <p class="text-sm text-teal-300 mt-2">To'lov tasdiqlangach, admin darhol faollashtiradi va sizga bildirishnoma yuboradi.</p>
+                            </div>
+                        </div>
+                    ` : `
+                        <div class="col-span-2">
+                            <div class="flex items-center space-x-4 p-6 bg-white/10 rounded-2xl">
+                                <div class="w-16 h-16 bg-gold-500/20 rounded-2xl flex items-center justify-center">
+                                    <i class="fas fa-box text-gold-400 text-2xl"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-white text-xl">Mahsulot ID: ${orderData.productId}</p>
+                                    <p class="text-teal-200 text-lg">Miqdor: ${orderData.quantity} dona</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-teal-100 font-semibold mb-2 flex items-center">
+                                <i class="fas fa-truck mr-2 text-gold-400"></i>Yetkazib berish usuli
+                            </label>
+                            <div class="glass p-4 rounded-2xl ${orderData.deliveryMethod === 'delivery' ? 'delivery-fee' : ''}">
+                                <p class="text-lg text-white">${orderData.deliveryMethod === 'delivery' ? '🚚 Yetkazib berish (Toshkent bo\'ylab 1-2 kun + 30,000 so\'m yetkazib berish to\'lovi)' : '🏪 Do\'kondan olib ketish (Darhol tayyor, bepul)'}</p>
+                            </div>
+                        </div>
+                    `}
+                </div>
+            `;
+        }
+        function updateTotalAmount() {
+            document.getElementById('totalAmount').textContent = `${Math.round(uiDiscountedAmount).toLocaleString()} so'm`;
+        }
+        // Faqat kartalarni yuklash (serverdan filter qilish)
+        async function loadPaymentMethods() {
+            try {
+                const response = await fetch('/api/payment-methods');
+                if (response.ok) {
+                    let allMethods = await response.json();
+                    // Faqat UzCard, HUMO, Visa ni filter qilish
+                    paymentMethods = allMethods.filter(m =>
+                        m.name === 'UzCard' || m.name === 'HUMO' || m.name === 'Visa'
+                    );
+                    if (paymentMethods.length === 0) {
+                        // Fallback hardcode
+                        paymentMethods = [
+                            { _id: 'uzcard', name: 'UzCard', type: 'card', icon: 'fas fa-credit-card', adminCard: '5614 6887 0520 2686', description: 'Milliy to\'lov tizimi - tez va xavfsiz', color: 'blue', isActive: true },
+                            { _id: 'humo', name: 'HUMO', type: 'card', icon: 'fas fa-credit-card', adminCard: '9860 1701 1582 5342', description: 'Tez va xavfsiz milliy karta', color: 'green', isActive: true },
+                            { _id: 'visa', name: 'Visa', type: 'card', icon: 'fab fa-cc-visa', adminCard: '4023 0602 4796 1401', description: 'Xalqaro karta - global to\'lovlar', color: 'blue', isActive: true }
+                        ];
+                    }
+                } else {
+                    // Fallback
+                    paymentMethods = [
+                        { _id: 'uzcard', name: 'UzCard', type: 'card', icon: 'fas fa-credit-card', adminCard: '5614 6887 0520 2686', description: 'Milliy to\'lov tizimi - tez va xavfsiz', color: 'blue', isActive: true },
+                        { _id: 'humo', name: 'HUMO', type: 'card', icon: 'fas fa-credit-card', adminCard: '9860 1701 1582 5342', description: 'Tez va xavfsiz milliy karta', color: 'green', isActive: true },
+                        { _id: 'visa', name: 'Visa', type: 'card', icon: 'fab fa-cc-visa', adminCard: '4023 0602 4796 1401', description: 'Xalqaro karta - global to\'lovlar', color: 'blue', isActive: true }
+                    ];
+                }
+                displayPaymentMethods(paymentMethods);
+                loadPromoSuggestions(); // Yangi: promo takliflar yuklash
+            } catch (error) {
+                console.error('To\'lov usullarini yuklashda xatolik:', error);
+                loadPaymentMethodsFallback();
+            }
+        }
+        function loadPaymentMethodsFallback() {
+            paymentMethods = [
+                { _id: 'uzcard', name: 'UzCard', type: 'card', icon: 'fas fa-credit-card', adminCard: '5614 6887 0520 2686', description: 'Milliy to\'lov tizimi - tez va xavfsiz', color: 'blue', isActive: true },
+                { _id: 'humo', name: 'HUMO', type: 'card', icon: 'fas fa-credit-card', adminCard: '9860 1701 1582 5342', description: 'Tez va xavfsiz milliy karta', color: 'green', isActive: true },
+                { _id: 'visa', name: 'Visa', type: 'card', icon: 'fab fa-cc-visa', adminCard: '4023 0602 4796 1401', description: 'Xalqaro karta - global to\'lovlar', color: 'blue', isActive: true }
+            ];
+            displayPaymentMethods(paymentMethods);
+        }
+        function displayPaymentMethods(methods) {
+            const container = document.getElementById('paymentMethodsContainer');
+            container.innerHTML = methods.map(method => {
+                let gradientClass = 'from-teal-500 to-cyan-500';
+                switch (method.color) {
+                    case 'blue': gradientClass = 'from-blue-500 to-indigo-500'; break;
+                    case 'green': gradientClass = 'from-green-500 to-emerald-500'; break;
+                }
+                return `
+                    <div class="payment-card glass rounded-2xl p-6 text-center cursor-pointer transition-all card-glow"
+                         onclick="selectPaymentMethod('${method._id}')"
+                         data-method='${JSON.stringify(method)}'>
+                        <div class="text-4xl mb-4 mx-auto w-16 h-16 bg-gradient-to-r ${gradientClass} rounded-full flex items-center justify-center text-white shadow-xl">
+                            <i class="${method.icon}"></i>
+                        </div>
+                        <div class="font-bold text-white text-lg mb-2">${method.name}</div>
+                        <div class="text-teal-200 text-sm">${method.description}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+        function selectPaymentMethod(methodId) {
+            // Oldingi tanlovni olib tashlash
+            document.querySelectorAll('.payment-card').forEach(card => {
+                card.classList.remove('bg-gold-500/10', 'border-gold-400', 'ring-2', 'ring-gold-300/50');
+            });
+            // Tanlangan metodni belgilash
+            const selectedCard = document.querySelector(`[onclick="selectPaymentMethod('${methodId}')"]`);
+            selectedCard.classList.add('bg-gold-500/10', 'border-gold-400', 'ring-2', 'ring-gold-300/50');
+            selectedPaymentMethod = JSON.parse(selectedCard.getAttribute('data-method'));
+            // Details bo'limini ko'rsatish
+            document.getElementById('paymentDetailsSection').classList.remove('hidden');
+            showPaymentDetails();
+            generateQRCode(); // Yangi: QR kod generatsiya
+            // Submit tugmasini faollashtirish (screenshot yuklangandan keyin)
+            document.getElementById('submitBtn').disabled = true;
+        }
+        // Yangi foydali funksiya: QR kod generatsiya (kartalar uchun)
+        function generateQRCode() {
+            const qrSection = document.getElementById('qrCodeSection');
+            const qrContainer = document.getElementById('qrCodeContainer');
+            qrContainer.innerHTML = ''; // Eski QR ni tozalash
+            const qrData = `pay:uzn${selectedPaymentMethod.adminCard.replace(/\s/g, '')}|amount:${uiDiscountedAmount}|currency:UZS|desc:${encodeURIComponent(orderData.description)}`;
+            new QRCode(qrContainer, {
+                text: qrData,
+                width: 200,
+                height: 200,
+                colorDark: "#0f766e",
+                colorLight: "#ffffff"
+            });
+            qrSection.classList.remove('hidden');
+        }
+        function showPaymentDetails() {
+            const titleEl = document.getElementById('selectedMethodTitle');
+            const instructionsEl = document.getElementById('methodInstructions');
+            titleEl.innerHTML = `
+                <i class="fas fa-credit-card mr-2 text-gold-400"></i>
+                ${selectedPaymentMethod.name} orqali to'lov
+            `;
+          
+            const amount = uiDiscountedAmount; // UI chegirmali
+            let instructions = `
+                <div class="glass p-8 rounded-3xl">
+                    <div class="text-center mb-8">
+                        <div class="text-4xl font-bold text-gold-400 mb-2">${Math.round(amount).toLocaleString()} so'm</div>
+                        <div class="text-teal-200 text-lg opacity-90">To'lov miqdori (joriy kurs bo'yicha)</div>
+                    </div>
+                    <div class="space-y-6">
+                        <div class="bg-white/20 p-6 rounded-2xl">
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-teal-100 font-semibold">💳 Karta raqami:</span>
+                                <span class="font-mono font-bold text-white text-lg">${selectedPaymentMethod.adminCard}</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-teal-100 font-semibold">👤 Karta egasi:</span>
+                                <span class="text-white">Abduraxmon Qoryogdiyev</span>
+                            </div>
+                        </div>
+                        <div class="bg-gold-500/20 p-6 rounded-3xl border border-gold-400/30">
+                            <p class="text-teal-100 flex items-center mb-2">
+                                <i class="fas fa-info-circle mr-2 text-gold-400"></i>To'lovni amalga oshirgach, bank ilovasidan skrinshot oling va yuklang
+                            </p>
+                            <p class="text-sm text-teal-300">Admin 24 soat ichida tasdiqlaydi va buyurtmani faollashtiradi</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            instructionsEl.innerHTML = instructions;
+        }
+        function handleScreenshotUpload() {
+            const file = document.getElementById('paymentScreenshot').files[0];
+            const preview = document.getElementById('screenshotPreview');
+          
+            if (file) {
+                // Fayl validatsiyasi (yangi)
+                if (file.size > 10 * 1024 * 1024) {
+                    alert('Skrinshot hajmi 10MB dan oshmasligi kerak');
+                    return;
+                }
+                if (!file.type.startsWith('image/')) {
+                    alert('Faqat rasm fayllari qabul qilinadi');
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.querySelector('img').src = e.target.result;
+                    preview.classList.remove('hidden');
+                    document.getElementById('submitBtn').disabled = false;
+                    document.getElementById('submitBtn').innerHTML = '<i class="fas fa-paper-plane mr-2"></i>Yuborish';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+        // Yangi foydali funksiya: Promo takliflar yuklash (user history ga asosan)
+        async function loadPromoSuggestions() {
+            const suggestions = [
+                { code: 'WELCOME', desc: 'Birinchi xarid uchun 5%', condition: completedOrders === 0 },
+                { code: 'SUMMER20', desc: 'Yozgi chegirma 20%', condition: true },
+                { code: 'FRIEND10', desc: 'Do\'st taklifi 10%', condition: true },
+                { code: 'FLASH5000', desc: 'Tez xarid 5000 so\'m', condition: baseAmount >= 50000 }
+            ];
+            const validSuggestions = suggestions.filter(s => s.condition);
+            const container = document.getElementById('promoSuggestions');
+            if (validSuggestions.length > 0) {
+                container.innerHTML = validSuggestions.map(s => `
+                    <button onclick="applyPromoCodeQuick('${s.code}')" class="glass p-2 rounded-xl text-xs text-center hover:bg-purple-500/20 transition-colors">
+                        ${s.code}<br><span class="text-purple-300">${s.desc}</span>
+                    </button>
+                `).join('');
+                container.classList.remove('hidden');
+            }
+        }
+        function applyPromoCodeQuick(code) {
+            document.getElementById('promoCode').value = code;
+            applyPromoCode();
+        }
+        // To'g'irlangan promo kod funksiyasi (server logikasiga to'liq mos: alohida validate endpoint)
+        async function applyPromoCode() {
+            const code = document.getElementById('promoCode').value.trim().toUpperCase();
+            if (!code) return;
+            // Serverga so'rov yuborish (yangi: real-time validatsiya, order yaratmasdan)
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch('/api/validate-promo', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        promoCode: code,
+                        amount: baseAmount, // Asosiy narxni yuborish
+                        type: orderData.type
+                    })
+                });
+                const result = await response.json();
+                if (response.ok && result.valid) {
+                    promoCodeApplied = code;
+                    promoDiscount = result.discountPercent;
+                    uiDiscountedAmount = baseAmount - result.discountAmount;
+                    updateTotalAmount();
+                    document.getElementById('promoMessage').classList.remove('hidden');
+                    document.getElementById('promoMessage').textContent = `Promo kod qo'llanildi! ${Math.round(promoDiscount)}% chegirma (${result.discountAmount.toLocaleString()} so'm).`;
+                } else {
+                    alert(result.error || 'Noto\'g\'ri promo kod');
+                    promoCodeApplied = null;
+                    promoDiscount = 0;
+                    uiDiscountedAmount = baseAmount;
+                    updateTotalAmount();
+                    document.getElementById('promoMessage').classList.add('hidden');
+                }
+            } catch (error) {
+                console.error('Promo validatsiya xatosi:', error);
+                alert('Promo kodni tekshirishda xatolik yuz berdi. Keyinroq urinib ko\'ring.');
+                promoCodeApplied = null;
+                promoDiscount = 0;
+                uiDiscountedAmount = baseAmount;
+                updateTotalAmount();
+                document.getElementById('promoMessage').classList.add('hidden');
+            }
+        }
+        async function submitPayment() {
+            if (!selectedPaymentMethod) {
+                alert('Iltimos, to\'lov usulini tanlang');
+                return;
+            }
+            const screenshotFile = document.getElementById('paymentScreenshot').files[0];
+            if (!screenshotFile) {
+                alert('Iltimos, to\'lov tasdiq skrinshotini yuklang');
+                return;
+            }
+            const formData = new FormData();
+            formData.append('type', orderData.type);
+            formData.append('amount', orderData.amount || baseAmount); // Serverga chegirmasiz asosiy narx yuborish
+            formData.append('description', orderData.description || 'Buyurtma');
+            formData.append('paymentMethod', selectedPaymentMethod.name);
+            formData.append('paymentScreenshot', screenshotFile);
+            if (orderData.productId) formData.append('productId', orderData.productId);
+            if (orderData.quantity) formData.append('quantity', orderData.quantity);
+            if (orderData.deliveryMethod) formData.append('deliveryMethod', orderData.deliveryMethod);
+            if (orderData.deliveryFee) formData.append('deliveryFee', orderData.deliveryFee);
+            if (promoCodeApplied) formData.append('promoCode', promoCodeApplied); // Faqat qo'llanilganini yuborish
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch('/api/orders', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` },
+                    body: formData
+                });
+                if (response.ok) {
+                    const result = await response.json();
+                    clearInterval(paymentTimer); // Timer to'xtatish
+                    // Success animation
+                    const submitBtn = document.getElementById('submitBtn');
+                    submitBtn.innerHTML = '<i class="fas fa-check mr-2"></i>Yuborildi!';
+                    submitBtn.classList.remove('btn-secondary');
+                    submitBtn.classList.add('bg-teal-600');
+                    setTimeout(() => {
+                        alert(`${orderData.type === 'premium' ? 'Premium obuna so\'rovi' : 'Buyurtma'} muvaffaqiyatli yuborildi! Buyurtma ID: ${result._id}. Admin tasdiqlashini kuting (24 soat ichida).`);
+                        window.location.href = orderData.type === 'premium' ? 'profile.html' : 'history.html';
+                    }, 1500);
+                } else {
+                    const error = await response.json();
+                    alert('Xatolik: ' + (error.error || 'Noma\'lum xato'));
+                }
+            } catch (error) {
+                console.error('Xatolik:', error);
+                alert('To\'lovni yuborishda xatolik yuz berdi');
+            }
+        }
+        // Sahifa yopilganda timer to'xtatish (yangi: resurs tejash)
+        window.addEventListener('beforeunload', () => {
+            if (paymentTimer) clearInterval(paymentTimer);
+        });
+    </script>
+</body>
+</html>

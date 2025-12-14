@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HALLAYM - Tez-tez So'raladigan Savollar (FAQ)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7ZFGK6W9YV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-7ZFGK6W9YV');
+    </script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        teal: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e'
+                        },
+                        gold: {
+                            400: '#facc15',
+                            500: '#eab308',
+                            600: '#ca8a04'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 50%, #0f766e 100%);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #facc15 0%, #eab308 100%);
+            color: #0f766e;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(250, 204, 21, 0.4);
+        }
+        .btn-secondary {
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(20, 184, 166, 0.4);
+        }
+        .input-field {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .input-field:focus {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: #facc15;
+            box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.2);
+        }
+        .faq-item {
+            transition: all 0.3s ease;
+        }
+        .faq-item:hover {
+            transform: translateX(4px);
+        }
+        .faq-open {
+            max-height: 500px;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen text-white">
+    <!-- Navbar -->
+    <nav class="glass fixed w-full z-50 shadow-xl">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-8">
+                    <a href="index.html" class="text-3xl font-bold bg-gradient-to-r from-gold-500 to-gold-600 bg-clip-text text-transparent">HALLAYM</a>
+                    <div class="hidden md:flex space-x-8">
+                        <a href="market.html" class="text-teal-300 font-semibold hover:text-white transition-colors">Market</a>
+                        <a href="history.html" class="text-teal-200 hover:text-teal-100 transition-colors">Buyurtmalar</a>
+                        <a href="sold-products.html" class="text-teal-200 hover:text-teal-100 transition-colors">Sotilganlar</a>
+                        <a href="profile.html" class="text-teal-200 hover:text-teal-100 transition-colors">Profil</a>
+                        <a href="add-product.html" id="addProductLink" class="text-teal-200 hover:text-teal-100 transition-colors hidden">Mahsulot Qo'shish</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span id="userInfo" class="text-teal-100 font-medium"></span>
+                    <button onclick="logout()" class="btn-danger px-6 py-2 rounded-full text-sm">Chiqish</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="pt-20 max-w-4xl mx-auto py-8 px-4">
+        <h1 class="text-4xl font-bold mb-8 flex items-center justify-center">
+            <i class="fas fa-question-circle mr-3 text-gold-400"></i>
+            Tez-tez So'raladigan Savollar (FAQ)
+        </h1>
+
+        <div class="space-y-6">
+            <div class="glass rounded-2xl p-6 faq-item">
+                <button onclick="toggleFAQ(this)" class="w-full text-left flex justify-between items-center">
+                    <span class="font-bold text-xl">HALLAYM nima va qanday ishlaydi?</span>
+                    <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                </button>
+                <div class="faq-answer mt-4 text-teal-200 text-sm max-h-0 overflow-hidden transition-all duration-300">
+                    <p>HALLAYM - bu raqamli mahsulotlar (Instagram, TikTok, YouTube hisoblari, veb-saytlar va boshqalar) savdo qilish uchun xavfsiz marketplace. Sotuvchilar mahsulotlarini yuklaydi, xaridorlar esa to'lov orqali sotib oladi. Admin to'lovlarni tasdiqlaydi va buyurtmalarni boshqaradi.</p>
+                </div>
+            </div>
+
+            <div class="glass rounded-2xl p-6 faq-item">
+                <button onclick="toggleFAQ(this)" class="w-full text-left flex justify-between items-center">
+                    <span class="font-bold text-xl">Qanday to'lov usullarini qo'llab-quvvatlaydi?</span>
+                    <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                </button>
+                <div class="faq-answer mt-4 text-teal-200 text-sm max-h-0 overflow-hidden transition-all duration-300">
+                    <p>Milliy kartalar (UzCard, HUMO) va xalqaro kartalar (Visa) orqali to'lov qilishingiz mumkin. To'lovni amalga oshirgach, skrinshot yuklang va admin tasdiqlashini kuting (24 soat ichida).</p>
+                </div>
+            </div>
+
+            <div class="glass rounded-2xl p-6 faq-item">
+                <button onclick="toggleFAQ(this)" class="w-full text-left flex justify-between items-center">
+                    <span class="font-bold text-xl">Premium obuna nima beradi?</span>
+                    <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                </button>
+                <div class="faq-answer mt-4 text-teal-200 text-sm max-h-0 overflow-hidden transition-all duration-300">
+                    <p>Premium obuna (30 kun uchun 24,500 so'm) sotuvchilarga mahsulot qo'shish va cheksiz ko'rish imkonini beradi. Xaridorlar esa chegirmali narxlardan foydalanadi va premium sotuvchilarni tanlaydi.</p>
+                </div>
+            </div>
+
+            <div class="glass rounded-2xl p-6 faq-item">
+                <button onclick="toggleFAQ(this)" class="w-full text-left flex justify-between items-center">
+                    <span class="font-bold text-xl">Buyurtmani qanday bekor qilish mumkin?</span>
+                    <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                </button>
+                <div class="faq-answer mt-4 text-teal-200 text-sm max-h-0 overflow-hidden transition-all duration-300">
+                    <p>Faqat "Kutilmoqda" holatidagi buyurtmalarni bekor qilishingiz mumkin. Buyurtmalar sahifasida "Bekor qilish" tugmasini bosing. Tasdiqlangan buyurtmalar qaytarilmaydi.</p>
+                </div>
+            </div>
+
+            <div class="glass rounded-2xl p-6 faq-item">
+                <button onclick="toggleFAQ(this)" class="w-full text-left flex justify-between items-center">
+                    <span class="font-bold text-xl">Sotuvchiga qanday bog'lanish mumkin?</span>
+                    <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                </button>
+                <div class="faq-answer mt-4 text-teal-200 text-sm max-h-0 overflow-hidden transition-all duration-300">
+                    <p>Mahsulot sahifasida "Sotuvchi bilan bog'lanish" tugmasini bosing. Suhbat orqali savollaringizni bering va tafsilotlarni muhokama qiling.</p>
+                </div>
+            </div>
+
+            <div class="glass rounded-2xl p-6 faq-item">
+                <button onclick="toggleFAQ(this)" class="w-full text-left flex justify-between items-center">
+                    <span class="font-bold text-xl">Promo kodlar qanday ishlaydi?</span>
+                    <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                </button>
+                <div class="faq-answer mt-4 text-teal-200 text-sm max-h-0 overflow-hidden transition-all duration-300">
+                    <p>To'lov sahifasida promo kod kiriting. Masalan, "WELCOME" - birinchi xarid uchun 5% chegirma. Admin tomonidan belgilangan chegirmalar amal qiladi va muddatli bo'lishi mumkin.</p>
+                </div>
+            </div>
+
+            <div class="glass rounded-2xl p-6 faq-item">
+                <button onclick="toggleFAQ(this)" class="w-full text-left flex justify-between items-center">
+                    <span class="font-bold text-xl">Mahsulotni qaytarish mumkinmi?</span>
+                    <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                </button>
+                <div class="faq-answer mt-4 text-teal-200 text-sm max-h-0 overflow-hidden transition-all duration-300">
+                    <p>Raqamli mahsulotlar qaytarilmaydi. Agar muammo bo'lsa, sotuvchi bilan bog'laning yoki admin ga shikoyat qiling. Admin hal qiladi.</p>
+                </div>
+            </div>
+
+            <div class="glass rounded-2xl p-6 faq-item">
+                <button onclick="toggleFAQ(this)" class="w-full text-left flex justify-between items-center">
+                    <span class="font-bold text-xl">Admin qanday yordam beradi?</span>
+                    <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                </button>
+                <div class="faq-answer mt-4 text-teal-200 text-sm max-h-0 overflow-hidden transition-all duration-300">
+                    <p>Admin to'lovlarni tasdiqlaydi, shikoyatlarni ko'rib chiqadi va platformani boshqaradi. Savollaringiz uchun support@hallaym.uz ga yozing.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-12">
+            <p class="text-teal-300 mb-4">Yana savollaringiz bormi?</p>
+            <a href="profile.html" class="btn-primary inline-block px-8 py-3 rounded-xl font-semibold">
+                <i class="fas fa-envelope mr-2"></i>Support ga yozing
+            </a>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+        });
+
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            const user = localStorage.getItem('user');
+            if (!token || !user) {
+                window.location.href = 'register-login.html';
+                return;
+            }
+            currentUser = JSON.parse(user);
+            document.getElementById('userInfo').textContent = `@${currentUser.username}`;
+            if (currentUser.isPremium) {
+                document.getElementById('addProductLink').classList.remove('hidden');
+            }
+        }
+
+        function toggleFAQ(button) {
+            const answer = button.nextElementSibling;
+            const icon = button.querySelector('i');
+            answer.classList.toggle('faq-open');
+            icon.style.transform = answer.classList.contains('faq-open') ? 'rotate(180deg)' : 'rotate(0deg)';
+        }
+
+        function logout() {
+            if (confirm('Chiqmoqchimisiz?')) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                window.location.href = 'register-login.html';
+            }
+        }
+    </script>
+</body>
+</html>

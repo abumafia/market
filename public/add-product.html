@@ -1,0 +1,1606 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HALLAYM - Mahsulot Qo'shish</title>
+    <link rel="icon" href="https://postimg.cc/pyLX1sj2" type="image/png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7ZFGK6W9YV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-7ZFGK6W9YV');
+    </script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        teal: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e'
+                        },
+                        gold: {
+                            400: '#facc15',
+                            500: '#eab308',
+                            600: '#ca8a04'
+                        }
+                    },
+                    fontSize: {
+                        'xs-m': '0.75rem',
+                        'sm-m': '0.8125rem',
+                        'base-m': '0.875rem'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 50%, #0f766e 100%);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #facc15 0%, #eab308 100%);
+            color: #0f766e;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(250, 204, 21, 0.4);
+        }
+        .btn-secondary {
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(20, 184, 166, 0.4);
+        }
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-danger:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.4);
+        }
+        .input-field {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .input-field:focus {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: #facc15;
+            box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.2);
+        }
+        .input-field::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+            transform: translateY(0);
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .premium-highlight {
+            background: linear-gradient(135deg, rgba(250, 204, 21, 0.1) 0%, rgba(234, 179, 8, 0.1) 100%);
+            border: 1px solid rgba(250, 204, 21, 0.3);
+        }
+        .image-preview {
+            position: relative;
+        }
+        .image-preview button {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: rgba(239, 68, 68, 0.8);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .image-preview button:hover {
+            background: rgba(239, 68, 68, 1);
+        }
+        /* Dinamik maydonlar */
+        .dynamic-field {
+            display: none;
+        }
+        .dynamic-field.show {
+            display: block;
+            animation: fadeIn 0.3s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Mobil hamburger */
+        .hamburger-line {
+            transition: all 0.3s ease;
+        }
+        .menu-open .hamburger-line:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .menu-open .hamburger-line:nth-child(2) {
+            opacity: 0;
+        }
+        .menu-open .hamburger-line:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+        /* Mobil */
+        @media (max-width: 640px) {
+            .card-hover:hover { transform: none; }
+            .btn-primary:hover, .btn-secondary:hover, .btn-danger:hover { transform: none; }
+            body { font-size: 0.875rem !important; }
+            h1, h2, h3 { line-height: 1.2 !important; }
+            p { line-height: 1.4 !important; }
+            .grid-cols-1 { grid-template-columns: 1fr; }
+            .gap-6 { gap: 1rem; }
+            .p-4 { padding: 0.75rem; }
+            .text-2xl { font-size: 1.25rem; }
+            .text-4xl { font-size: 1.875rem; }
+            .h-64 { height: 12rem; }
+            .h-80 { height: 14rem; }
+            .flex-col { flex-direction: column; }
+            .space-x-3 { space-x: 0.5rem; }
+        }
+        @media (max-width: 480px) {
+            .px-4 { padding-left: 0.5rem; padding-right: 0.5rem; }
+            .py-4 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+            .text-base { font-size: 0.875rem; }
+            .text-lg { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen text-white">
+    <!-- Navbar -->
+    <nav class="glass fixed w-full z-50 shadow-xl">
+        <div class="max-w-7xl mx-auto px-2 sm:px-4">
+            <div class="flex justify-between items-center py-2 sm:py-4">
+                <div class="flex items-center space-x-2 sm:space-x-8">
+                    <button id="mobileMenuBtn" class="md:hidden hamburger p-2 rounded-lg hover:bg-white/10 transition-all">
+                        <span class="block w-6 h-0.5 bg-white hamburger-line"></span>
+                        <span class="block w-6 h-0.5 bg-white hamburger-line mt-1.5"></span>
+                        <span class="block w-6 h-0.5 bg-white hamburger-line mt-1.5"></span>
+                    </button>
+                    <a href="index.html" class="text-xl sm:text-3xl font-bold bg-gradient-to-r from-gold-500 to-gold-600 bg-clip-text text-transparent">HALLAYM</a>
+                </div>
+                <div class="hidden md:flex space-x-4 sm:space-x-8">
+                    <a href="market.html" class="text-teal-300 font-semibold hover:text-white transition-colors text-xs sm:text-sm">Market</a>
+                    <a href="history.html" class="text-teal-200 hover:text-teal-100 transition-colors text-xs sm:text-sm">Buyurtmalar</a>
+                    <a href="profile.html" class="text-teal-200 hover:text-teal-100 transition-colors text-xs sm:text-sm">Profil</a>
+                    <a href="add-product.html" class="text-gold-400 font-semibold text-xs sm:text-sm">Mahsulot Qo'shish</a>
+                </div>
+                <div class="flex items-center space-x-1 sm:space-x-4">
+                    <span id="userInfo" class="text-teal-100 font-medium hidden sm:inline text-xs sm:text-sm"></span>
+                    <button onclick="logout()" class="btn-danger px-2 sm:px-6 py-1 sm:py-2 rounded-full text-xs sm:text-sm">Chiqish</button>
+                </div>
+            </div>
+            <div id="mobileMenu" class="md:hidden hidden overflow-hidden transition-all duration-300 ease-in-out max-h-0">
+                <div class="px-2 sm:px-4 py-2 sm:py-4 space-y-2 sm:space-y-4 bg-white/10 backdrop-blur-sm">
+                    <a href="market.html" class="block text-teal-200 font-semibold hover:text-white transition-colors py-1 sm:py-2 text-xs sm:text-sm">Market</a>
+                    <a href="history.html" class="block text-teal-200 hover:text-teal-100 transition-colors py-1 sm:py-2 text-xs sm:text-sm">Buyurtmalar</a>
+                    <a href="profile.html" class="block text-teal-200 hover:text-teal-100 transition-colors py-1 sm:py-2 text-xs sm:text-sm">Profil</a>
+                    <a href="add-product.html" class="block text-gold-400 font-semibold py-1 sm:py-2 text-xs sm:text-sm">Mahsulot Qo'shish</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="pt-16 sm:pt-20 max-w-4xl mx-auto py-2 sm:py-8 px-1 sm:px-4">
+        <!-- Premium tekshirish -->
+        <div id="premiumCheck" class="glass rounded-3xl p-4 sm:p-8 text-center mb-6 sm:mb-8 shadow-2xl">
+            <div class="text-4xl sm:text-6xl mb-4 sm:mb-6 premium-highlight rounded-full w-16 sm:w-24 h-16 sm:h-24 mx-auto flex items-center justify-center">👑</div>
+            <h2 class="text-xl sm:text-3xl font-bold text-white mb-2 sm:mb-4">Premium Obuna Kerak</h2>
+            <p class="text-teal-200 text-sm sm:text-lg mb-4 sm:mb-8">Ijtimoiy tarmoq hisoblarini qo'shish va sotish uchun premium obunaga ega bo'lishingiz kerak. Bu sizga chegirmalar va ustuvor xizmatlar beradi!</p>
+            <button onclick="goToPremium()" class="btn-primary px-4 sm:px-8 py-2 sm:py-4 rounded-2xl font-semibold text-sm sm:text-lg shadow-lg">
+                Premium Obuna Bo'lish
+            </button>
+        </div>
+
+        <!-- Mahsulot qo'shish formasi -->
+        <div id="productFormContainer" class="hidden">
+            <div class="glass rounded-3xl shadow-2xl p-4 sm:p-8 mb-6 sm:mb-8">
+                <h1 class="text-2xl sm:text-4xl font-bold text-white mb-4 sm:mb-8 flex items-center">
+                    <span class="mr-2 sm:mr-4 text-xl sm:text-3xl">➕</span>Yangi Hisob Qo'shish
+                </h1>
+                
+                <form id="addProductForm" class="space-y-4 sm:space-y-8">
+                    <!-- Asosiy ma'lumotlar -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8">
+                        <!-- Mahsulot nomi -->
+                        <div class="md:col-span-2">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">📛</span>Mahsulot nomi *
+                            </label>
+                            <input type="text" id="productName" required
+                                   class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg"
+                                   placeholder="Hisob nomi yoki veb-sayt nomi (masalan: @instagram_account)">
+                        </div>
+
+                        <!-- Tavsif -->
+                        <div class="md:col-span-2">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">📝</span>Tavsif
+                            </label>
+                            <textarea id="productDescription" rows="4" sm:rows="5"
+                                      class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg resize-none"
+                                      placeholder="Hisob haqida batafsil ma'lumot yozing (masalan: Faol obunachilar, kontent turi...)"></textarea>
+                        </div>
+
+                        <!-- Kategoriya -->
+                        <div>
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">📂</span>Kategoriya *
+                            </label>
+                            <select id="productCategory" required onchange="toggleDynamicFields()"
+                                    class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg">
+                                <option value="">Kategoriyani tanlang</option>
+                                <option value="instagram">Instagram Hisoblari</option>
+                                <option value="tiktok">TikTok Hisoblari</option>
+                                <option value="youtube">YouTube Kanallari</option>
+                                <option value="likee">Likee Hisoblari</option>
+                                <option value="facebook">Facebook hisoblari</option>
+                                <option value="pubg">PUBG Mobile hisoblari</option>
+                                <option value="freefire">Free Fire hisoblari</option>
+                                <option value="websites">Tayyor Veb-saytlar</option>
+                                <option value="domains">Domenlar va Hosting</option>
+                                <option value="telegram-channels">Telegram Kanallari</option>
+                                <option value="telegram-groups">Telegram Guruhlari</option>
+                                <option value="telegram-bots">Telegram Botlari</option>
+                            </select>
+                        </div>
+
+                        <!-- Subkategoriya (umumiy dinamik) -->
+                        <div id="subCategoryField" class="dynamic-field md:col-span-2">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">🏷️</span>Subkategoriya
+                            </label>
+                            <input type="text" id="productSubCategory"
+                                   class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg"
+                                   placeholder="Masalan: Fashion, Gaming, Business...">
+                        </div>
+
+                        <!-- Username/URL (umumiy dinamik) -->
+                        <div id="usernameField" class="dynamic-field">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">🔗</span>Username yoki URL *
+                            </label>
+                            <input type="url" id="productUsername" required
+                                   class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg"
+                                   placeholder="https://instagram.com/username yoki @username">
+                        </div>
+
+                        <!-- Instagram dinamik maydonlari -->
+                        <div id="instagramPostsField" class="dynamic-field">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">📝</span>Postlar soni
+                            </label>
+                            <input type="number" id="productPosts" min="0"
+                                   class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg"
+                                   placeholder="Masalan: 500">
+                        </div>
+                        <div id="instagramAvgLikesField" class="dynamic-field">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">❤️</span>O'rtacha likelar
+                            </label>
+                            <input type="number" id="productAvgLikes" min="0"
+                                   class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg"
+                                   placeholder="Masalan: 100">
+                        </div>
+                        <div id="instagramAvgCommentsField" class="dynamic-field">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">💬</span>O'rtacha kommentariyalar
+                            </label>
+                            <input type="number" id="productAvgComments" min="0"
+                                   class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg"
+                                   placeholder="Masalan: 20">
+                        </div>
+
+                        <!-- TikTok dinamik maydonlari -->
+                        <div id="tiktokVideosField" class="dynamic-field">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">🎬</span>Videolar soni
+                            </label>
+                            <input type="number" id="productVideos" min="0"
+                                   class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg"
+                                   placeholder="Masalan: 200">
+                        </div>
+                        <div id="tiktokAvgViewsField" class="dynamic-field">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">👁️</span>O'rtacha ko'rishlar
+                            </label>
+                            <input type="number" id="productAvgViews" min="0"
+                                   class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg"
+                                   placeholder="Masalan: 50000">
+                        </div>
+
+                        <!-- YouTube dinamik maydonlari -->
+                        <div id="youtubeSubscribersField" class="dynamic-field">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">👥</span>Obunachilar soni
+                            </label>
+                            <input type="number" id="productSubscribers" min="0"
+                                   class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg"
+                                   placeholder="Masalan: 10000">
+                        </div>
+                        <div id="youtubeViewsField" class="dynamic-field">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">👁️</span>Umumiy ko'rishlar
+                            </label>
+                            <input type="number" id="productViews" min="0"
+                                   class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg"
+                                   placeholder="Masalan: 500000">
+                        </div>
+                        <div id="youtubeWatchHoursField" class="dynamic-field">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">⏱️</span>Umumiy ko'rilgan soatlar
+                            </label>
+                            <input type="number" id="productWatchHours" min="0" step="0.1"
+                                   class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg"
+                                   placeholder="Masalan: 1000.5">
+                        </div>
+                        <div id="youtubeLikesField" class="dynamic-field">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">❤️</span>Umumiy likelar
+                            </label>
+                            <input type="number" id="productLikes" min="0"
+                                   class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg"
+                                   placeholder="Masalan: 20000">
+                        </div>
+                        <div id="youtubePrmEarningsField" class="dynamic-field">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">💰</span>PRM daromadlari (taxminiy, oyiga)
+                            </label>
+                            <input type="number" id="productPrmEarnings" min="0" step="0.01"
+                                   class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg"
+                                   placeholder="Masalan: 500.00 USD">
+                        </div>
+                        <div id="youtubeMonetizedField" class="dynamic-field">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">💎</span>Monetizatsiya holati
+                            </label>
+                            <select id="productMonetized" class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg">
+                                <option value="">Tanlanmagan</option>
+                                <option value="yes">Ha</option>
+                                <option value="no">Yo'q</option>
+                            </select>
+                        </div>
+
+                        <!-- Likee dinamik maydonlari -->
+                        <div id="likeeVideosField" class="dynamic-field">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">🎬</span>Videolar soni
+                            </label>
+                            <input type="number" id="productLikeeVideos" min="0"
+                                   class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg"
+                                   placeholder="Masalan: 150">
+                        </div>
+                        <div id="likeeLikesField" class="dynamic-field">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">❤️</span>Umumiy likelar
+                            </label>
+                            <input type="number" id="productLikeeLikes" min="0"
+                                   class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg"
+                                   placeholder="Masalan: 10000">
+                        </div>
+
+                        <!-- Facebook dinamik maydonlari -->
+                        <div id="facebookFriendsField" class="dynamic-field">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">👥</span>Dostlar soni
+                            </label>
+                            <input type="number" id="productFriends" min="0"
+                                   class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg"
+                                   placeholder="Masalan: 2000">
+                        </div>
+                        <div id="facebookPageLikesField" class="dynamic-field">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">❤️</span>Sahifa likelari
+                            </label>
+                            <input type="number" id="productPageLikes" min="0"
+                                   class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg"
+                                   placeholder="Masalan: 5000">
+                        </div>
+                        <div id="facebookPostsField" class="dynamic-field">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">📝</span>Postlar soni
+                            </label>
+                            <input type="number" id="productFacebookPosts" min="0"
+                                   class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg"
+                                   placeholder="Masalan: 300">
+                        </div>
+
+                        <!-- PUBG dinamik maydonlari -->
+                        <div id="pubgLevelField" class="dynamic-field">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">🏆</span>Level
+                            </label>
+                            <input type="number" id="productPubgLevel" min="0"
+                                   class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg"
+                                   placeholder="Masalan: 80">
+                        </div>
+                        <div id="pubgRpCountField" class="dynamic-field">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">💎</span>RP necha marta olingan
+                            </label>
+                            <input type="number" id="productPubgRpCount" min="0"
+                                   class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg"
+                                   placeholder="Masalan: 5">
+                        </div>
+                        <div id="pubgCollectionLevelField" class="dynamic-field">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">📚</span>Kolleksiya leveli
+                            </label>
+                            <input type="number" id="productPubgCollectionLevel" min="0"
+                                   class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg"
+                                   placeholder="Masalan: 50">
+                        </div>
+                        <div id="pubgArenaLevelField" class="dynamic-field">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">⚔️</span>Arena leveli
+                            </label>
+                            <input type="number" id="productPubgArenaLevel" min="0"
+                                   class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg"
+                                   placeholder="Masalan: 30">
+                        </div>
+                        <div id="pubgSkinsField" class="dynamic-field md:col-span-2">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">👕</span>Skins (ro'yxati)
+                            </label>
+                            <textarea id="productPubgSkins" rows="3"
+                                      class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg resize-none"
+                                      placeholder="Masalan: M416 skin, AKM legendary..."></textarea>
+                        </div>
+                        <div id="pubgWeaponsField" class="dynamic-field md:col-span-2">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">🔫</span>Qurollar (darajalari bilan)
+                            </label>
+                            <textarea id="productPubgWeapons" rows="3"
+                                      class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg resize-none"
+                                      placeholder="Masalan: Lednik 7, M24 2-level, AWM legendary..."></textarea>
+                        </div>
+
+                        <!-- Free Fire dinamik maydonlari -->
+                        <div id="freefireLevelField" class="dynamic-field">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">🏆</span>Level
+                            </label>
+                            <input type="number" id="productFreefireLevel" min="0"
+                                   class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg"
+                                   placeholder="Masalan: 90">
+                        </div>
+                        <div id="freefireDiamondsField" class="dynamic-field">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">💎</span>Diamondlar soni
+                            </label>
+                            <input type="number" id="productFreefireDiamonds" min="0"
+                                   class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg"
+                                   placeholder="Masalan: 1000">
+                        </div>
+                        <div id="freefireCharactersField" class="dynamic-field md:col-span-2">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">🧑</span>Personajlar (ro'yxati)
+                            </label>
+                            <textarea id="productFreefireCharacters" rows="3"
+                                      class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg resize-none"
+                                      placeholder="Masalan: Alok, K, Chrono..."></textarea>
+                        </div>
+                        <div id="freefireWeaponsField" class="dynamic-field md:col-span-2">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">🔫</span>Qurollar (darajalari bilan)
+                            </label>
+                            <textarea id="productFreefireWeapons" rows="3"
+                                      class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg resize-none"
+                                      placeholder="Masalan: M4A1 gold, AK legendary..."></textarea>
+                        </div>
+
+                        <!-- Websites dinamik maydonlari -->
+                        <div id="websitesTrafficField" class="dynamic-field">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">👥</span>Oylik trafik
+                            </label>
+                            <input type="number" id="productTraffic" min="0"
+                                   class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg"
+                                   placeholder="Masalan: 10000">
+                        </div>
+                        <div id="websitesDomainAgeField" class="dynamic-field">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">📅</span>Domen yoshi (oy)
+                            </label>
+                            <input type="number" id="productDomainAge" min="0"
+                                   class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg"
+                                   placeholder="Masalan: 12">
+                        </div>
+                        <div id="websitesFeaturesField" class="dynamic-field md:col-span-2">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">⚙️</span>Xususiyatlar
+                            </label>
+                            <textarea id="productFeatures" rows="3"
+                                      class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg resize-none"
+                                      placeholder="Masalan: Responsive design, SEO optimized, E-commerce ready..."></textarea>
+                        </div>
+
+                        <!-- Domains dinamik maydonlari -->
+                        <div id="domainsExpiryField" class="dynamic-field">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">📅</span>Muddati tugash sanasi
+                            </label>
+                            <input type="date" id="productExpiryDate"
+                                   class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg">
+                        </div>
+                        <div id="domainsRegistrarField" class="dynamic-field">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">🏢</span>Registrar
+                            </label>
+                            <input type="text" id="productRegistrar"
+                                   class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg"
+                                   placeholder="Masalan: GoDaddy, Namecheap">
+                        </div>
+
+                        <!-- Telegram Kanallari dinamik maydonlari -->
+                        <div id="telegramChannelsSubscribersField" class="dynamic-field">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">👥</span>Obunachilar soni
+                            </label>
+                            <input type="number" id="productTelegramChannelsSubscribers" min="0"
+                                   class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg"
+                                   placeholder="Masalan: 5000">
+                        </div>
+                        <div id="telegramChannelsPostsField" class="dynamic-field">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">📝</span>Postlar soni
+                            </label>
+                            <input type="number" id="productTelegramChannelsPosts" min="0"
+                                   class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg"
+                                   placeholder="Masalan: 1000">
+                        </div>
+                        <div id="telegramChannelsViewsField" class="dynamic-field">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">👁️</span>Umumiy ko'rishlar
+                            </label>
+                            <input type="number" id="productTelegramChannelsViews" min="0"
+                                   class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg"
+                                   placeholder="Masalan: 100000">
+                        </div>
+
+                        <!-- Telegram Guruhlari dinamik maydonlari -->
+                        <div id="telegramGroupsMembersField" class="dynamic-field">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">👥</span>A'zolar soni
+                            </label>
+                            <input type="number" id="productTelegramGroupsMembers" min="0"
+                                   class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg"
+                                   placeholder="Masalan: 2000">
+                        </div>
+                        <div id="telegramGroupsMessagesField" class="dynamic-field">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">💬</span>Xabarlar soni
+                            </label>
+                            <input type="number" id="productTelegramGroupsMessages" min="0"
+                                   class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg"
+                                   placeholder="Masalan: 50000">
+                        </div>
+                        <div id="telegramGroupsActivityField" class="dynamic-field">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">⚡</span>Faollik darajasi (oyiga xabarlar)
+                            </label>
+                            <input type="number" id="productTelegramGroupsActivity" min="0"
+                                   class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg"
+                                   placeholder="Masalan: 1000">
+                        </div>
+
+                        <!-- Telegram Botlari dinamik maydonlari -->
+                        <div id="telegramBotsUsersField" class="dynamic-field">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">👥</span>Foydalanuvchilar soni
+                            </label>
+                            <input type="number" id="productTelegramBotsUsers" min="0"
+                                   class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg"
+                                   placeholder="Masalan: 5000">
+                        </div>
+                        <div id="telegramBotsCommandsField" class="dynamic-field">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">⚙️</span>Buyruqlar soni
+                            </label>
+                            <input type="number" id="productTelegramBotsCommands" min="0"
+                                   class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg"
+                                   placeholder="Masalan: 50">
+                        </div>
+                        <div id="telegramBotsFeaturesField" class="dynamic-field md:col-span-2">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">🔧</span>Xususiyatlar (ro'yxati)
+                            </label>
+                            <textarea id="productTelegramBotsFeatures" rows="3"
+                                      class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg resize-none"
+                                      placeholder="Masalan: Inline keyboard, API integratsiya, Avtojavob..."></textarea>
+                        </div>
+
+                        <!-- Narxlar -->
+                        <div class="md:col-span-2 space-y-4 sm:space-y-6 bg-white/10 rounded-2xl p-4 sm:p-6">
+                            <h3 class="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6 flex items-center">
+                                <span class="mr-2 sm:mr-4">💰</span>Narxlar
+                            </h3>
+                            
+                            <!-- Olingan narx (faqat statistika uchun) -->
+                            <div>
+                                <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                    <span class="mr-1 sm:mr-2">📊</span>Olingan narx (faqat statistika uchun)
+                                </label>
+                                <input type="number" id="costPrice" min="0" step="1000"
+                                       class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg"
+                                       placeholder="Hisobning o'zingizga tushgan narxi (so'm)">
+                            </div>
+
+                            <!-- Sotish narxi -->
+                            <div>
+                                <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                    <span class="mr-1 sm:mr-2">🛒</span>Sotish narxi *
+                                </label>
+                                <input type="number" id="productPrice" required min="0" step="1000"
+                                       class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg"
+                                       placeholder="Sotish narxini kiriting (so'm)">
+                            </div>
+
+                            <!-- Chegirma narxi -->
+                            <div>
+                                <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                    <span class="mr-1 sm:mr-2">🔥</span>Chegirma narxi
+                                </label>
+                                <input type="number" id="discountPrice" min="0" step="1000"
+                                       class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg"
+                                       placeholder="Aksiyadagi narx (agar mavjud bo'lsa, so'm)">
+                                <p class="text-xs sm:text-sm text-teal-300 mt-2">Agar chegirma narxini kiritmasangiz, oddiy narx qo'llaniladi</p>
+                            </div>
+                        </div>
+
+                        <!-- Stok -->
+                        <div>
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">📦</span>Stok miqdori *
+                            </label>
+                            <input type="number" id="productStock" required min="0"
+                                   class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg"
+                                   placeholder="Mavjud dona soni (masalan: 1 - bitta hisob)">
+                        </div>
+
+                        <!-- Rasmlar -->
+                        <div class="md:col-span-2">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">📸</span>Mahsulot rasmlari *
+                            </label>
+                            <div class="border-2 border-dashed border-white/30 rounded-3xl p-8 sm:p-12 text-center cursor-pointer"
+                                 id="imageUploadArea" onclick="document.getElementById('productImages').click()">
+                                <div class="text-4xl sm:text-6xl mb-4 sm:mb-6">📷</div>
+                                <h4 class="text-xl sm:text-2xl font-bold text-white mb-2">Rasmlarni yuklash</h4>
+                                <p class="text-teal-200 text-base sm:text-lg mb-2">Bosing yoki rasmlarni sudrab keling</p>
+                                <p class="text-teal-300 text-xs sm:text-sm">Maksimum 5 ta rasm, har biri 5MB dan oshmasin (JPG, PNG)</p>
+                            </div>
+                            <input type="file" id="productImages" multiple accept="image/*" class="hidden" onchange="previewImages()">
+                            
+                            <!-- Rasm pre-view -->
+                            <div id="imagePreview" class="grid grid-cols-2 md:grid-cols-5 gap-2 sm:gap-4 mt-4 sm:mt-8 hidden">
+                                <!-- Pre-view rasmlari shu yerda ko'rsatiladi -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Harakatlar -->
+                    <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 sm:pt-8 border-t border-white/20 pt-4 sm:pt-8">
+                        <button type="button" onclick="clearForm()" 
+                                class="flex-1 btn-danger py-3 sm:py-4 rounded-2xl hover:shadow-xl font-semibold text-base sm:text-lg">
+                            🗑️ Tozalash
+                        </button>
+                        <button type="submit" 
+                                class="flex-1 btn-primary py-3 sm:py-4 rounded-2xl hover:shadow-xl font-semibold text-base sm:text-lg shadow-lg">
+                            🚀 Hisobni Qo'shish
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Mening mahsulotlarim -->
+            <div class="glass rounded-3xl shadow-2xl p-4 sm:p-8 mt-6 sm:mt-12">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-8">
+                    <h2 class="text-xl sm:text-3xl font-bold text-white flex items-center mb-2 sm:mb-0">
+                        <span class="mr-2 sm:mr-4 text-lg sm:text-2xl">📦</span>Mening Hisoblarim
+                    </h2>
+                    <div class="flex space-x-2 sm:space-x-4 w-full sm:w-auto mt-2 sm:mt-0">
+                        <select id="productFilter" onchange="loadMyProducts()" 
+                                class="bg-white/20 border border-white/30 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-2xl focus:outline-none focus:ring-0 focus:border-gold-400 text-sm sm:text-base flex-1 sm:flex-none">
+                            <option value="all">Barchasi</option>
+                            <option value="active">Faol</option>
+                            <option value="inactive">Nofaol</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="myProductsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
+                    <!-- Foydalanuvchi mahsulotlari shu yerda yuklanadi -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mahsulotni tahrirlash modali -->
+    <div id="editProductModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-2 sm:p-4">
+        <div class="glass rounded-3xl max-w-4xl w-full max-h-[95vh] overflow-y-auto shadow-2xl">
+            <div class="p-4 sm:p-8 sticky top-0 bg-white/20 border-b border-white/20">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-xl sm:text-3xl font-bold text-white flex items-center">
+                        <span class="mr-2 sm:mr-4 text-lg sm:text-2xl">✏️</span>Mahsulotni Tahrirlash
+                    </h3>
+                    <button onclick="closeEditModal()" class="text-teal-300 hover:text-white text-2xl sm:text-3xl">
+                        ✕
+                    </button>
+                </div>
+            </div>
+            <div id="editProductFormContainer" class="p-4 sm:p-8">
+                <!-- Tahrirlash formasi shu yerda yuklanadi -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Buyurtmalar modali -->
+    <div id="ordersModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-2 sm:p-4">
+        <div class="glass rounded-3xl max-w-4xl w-full max-h-[95vh] overflow-y-auto shadow-2xl">
+            <div class="p-4 sm:p-8 sticky top-0 bg-white/20 border-b border-white/20">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-xl sm:text-3xl font-bold text-white flex items-center">
+                        <span class="mr-2 sm:mr-4 text-lg sm:text-2xl">📋</span>Mahsulot Buyurtmalari
+                    </h3>
+                    <button onclick="closeOrdersModal()" class="text-teal-300 hover:text-white text-2xl sm:text-3xl">
+                        ✕
+                    </button>
+                </div>
+            </div>
+            <div id="ordersListContainer" class="p-4 sm:p-8">
+                <!-- Buyurtmalar ro'yxati shu yerda yuklanadi -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+        let currentEditingProduct = null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+            setupMobileMenu();
+            checkPremiumStatus();
+        });
+
+        function setupMobileMenu() {
+            const btn = document.getElementById('mobileMenuBtn');
+            const menu = document.getElementById('mobileMenu');
+            btn.addEventListener('click', () => {
+                const isOpen = menu.classList.contains('hidden');
+                if (isOpen) {
+                    menu.classList.remove('hidden');
+                    menu.style.maxHeight = menu.scrollHeight + 'px';
+                    btn.closest('nav').classList.add('menu-open');
+                } else {
+                    menu.style.maxHeight = '0px';
+                    setTimeout(() => {
+                        menu.classList.add('hidden');
+                        btn.closest('nav').classList.remove('menu-open');
+                    }, 300);
+                }
+            });
+            document.querySelectorAll('#mobileMenu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    menu.style.maxHeight = '0px';
+                    setTimeout(() => menu.classList.add('hidden'), 300);
+                });
+            });
+        }
+
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            const user = localStorage.getItem('user');
+            
+            if (!token || !user) {
+                window.location.href = 'register-login.html';
+                return;
+            }
+            
+            currentUser = JSON.parse(user);
+            document.getElementById('userInfo').textContent = `@${currentUser.username}`;
+        }
+
+        async function checkPremiumStatus() {
+            try {
+                const response = await fetch('/api/users/profile', {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+
+                if (response.ok) {
+                    const user = await response.json();
+                    if (user.isPremium && new Date(user.premiumExpiry) > new Date()) {
+                        document.getElementById('premiumCheck').classList.add('hidden');
+                        document.getElementById('productFormContainer').classList.remove('hidden');
+                        loadMyProducts();
+                    } else {
+                        document.getElementById('premiumCheck').classList.remove('hidden');
+                        document.getElementById('productFormContainer').classList.add('hidden');
+                    }
+                }
+            } catch (error) {
+                console.error('Xatolik:', error);
+            }
+        }
+
+        function goToPremium() {
+            window.location.href = 'profile.html#premium';
+        }
+
+        function toggleDynamicFields() {
+            const category = document.getElementById('productCategory').value;
+            // Barcha dinamik maydonlarni yashirish
+            const allDynamicFields = [
+                'subCategoryField', 'usernameField',
+                // Instagram
+                'instagramPostsField', 'instagramAvgLikesField', 'instagramAvgCommentsField',
+                // TikTok
+                'tiktokVideosField', 'tiktokAvgViewsField',
+                // YouTube
+                'youtubeSubscribersField', 'youtubeViewsField', 'youtubeWatchHoursField', 'youtubeLikesField', 'youtubePrmEarningsField', 'youtubeMonetizedField',
+                // Likee
+                'likeeVideosField', 'likeeLikesField',
+                // Facebook
+                'facebookFriendsField', 'facebookPageLikesField', 'facebookPostsField',
+                // PUBG
+                'pubgLevelField', 'pubgRpCountField', 'pubgCollectionLevelField', 'pubgArenaLevelField', 'pubgSkinsField', 'pubgWeaponsField',
+                // Free Fire
+                'freefireLevelField', 'freefireDiamondsField', 'freefireCharactersField', 'freefireWeaponsField',
+                // Websites
+                'websitesTrafficField', 'websitesDomainAgeField', 'websitesFeaturesField',
+                // Domains
+                'domainsExpiryField', 'domainsRegistrarField',
+                // Telegram Kanallari
+                'telegramChannelsSubscribersField', 'telegramChannelsPostsField', 'telegramChannelsViewsField',
+                // Telegram Guruhlari
+                'telegramGroupsMembersField', 'telegramGroupsMessagesField', 'telegramGroupsActivityField',
+                // Telegram Botlari
+                'telegramBotsUsersField', 'telegramBotsCommandsField', 'telegramBotsFeaturesField'
+            ];
+            allDynamicFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (field) field.classList.remove('show');
+            });
+            
+            if (!category) return;
+
+            // Umumiy maydonlarni ko'rsatish
+            document.getElementById('subCategoryField').classList.add('show');
+            document.getElementById('usernameField').classList.add('show');
+
+            // Kategoriyaga qarab maxsus maydonlar
+            switch (category) {
+                case 'instagram':
+                    ['instagramPostsField', 'instagramAvgLikesField', 'instagramAvgCommentsField'].forEach(f => document.getElementById(f).classList.add('show'));
+                    break;
+                case 'tiktok':
+                    ['tiktokVideosField', 'tiktokAvgViewsField'].forEach(f => document.getElementById(f).classList.add('show'));
+                    break;
+                case 'youtube':
+                    ['youtubeSubscribersField', 'youtubeViewsField', 'youtubeWatchHoursField', 'youtubeLikesField', 'youtubePrmEarningsField', 'youtubeMonetizedField'].forEach(f => document.getElementById(f).classList.add('show'));
+                    break;
+                case 'likee':
+                    ['likeeVideosField', 'likeeLikesField'].forEach(f => document.getElementById(f).classList.add('show'));
+                    break;
+                case 'facebook':
+                    ['facebookFriendsField', 'facebookPageLikesField', 'facebookPostsField'].forEach(f => document.getElementById(f).classList.add('show'));
+                    break;
+                case 'pubg':
+                    ['pubgLevelField', 'pubgRpCountField', 'pubgCollectionLevelField', 'pubgArenaLevelField', 'pubgSkinsField', 'pubgWeaponsField'].forEach(f => document.getElementById(f).classList.add('show'));
+                    break;
+                case 'freefire':
+                    ['freefireLevelField', 'freefireDiamondsField', 'freefireCharactersField', 'freefireWeaponsField'].forEach(f => document.getElementById(f).classList.add('show'));
+                    break;
+                case 'websites':
+                    ['websitesTrafficField', 'websitesDomainAgeField', 'websitesFeaturesField'].forEach(f => document.getElementById(f).classList.add('show'));
+                    break;
+                case 'domains':
+                    ['domainsExpiryField', 'domainsRegistrarField'].forEach(f => document.getElementById(f).classList.add('show'));
+                    break;
+                case 'telegram-channels':
+                    ['telegramChannelsSubscribersField', 'telegramChannelsPostsField', 'telegramChannelsViewsField'].forEach(f => document.getElementById(f).classList.add('show'));
+                    break;
+                case 'telegram-groups':
+                    ['telegramGroupsMembersField', 'telegramGroupsMessagesField', 'telegramGroupsActivityField'].forEach(f => document.getElementById(f).classList.add('show'));
+                    break;
+                case 'telegram-bots':
+                    ['telegramBotsUsersField', 'telegramBotsCommandsField', 'telegramBotsFeaturesField'].forEach(f => document.getElementById(f).classList.add('show'));
+                    break;
+            }
+        }
+
+        // Rasm pre-view funksiyasi
+        function previewImages() {
+            const files = document.getElementById('productImages').files;
+            const preview = document.getElementById('imagePreview');
+            const uploadArea = document.getElementById('imageUploadArea');
+
+            if (files.length === 0) {
+                preview.classList.add('hidden');
+                uploadArea.innerHTML = `
+                    <div class="text-4xl sm:text-6xl mb-4 sm:mb-6">📷</div>
+                    <h4 class="text-xl sm:text-2xl font-bold text-white mb-2">Rasmlarni yuklash</h4>
+                    <p class="text-teal-200 text-base sm:text-lg mb-2">Bosing yoki rasmlarni sudrab keling</p>
+                    <p class="text-teal-300 text-xs sm:text-sm">Maksimum 5 ta rasm, har biri 5MB dan oshmasin (JPG, PNG)</p>
+                `;
+                return;
+            }
+
+            if (files.length > 5) {
+                alert('Maksimum 5 ta rasm yuklash mumkin');
+                document.getElementById('productImages').value = '';
+                return;
+            }
+
+            preview.innerHTML = '';
+            preview.classList.remove('hidden');
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if (!file.type.startsWith('image/')) continue;
+
+                if (file.size > 5 * 1024 * 1024) {
+                    alert(`Rasm ${file.name} hajmi 5MB dan katta!`);
+                    continue;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imgDiv = document.createElement('div');
+                    imgDiv.className = 'image-preview';
+                    imgDiv.innerHTML = `
+                        <img src="${e.target.result}" class="w-full h-24 sm:h-32 object-cover rounded-2xl shadow-lg">
+                        <button type="button" onclick="removeImage(${i})" 
+                                class="bg-red-500/90 hover:bg-red-500 text-white rounded-full w-6 sm:w-8 h-6 sm:h-8 flex items-center justify-center text-xs sm:text-sm font-bold shadow-lg">
+                            ✕
+                        </button>
+                    `;
+                    preview.appendChild(imgDiv);
+                };
+                reader.readAsDataURL(file);
+            }
+
+            uploadArea.innerHTML = `
+                <div class="text-teal-400">
+                    <div class="text-2xl sm:text-3xl mb-2 sm:mb-4">✅</div>
+                    <h4 class="text-base sm:text-xl font-bold text-white mb-2">${files.length} ta rasm tanlandi</h4>
+                    <p class="text-teal-300 text-base sm:text-lg">Boshqa rasm qo'shish uchun yana bosing</p>
+                </div>
+            `;
+        }
+
+        function removeImage(index) {
+            const files = document.getElementById('productImages').files;
+            const dt = new DataTransfer();
+            
+            for (let i = 0; i < files.length; i++) {
+                if (i !== index) {
+                    dt.items.add(files[i]);
+                }
+            }
+            
+            document.getElementById('productImages').files = dt.files;
+            previewImages();
+        }
+
+        // Mahsulot qo'shish formasi
+        document.getElementById('addProductForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const formData = new FormData();
+            formData.append('name', document.getElementById('productName').value);
+            formData.append('description', document.getElementById('productDescription').value);
+            formData.append('category', document.getElementById('productCategory').value);
+            formData.append('subCategory', document.getElementById('productSubCategory').value || '');
+            formData.append('username', document.getElementById('productUsername').value || '');
+
+            // Kategoriyaga qarab qo'shimcha ma'lumotlar
+            const category = document.getElementById('productCategory').value;
+            switch (category) {
+                case 'instagram':
+                    formData.append('posts', document.getElementById('productPosts').value || '');
+                    formData.append('avgLikes', document.getElementById('productAvgLikes').value || '');
+                    formData.append('avgComments', document.getElementById('productAvgComments').value || '');
+                    break;
+                case 'tiktok':
+                    formData.append('videos', document.getElementById('productVideos').value || '');
+                    formData.append('avgViews', document.getElementById('productAvgViews').value || '');
+                    break;
+                case 'youtube':
+                    formData.append('subscribers', document.getElementById('productSubscribers').value || '');
+                    formData.append('views', document.getElementById('productViews').value || '');
+                    formData.append('watchHours', document.getElementById('productWatchHours').value || '');
+                    formData.append('likes', document.getElementById('productLikes').value || '');
+                    formData.append('prmEarnings', document.getElementById('productPrmEarnings').value || '');
+                    formData.append('monetized', document.getElementById('productMonetized').value || '');
+                    break;
+                case 'likee':
+                    formData.append('videos', document.getElementById('productLikeeVideos').value || '');
+                    formData.append('likes', document.getElementById('productLikeeLikes').value || '');
+                    break;
+                case 'facebook':
+                    formData.append('friends', document.getElementById('productFriends').value || '');
+                    formData.append('pageLikes', document.getElementById('productPageLikes').value || '');
+                    formData.append('posts', document.getElementById('productFacebookPosts').value || '');
+                    break;
+                case 'pubg':
+                    formData.append('pubgLevel', document.getElementById('productPubgLevel').value || '');
+                    formData.append('pubgRpCount', document.getElementById('productPubgRpCount').value || '');
+                    formData.append('pubgCollectionLevel', document.getElementById('productPubgCollectionLevel').value || '');
+                    formData.append('pubgArenaLevel', document.getElementById('productPubgArenaLevel').value || '');
+                    formData.append('pubgSkins', document.getElementById('productPubgSkins').value || '');
+                    formData.append('pubgWeapons', document.getElementById('productPubgWeapons').value || '');
+                    break;
+                case 'freefire':
+                    formData.append('freefireLevel', document.getElementById('productFreefireLevel').value || '');
+                    formData.append('freefireDiamonds', document.getElementById('productFreefireDiamonds').value || '');
+                    formData.append('freefireCharacters', document.getElementById('productFreefireCharacters').value || '');
+                    formData.append('freefireWeapons', document.getElementById('productFreefireWeapons').value || '');
+                    break;
+                case 'websites':
+                    formData.append('traffic', document.getElementById('productTraffic').value || '');
+                    formData.append('domainAge', document.getElementById('productDomainAge').value || '');
+                    formData.append('features', document.getElementById('productFeatures').value || '');
+                    break;
+                case 'domains':
+                    formData.append('expiryDate', document.getElementById('productExpiryDate').value || '');
+                    formData.append('registrar', document.getElementById('productRegistrar').value || '');
+                    break;
+                case 'telegram-channels':
+                    formData.append('telegramChannelsSubscribers', document.getElementById('productTelegramChannelsSubscribers').value || '');
+                    formData.append('telegramChannelsPosts', document.getElementById('productTelegramChannelsPosts').value || '');
+                    formData.append('telegramChannelsViews', document.getElementById('productTelegramChannelsViews').value || '');
+                    break;
+                case 'telegram-groups':
+                    formData.append('telegramGroupsMembers', document.getElementById('productTelegramGroupsMembers').value || '');
+                    formData.append('telegramGroupsMessages', document.getElementById('productTelegramGroupsMessages').value || '');
+                    formData.append('telegramGroupsActivity', document.getElementById('productTelegramGroupsActivity').value || '');
+                    break;
+                case 'telegram-bots':
+                    formData.append('telegramBotsUsers', document.getElementById('productTelegramBotsUsers').value || '');
+                    formData.append('telegramBotsCommands', document.getElementById('productTelegramBotsCommands').value || '');
+                    formData.append('telegramBotsFeatures', document.getElementById('productTelegramBotsFeatures').value || '');
+                    break;
+            }
+
+            formData.append('price', document.getElementById('productPrice').value);
+            formData.append('costPrice', document.getElementById('costPrice').value);
+            formData.append('discountPrice', document.getElementById('discountPrice').value || '');
+            formData.append('stock', document.getElementById('productStock').value);
+
+            const imageFiles = document.getElementById('productImages').files;
+            for (let i = 0; i < imageFiles.length; i++) {
+                formData.append('images', imageFiles[i]);
+            }
+
+            try {
+                const response = await fetch('/api/products', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: formData
+                });
+
+                if (response.ok) {
+                    const product = await response.json();
+                    alert('Hisob muvaffaqiyatli qo\'shildi!');
+                    clearForm();
+                    loadMyProducts();
+                } else {
+                    const error = await response.json();
+                    alert('Xatolik: ' + error.error);
+                }
+            } catch (error) {
+                console.error('Xatolik:', error);
+                alert('Hisob qo\'shishda xatolik yuz berdi');
+            }
+        });
+
+function clearForm() {
+    document.getElementById('addProductForm').reset();
+    document.getElementById('productImages').value = '';
+    document.getElementById('imagePreview').innerHTML = '';
+    document.getElementById('imagePreview').classList.add('hidden');
+    document.getElementById('imageUploadArea').innerHTML = `
+        <div class="text-4xl sm:text-6xl mb-4 sm:mb-6">📷</div>
+        <h4 class="text-xl sm:text-2xl font-bold text-white mb-2">Rasmlarni yuklash</h4>
+        <p class="text-teal-200 text-base sm:text-lg mb-2">Bosing yoki rasmlarni sudrab keling</p>
+        <p class="text-teal-300 text-xs sm:text-sm">Maksimum 5 ta rasm, har biri 5MB dan oshmasin (JPG, PNG)</p>
+    `;
+            // Barcha dinamik maydonlarni yashirish
+            const allDynamicFields = [
+                'subCategoryField', 'usernameField',
+                'instagramPostsField', 'instagramAvgLikesField', 'instagramAvgCommentsField',
+                'tiktokVideosField', 'tiktokAvgViewsField',
+                'youtubeSubscribersField', 'youtubeViewsField', 'youtubeWatchHoursField', 'youtubeLikesField', 'youtubePrmEarningsField', 'youtubeMonetizedField',
+                'likeeVideosField', 'likeeLikesField',
+                'facebookFriendsField', 'facebookPageLikesField', 'facebookPostsField',
+                'pubgLevelField', 'pubgRpCountField', 'pubgCollectionLevelField', 'pubgArenaLevelField', 'pubgSkinsField', 'pubgWeaponsField',
+                'freefireLevelField', 'freefireDiamondsField', 'freefireCharactersField', 'freefireWeaponsField',
+                'websitesTrafficField', 'websitesDomainAgeField', 'websitesFeaturesField',
+                'domainsExpiryField', 'domainsRegistrarField',
+                'telegramChannelsSubscribersField', 'telegramChannelsPostsField', 'telegramChannelsViewsField',
+                'telegramGroupsMembersField', 'telegramGroupsMessagesField', 'telegramGroupsActivityField',
+                'telegramBotsUsersField', 'telegramBotsCommandsField', 'telegramBotsFeaturesField'
+            ];
+            allDynamicFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (field) field.classList.remove('show');
+            });
+        }
+
+        // Mening mahsulotlarim
+        async function loadMyProducts() {
+            try {
+                const filter = document.getElementById('productFilter').value;
+                const response = await fetch(`/api/users/my-products?filter=${filter}`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+
+                if (response.ok) {
+                    const products = await response.json();
+                    displayMyProducts(products);
+                }
+            } catch (error) {
+                console.error('Xatolik:', error);
+            }
+        }
+
+        function displayMyProducts(products) {
+            const container = document.getElementById('myProductsContainer');
+            
+            if (products.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-8 sm:py-16 text-teal-200 col-span-full">
+                        <div class="text-6xl sm:text-8xl mb-4 sm:mb-8">📦</div>
+                        <h3 class="text-xl sm:text-3xl font-bold text-white mb-2 sm:mb-4">Hali hisoblar yo'q</h3>
+                        <p class="text-teal-300 text-base sm:text-xl">Birinchi hisobingizni qo'shing va savdoni boshlang!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = products.map(product => {
+                const discountPercent = product.discountPrice ? Math.round((1 - product.discountPrice / product.price) * 100) : 0;
+                const price = product.discountPrice || product.price;
+                const categoryIcon = { 
+                    instagram: '📸', 
+                    tiktok: '🎥', 
+                    youtube: '📺', 
+                    likee: '🎬', 
+                    facebook: '📘', 
+                    pubg: '🎮', 
+                    freefire: '🔥', 
+                    websites: '🌐', 
+                    domains: '🔗',
+                    'telegram-channels': '📢',
+                    'telegram-groups': '👥',
+                    'telegram-bots': '🤖'
+                }[product.category] || '📊';
+                return `
+                    <div class="glass rounded-3xl p-4 sm:p-6 card-hover">
+                        <div class="relative mb-4 sm:mb-6">
+                            <img src="${product.images && product.images[0] ? product.images[0] : 'https://via.placeholder.com/300x200?text=No+Image'}" 
+                                 alt="${product.name}" 
+                                 class="w-full h-32 sm:h-48 object-cover rounded-2xl shadow-xl">
+                            ${discountPercent > 0 ? `
+                                <div class="absolute top-2 sm:top-4 left-2 sm:left-4 bg-gradient-to-r from-red-500 to-red-600 text-white px-2 sm:px-3 py-1 sm:py-2 rounded-full text-xs sm:text-sm font-bold shadow-lg">
+                                    <i class="fas fa-percentage mr-1"></i>${discountPercent}% CHEGIRMA
+                                </div>
+                            ` : ''}
+                        </div>
+                        
+                        <div class="space-y-2 sm:space-y-4">
+                            <div class="flex justify-between items-start mb-2 sm:mb-4">
+                                <h3 class="font-bold text-base sm:text-xl text-white flex-1 line-clamp-1">${product.name}</h3>
+                                <span class="px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-semibold ${product.isActive ? 'bg-teal-500/20 text-teal-300' : 'bg-red-500/20 text-red-300'}">
+                                    ${product.isActive ? 'Faol' : 'Nofaol'}
+                                </span>
+                            </div>
+                            
+                            <p class="text-teal-200 text-sm sm:text-lg line-clamp-2 mb-4 sm:mb-6">${product.description || 'Tavsif mavjud emas'}</p>
+                            
+                            <div class="flex items-center justify-between mb-4 sm:mb-6">
+                                <span class="text-xl sm:text-2xl font-bold text-gold-400">
+                                    ${price.toLocaleString()} so'm
+                                </span>
+                                <div class="text-teal-300 text-xs sm:text-sm">
+                                    🔥 ${product.monthlySales || 0} sotuv
+                                </div>
+                            </div>
+                            
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="editProduct('${product._id}')" 
+                                        class="flex-1 btn-secondary py-2 sm:py-3 rounded-xl font-semibold text-xs sm:text-sm hover:shadow-lg">
+                                    <i class="fas fa-edit mr-1"></i>Tahrirlash
+                                </button>
+                                <button onclick="viewProductOrders('${product._id}')" 
+                                        class="flex-1 btn-primary py-2 sm:py-3 rounded-xl font-semibold text-xs sm:text-sm hover:shadow-lg">
+                                    <i class="fas fa-list mr-1"></i>Buyurtmalar
+                                </button>
+                                <button onclick="toggleProductStatus('${product._id}', ${!product.isActive})" 
+                                        class="flex-1 ${product.isActive ? 'btn-danger' : 'btn-secondary'} py-2 sm:py-3 rounded-xl font-semibold text-xs sm:text-sm hover:shadow-lg">
+                                    ${product.isActive ? '❌ Nofaol' : '✅ Faol'}
+                                </button>
+                                <button onclick="deleteProduct('${product._id}')" 
+                                        class="flex-1 btn-danger py-2 sm:py-3 rounded-xl font-semibold text-xs sm:text-sm hover:shadow-lg">
+                                    <i class="fas fa-trash mr-1"></i>O'chirish
+                                </button>
+                            </div>
+                            <div class="text-xs text-teal-300 mt-2 flex items-center">
+                                <span class="mr-1">${categoryIcon}</span>${product.category}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function editProduct(productId) {
+            try {
+                const response = await fetch(`/api/products/${productId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+
+                if (response.ok) {
+                    currentEditingProduct = await response.json();
+                    openEditModal();
+                }
+            } catch (error) {
+                console.error('Xatolik:', error);
+                alert('Mahsulotni yuklashda xatolik');
+            }
+        }
+
+        function openEditModal() {
+            const container = document.getElementById('editProductFormContainer');
+            
+            container.innerHTML = `
+                <form id="editProductForm" class="space-y-4 sm:space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                        <div class="md:col-span-2">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">📛</span>Mahsulot nomi
+                            </label>
+                            <input type="text" id="editName" value="${currentEditingProduct.name}" required
+                                   class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg">
+                        </div>
+                        
+                        <div class="md:col-span-2">
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">📝</span>Tavsif
+                            </label>
+                            <textarea id="editDescription" rows="4"
+                                      class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg resize-none">${currentEditingProduct.description || ''}</textarea>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">📂</span>Kategoriya
+                            </label>
+                            <select id="editCategory" onchange="toggleDynamicFields()" class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg">
+                                <option value="instagram" ${currentEditingProduct.category === 'instagram' ? 'selected' : ''}>Instagram Hisoblari</option>
+                                <option value="tiktok" ${currentEditingProduct.category === 'tiktok' ? 'selected' : ''}>TikTok Hisoblari</option>
+                                <option value="youtube" ${currentEditingProduct.category === 'youtube' ? 'selected' : ''}>YouTube Kanallari</option>
+                                <option value="likee" ${currentEditingProduct.category === 'likee' ? 'selected' : ''}>Likee Hisoblari</option>
+                                <option value="facebook" ${currentEditingProduct.category === 'facebook' ? 'selected' : ''}>Facebook hisoblari</option>
+                                <option value="pubg" ${currentEditingProduct.category === 'pubg' ? 'selected' : ''}>PUBG Mobile hisoblari</option>
+                                <option value="freefire" ${currentEditingProduct.category === 'freefire' ? 'selected' : ''}>Free Fire hisoblari</option>
+                                <option value="websites" ${currentEditingProduct.category === 'websites' ? 'selected' : ''}>Tayyor Veb-saytlar</option>
+                                <option value="domains" ${currentEditingProduct.category === 'domains' ? 'selected' : ''}>Domenlar va Hosting</option>
+                                <option value="telegram-channels" ${currentEditingProduct.category === 'telegram-channels' ? 'selected' : ''}>Telegram Kanallari</option>
+                                <option value="telegram-groups" ${currentEditingProduct.category === 'telegram-groups' ? 'selected' : ''}>Telegram Guruhlari</option>
+                                <option value="telegram-bots" ${currentEditingProduct.category === 'telegram-bots' ? 'selected' : ''}>Telegram Botlari</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">🛒</span>Sotish narxi
+                            </label>
+                            <input type="number" id="editPrice" value="${currentEditingProduct.price}" required min="0"
+                                   class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-base sm:text-lg font-semibold text-teal-100 mb-2 sm:mb-4 flex items-center">
+                                <span class="mr-1 sm:mr-2">🔥</span>Chegirma narxi
+                            </label>
+                            <input type="number" id="editDiscountPrice" value="${currentEditingProduct.discountPrice || ''}" min="0"
+                                   class="input-field w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl focus:outline-none focus:ring-0 text-base sm:text-lg">
+                        </div>
+                    </div>
+                    
+                    <div class="flex space-x-4 sm:space-x-6 pt-4 sm:pt-8 border-t border-white/20">
+                        <button type="button" onclick="closeEditModal()" 
+                                class="flex-1 btn-danger py-3 sm:py-4 rounded-2xl hover:shadow-xl font-semibold text-base sm:text-lg">
+                            ❌ Bekor qilish
+                        </button>
+                        <button type="submit" 
+                                class="flex-1 btn-secondary py-3 sm:py-4 rounded-2xl hover:shadow-xl font-semibold text-base sm:text-lg shadow-lg">
+                            💾 Saqlash
+                        </button>
+                    </div>
+                </form>
+            `;
+
+            document.getElementById('editProductForm').addEventListener('submit', saveProductChanges);
+            document.getElementById('editProductModal').classList.remove('hidden');
+            toggleDynamicFields(); // Dinamik maydonlarni yangilash
+        }
+
+        async function saveProductChanges(e) {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('editName').value,
+                description: document.getElementById('editDescription').value,
+                category: document.getElementById('editCategory').value,
+                price: document.getElementById('editPrice').value,
+                discountPrice: document.getElementById('editDiscountPrice').value || null
+            };
+
+            try {
+                const response = await fetch(`/api/products/${currentEditingProduct._id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    alert('Mahsulot muvaffaqiyatli yangilandi!');
+                    closeEditModal();
+                    loadMyProducts();
+                } else {
+                    alert('Yangilashda xatolik');
+                }
+            } catch (error) {
+                console.error('Xatolik:', error);
+                alert('Xatolik yuz berdi');
+            }
+        }
+
+        function closeEditModal() {
+            document.getElementById('editProductModal').classList.add('hidden');
+            currentEditingProduct = null;
+        }
+
+        async function toggleProductStatus(productId, newStatus) {
+            try {
+                const response = await fetch(`/api/products/${productId}/status`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ isActive: newStatus })
+                });
+
+                if (response.ok) {
+                    alert(`Mahsulot ${newStatus ? 'faollashtirildi' : 'nofaollashtirildi'}!`);
+                    loadMyProducts();
+                } else {
+                    alert('Statusni o\'zgartirishda xatolik');
+                }
+            } catch (error) {
+                console.error('Xatolik:', error);
+                alert('Xatolik yuz berdi');
+            }
+        }
+
+        async function deleteProduct(productId) {
+            if (!confirm('Bu mahsulotni o\'chirishni istaysizmi? Bu amalni bekor qilib bo\'lmaydi.')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/products/${productId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+
+                if (response.ok) {
+                    alert('Mahsulot muvaffaqiyatli o\'chirildi!');
+                    loadMyProducts();
+                } else {
+                    alert('O\'chirishda xatolik');
+                }
+            } catch (error) {
+                console.error('Xatolik:', error);
+                alert('Xatolik yuz berdi');
+            }
+        }
+
+        async function viewProductOrders(productId) {
+            try {
+                const response = await fetch(`/api/products/${productId}/orders`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+
+                if (response.ok) {
+                    const orders = await response.json();
+                    displayProductOrders(orders, productId);
+                }
+            } catch (error) {
+                console.error('Xatolik:', error);
+                alert('Buyurtmalarni yuklashda xatolik');
+            }
+        }
+
+        function displayProductOrders(orders, productId) {
+            const container = document.getElementById('ordersListContainer');
+            
+            if (orders.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-8 sm:py-16 text-teal-200">
+                        <div class="text-6xl sm:text-8xl mb-4 sm:mb-8">📦</div>
+                        <h3 class="text-xl sm:text-3xl font-bold text-white mb-2 sm:mb-4">Hali buyurtmalar yo'q</h3>
+                        <p class="text-teal-300 text-base sm:text-xl">Birinchi buyurtmangizni kuting!</p>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `
+                    <div class="space-y-4 sm:space-y-6">
+                        ${orders.map(order => `
+                            <div class="glass p-4 sm:p-6 rounded-2xl card-hover">
+                                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6">
+                                    <div>
+                                        <p class="font-bold text-base sm:text-xl text-white">Buyurtma #${order._id.slice(-6)}</p>
+                                        <p class="text-teal-300 text-sm sm:text-lg">${new Date(order.createdAt).toLocaleDateString('uz-UZ')}</p>
+                                    </div>
+                                    <span class="px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-semibold ${getStatusClass(order.status)} mt-2 sm:mt-0">
+                                        ${getStatusText(order.status)}
+                                    </span>
+                                </div>
+                                
+                                <div class="grid grid-cols-2 gap-4 sm:gap-6 text-base sm:text-lg mb-4 sm:mb-6">
+                                    <div>
+                                        <span class="text-teal-300 font-semibold">Miqdor:</span>
+                                        <span class="text-white font-bold">${order.quantity} dona</span>
+                                    </div>
+                                    <div>
+                                        <span class="text-teal-300 font-semibold">Jami:</span>
+                                        <span class="text-gold-400 font-bold text-lg sm:text-xl">${order.totalPrice.toLocaleString()} so'm</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex flex-wrap gap-2 sm:gap-4">
+                                    ${order.status === 'pending' ? `
+                                        <button onclick="updateOrderStatus('${order._id}', 'confirmed')" 
+                                                class="btn-secondary px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-semibold text-sm sm:text-base hover:shadow-lg">
+                                            ✅ Tasdiqlash
+                                        </button>
+                                        <button onclick="updateOrderStatus('${order._id}', 'cancelled')" 
+                                                class="btn-danger px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-semibold text-sm sm:text-base hover:shadow-lg">
+                                            ❌ Rad etish
+                                        </button>
+                                    ` : ''}
+                                    
+                                    ${order.status === 'confirmed' ? `
+                                        <button onclick="updateOrderStatus('${order._id}', 'shipped')" 
+                                                class="btn-primary px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-semibold text-sm sm:text-base hover:shadow-lg">
+                                            📦 Jo'natish
+                                        </button>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+
+            document.getElementById('ordersModal').classList.remove('hidden');
+        }
+
+        function closeOrdersModal() {
+            document.getElementById('ordersModal').classList.add('hidden');
+        }
+
+        function getStatusClass(status) {
+            const classes = {
+                'pending': 'bg-yellow-500/20 text-yellow-300',
+                'confirmed': 'bg-teal-500/20 text-teal-300',
+                'shipped': 'bg-purple-500/20 text-purple-300',
+                'delivered': 'bg-green-500/20 text-green-300',
+                'cancelled': 'bg-red-500/20 text-red-300'
+            };
+            return classes[status] || 'bg-gray-500/20 text-gray-300';
+        }
+
+        function getStatusText(status) {
+            const texts = {
+                'pending': 'Kutilmoqda',
+                'confirmed': 'Tasdiqlandi',
+                'shipped': 'Jo\'natildi',
+                'delivered': 'Yetkazildi',
+                'cancelled': 'Bekor qilindi'
+            };
+            return texts[status] || status;
+        }
+
+        async function updateOrderStatus(orderId, newStatus) {
+            try {
+                const response = await fetch(`/api/orders/${orderId}/status`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ status: newStatus })
+                });
+
+                if (response.ok) {
+                    alert('Buyurtma statusi yangilandi!');
+                    closeOrdersModal();
+                    // Qayta yuklash
+                    if (currentEditingProduct) {
+                        viewProductOrders(currentEditingProduct._id);
+                    }
+                } else {
+                    alert('Statusni yangilashda xatolik');
+                }
+            } catch (error) {
+                console.error('Xatolik:', error);
+                alert('Xatolik yuz berdi');
+            }
+        }
+
+        function logout() {
+            if (confirm('Chiqmoqchimisiz?')) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                window.location.href = 'register-login.html';
+            }
+        }
+    </script>
+</body>
+</html>
