@@ -568,25 +568,26 @@
         }
 
         function checkAuth() {
-            const token = localStorage.getItem('token');
-            const user = localStorage.getItem('user');
-           
-            if (!token || !user) {
-                window.location.href = 'register-login.html';
-                return;
-            }
-           
-            currentUser = JSON.parse(user);
-            const userInfo = document.getElementById('userInfo');
-            const addProductLink = document.getElementById('addProductLink');
-            const addProductLinkMobile = document.getElementById('addProductLinkMobile');
-            userInfo.textContent = `@${currentUser.username}`;
-           
-            if (currentUser.isPremium) {
-                addProductLink.classList.remove('hidden');
-                addProductLinkMobile.classList.remove('hidden');
-            }
-        }
+    const token = localStorage.getItem('token');
+    const user = localStorage.getItem('user');
+  
+    if (!token || !user) {
+        window.location.href = 'register-login.html';
+        return;
+    }
+  
+    currentUser = JSON.parse(user);
+    const userInfo = document.getElementById('userInfo');
+    const addProductLink = document.getElementById('addProductLink');
+    const addProductLinkMobile = document.getElementById('addProductLinkMobile'); // Bu null bo'lishi mumkin
+  
+    if (userInfo) userInfo.textContent = `@${currentUser.username}`; // Null check
+  
+    if (currentUser.isPremium) {
+        if (addProductLink) addProductLink.classList.remove('hidden');
+        if (addProductLinkMobile) addProductLinkMobile.classList.remove('hidden'); // Null check qo'shildi
+    }
+}
 
         function setupEventListeners() {
             document.getElementById('searchInput').addEventListener('input', debounce(applyFilters, 500));
